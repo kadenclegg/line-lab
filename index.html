@@ -51,10 +51,6 @@
     .snapshot{color:var(--muted);font-size:12.5px;margin:6px 0 0}
     .icon-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:19px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
     .icon-btn:active{transform:scale(.92)}
-    .learning{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:12px 14px;border-radius:14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
-    .learning svg{flex:0 0 auto;margin-top:1px}
-    .learning strong{display:block;font-size:13px;margin-bottom:2px;color:var(--ink)}
-    .learning span{display:block;font-size:12.5px;line-height:1.45}
     .toolbar{position:sticky;top:0;z-index:30;margin:0 -16px;padding:10px 16px 12px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
     .segmented{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:3px;gap:2px}
     .segmented button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:14px;padding:9px 0;border-radius:11px}
@@ -146,7 +142,6 @@
     .sheet-teams .g-row{padding:0}
     .sheet-kick{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px}
     .sheet-kick .countdown{color:var(--blue);font-weight:700}
-    .ver-tag{font-size:11px;font-weight:800;color:var(--muted);background:var(--surface-2);border-radius:7px;padding:4px 8px;white-space:nowrap;margin-top:12px;display:inline-block}
     .sheet h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:20px 0 8px;font-weight:800}
     .sheet-sec{background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55}
     .sheet-sec .vs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
@@ -155,7 +150,6 @@
     .sheet-sec .vs .delta b{color:var(--blue)}
     .sheet-sec .edge-line{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
     .sheet-sec .edge-line b{color:var(--ink)}
-    .sheet-note{font-size:12px;color:var(--muted);margin:16px 2px 0;line-height:1.5}
     .sheet .signal{flex:0 0 auto;margin-top:12px}
     .ptr{height:0;overflow:hidden;display:flex;justify-content:center;transition:height .18s ease}
     .ptr-spin{width:26px;height:26px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--blue);margin:10px 0;animation:ptrSpin .8s linear infinite}
@@ -233,10 +227,6 @@
       <div><p class="kicker">MODEL SNAPSHOT</p><h1>Line Lab</h1><p class="snapshot">Built from pregame numbers · Sep 21, 2026</p></div>
       <button class="icon-btn" id="themeToggle" aria-label="Toggle light or dark mode">&#9789;</button>
     </header>
-    <aside class="learning" aria-label="Learning mode note">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 2.8 20h18.4L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v5m0 3v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      <div><strong>Paper markers, not picks</strong><span>These models are still learning. Badges only flag disagreements with the market so we can test whether the model is right over time.</span></div>
-    </aside>
 
     <div class="toolbar" id="toolbar">
       <div class="segmented" id="daySeg" role="tablist" aria-label="Filter by day">
@@ -257,7 +247,7 @@
       <div id="favSection"></div>
       <div class="summary"><h2 id="gamesTitle">Today's games</h2><p id="gameCount" aria-live="polite"></p></div>
       <div id="games"></div>
-      <details class="method"><summary>How paper markers work</summary><p><b>Strong</b> means the model differs from the market by at least 5 points on the spread or 4 on the total. <b>Lean</b> means at least 3 on the spread or 2.5 on the total. <b>Coin flip</b> means the numbers are close. These are calibration labels, not recommendations. Test lines are active experiments tracked separately from the production model.</p></details>
+      <details class="method"><summary>How paper markers work</summary><p><b>Strong</b> means the model differs from the market by at least 5 points on the spread or 4 on the total. <b>Lean</b> means at least 3 on the spread or 2.5 on the total. <b>Coin flip</b> means the numbers are close. Test lines are active experiments tracked separately from the production model.</p></details>
     </section>
 
     <section id="signalsView" class="view" aria-label="Signals">
@@ -272,12 +262,12 @@
     </section>
 
     <section id="healthView" class="view" aria-label="Model health">
-      <div class="section-head"><h2>Model health</h2><p>Backtests measure past accuracy. They don&rsquo;t turn a young model into a proven betting system.</p></div>
+      <div class="section-head"><h2>Model health</h2></div>
       <div class="health-grid">
-        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">nfl-srs-v2 &middot; 272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Naive baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread bias</span><b>&asymp; 0</b></div><div class="caution">v2 retuned totals: error 10.57 pts vs naive 10.98, bias &asymp; 0. Still a young model &mdash; paper labels only.</div></article>
-        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">cfb-srs-v2 &middot; 906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Naive baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">v2 retuned totals: error 12.64 pts vs naive 12.95, bias &asymp; 0. Still a young model &mdash; paper labels only.</div></article>
-        <article class="health"><div class="health-head"><h3>MLB</h3><span class="status tested">Backtested</span></div><div class="version">mlb-srs-v2 &middot; 2,267 games</div><div class="metric"><span>Total bias</span><b>&asymp; 0</b></div><div class="metric"><span>Total error</span><b>3.55 runs</b></div><div class="metric"><span>Spread error</span><b>unchanged</b></div><div class="caution">v2 fixed the hot-total bias (symmetric home-field + shrinkage). Starting pitchers still unmodeled &mdash; the market sees them, we don&rsquo;t.</div></article>
-        <article class="health"><div class="health-head"><h3>NBA</h3><span class="status">Learning</span></div><div class="version">nba-srs-v1 &middot; unvalidated</div><div class="metric"><span>Season begins</span><b>Oct 20</b></div><div class="metric"><span>Roster changes</span><b>Not modeled</b></div><div class="caution">Opening numbers are logged for study, but there is no historical validation yet.</div></article>
+        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Naive baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread bias</span><b>&asymp; 0</b></div><div class="caution">Retuned totals: error 10.57 pts vs naive 10.98, bias &asymp; 0.</div></article>
+        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Naive baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Retuned totals: error 12.64 pts vs naive 12.95, bias &asymp; 0.</div></article>
+        <article class="health"><div class="health-head"><h3>MLB</h3><span class="status tested">Backtested</span></div><div class="version">2,267 games</div><div class="metric"><span>Total bias</span><b>&asymp; 0</b></div><div class="metric"><span>Total error</span><b>3.55 runs</b></div><div class="metric"><span>Spread error</span><b>unchanged</b></div><div class="caution">Hot-total bias fixed (symmetric home-field + shrinkage). Starting pitchers still unmodeled.</div></article>
+        <article class="health"><div class="health-head"><h3>NBA</h3><span class="status">Learning</span></div><div class="version">unvalidated</div><div class="metric"><span>Season begins</span><b>Oct 20</b></div><div class="metric"><span>Roster changes</span><b>Not modeled</b></div></article>
       </div>
     </section>
   </main>
@@ -481,14 +471,14 @@
   function spreadDetail(g){
     const d=g.our_spread-g.market_spread;
     const body=g.market_spread==null
-      ?`<div class="vs"><div>Model<b>${fmtLine(g,g.our_spread)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div><div class="edge-line">Awaiting a market line to compare.</div>`
+      ?`<div class="vs"><div>Model<b>${fmtLine(g,g.our_spread)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div>`
       :`<div class="vs"><div>Model<b>${fmtLine(g,g.our_spread)}</b></div><div>Market<b>${fmtLine(g,g.market_spread)}</b></div><div class="delta">Δ<b>${Math.abs(d).toFixed(1)}</b></div></div><div class="edge-line">${Math.abs(d)<.05?'No edge — matches the market':'Leans <b>'+escapeHTML(Math.abs(d)>0&&d>0?g.home_team:g.away_team)+'</b>'}</div>`;
     return `<h4>Spread</h4><div class="sheet-sec">${body}</div>`;
   }
   function totalDetail(g){
     const d=g.our_total-g.market_total;
     const body=g.market_total==null
-      ?`<div class="vs"><div>Model<b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div><div class="edge-line">Awaiting a market line to compare.</div>`
+      ?`<div class="vs"><div>Model<b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div>`
       :`<div class="vs"><div>Model<b>${g.our_total.toFixed(1)}</b></div><div>Market<b>${g.market_total.toFixed(1)}</b></div><div class="delta">Δ<b>${Math.abs(d).toFixed(1)}</b></div></div><div class="edge-line">${Math.abs(d)<.05?'No edge — matches the market':'Leans <b>'+(d>0?'Over':'Under')+'</b>'}</div>`;
     return `<h4>Total</h4><div class="sheet-sec">${body}</div>`;
   }
@@ -507,14 +497,12 @@
       ?`<div class="sheet-kick"><span class="live-badge"><span class="live-dot"></span>LIVE</span> ${escapeHTML(L.detail)}</div>`
       :g.kickoff_utc?`<div class="sheet-kick">${escapeHTML(kickoffWhen(g.kickoff_utc))} · <span class="countdown" data-ko="${escapeHTML(g.kickoff_utc)}">${countdownText(g.kickoff_utc)}</span></div>`:'';
     const ps=projectedScore(g);
-    const ver=g.model_version?`<div><span class="ver-tag">${escapeHTML(g.model_version)}</span></div>`:'';
-    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-row">${teamBlock(g,'away')}<div class="g-mid"><div class="g-time">vs</div></div>${teamBlock(g,'home')}</div></div><span class="signal ${s.cls}">${s.label}</span></div>${ko}${ver}`;
+    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-row">${teamBlock(g,'away')}<div class="g-mid"><div class="g-time">vs</div></div>${teamBlock(g,'home')}</div></div><span class="signal ${s.cls}">${s.label}</span></div>${ko}`;
     h+=`<h4>Model projection</h4><div class="sheet-sec">Model projects: <b>${escapeHTML(g.home_team)} ${ps.home.toFixed(1)} – ${escapeHTML(g.away_team)} ${ps.away.toFixed(1)}</b><div class="edge-line">From our spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
     h+=spreadDetail(g)+totalDetail(g)+variantLine(g)+movementDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
     if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
-    h+=`<p class="sheet-note">Paper marker for calibration — not a pick. The model is still learning, and these labels only track whether it disagrees with the market.</p>`;
     return h;
   }
   function openSheet(id){
