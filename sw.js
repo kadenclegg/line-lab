@@ -1,5 +1,5 @@
 // Line Lab service worker — cache the app shell so it installs and works offline.
-const CACHE = "line-lab-v5";
+const CACHE = "line-lab-v6";
 const ASSETS = [
   "./",
   "./index.html",
@@ -17,9 +17,11 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      )
+      .then(() => self.clients.claim())
   );
 });
 
@@ -28,8 +30,28 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   // Only handle same-origin requests; let fonts/CDN go to network.
   if (url.origin !== self.location.origin) return;
+  const isDocument =
+    event.request.mode === "navigate" ||
+    url.pathname === "/" ||
+    url.pathname.endsWith("/index.html");
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: false }).then((cached) => {
+    (async () => {
+      if (isDocument) {
+        // Network-first for the page itself: always render the latest UI.
+        // (Stale-while-revalidate here left the installed app one deploy behind.)
+        try {
+          const fresh = await fetch(new Request(event.request, { cache: "no-store" }));
+          if (fresh && fresh.ok) {
+            const copy = fresh.clone();
+            caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+          }
+          return fresh;
+        } catch (e) {
+          return caches.match(event.request, { ignoreSearch: true });
+        }
+      }
+      // Stale-while-revalidate for static assets (icons, manifest).
+      const cached = await caches.match(event.request, { ignoreSearch: false });
       const network = fetch(event.request).then((resp) => {
         if (resp && resp.ok) {
           const copy = resp.clone();
@@ -37,8 +59,7 @@ self.addEventListener("fetch", (event) => {
         }
         return resp;
       }).catch(() => cached);
-      // Stale-while-revalidate: serve cache instantly, refresh in background.
       return cached || network;
-    })
+    })()
   );
 });
