@@ -1,12 +1,16 @@
 // Line Lab service worker — cache the app shell so it installs and works offline.
-const CACHE = "line-lab-v6";
+const CACHE = "line-lab-v7";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./apple-touch-icon.png",
+  "./splash-1170x2532.png",
+  "./splash-1290x2796.png",
+  "./splash-1125x2436.png",
+  "./splash-750x1334.png"
 ];
 
 self.addEventListener("install", (event) => {
