@@ -190,6 +190,20 @@
     .cb-dot.on-o{background:#ff6b74;border-color:#ff6b74}
     .diamond rect{fill:none;stroke:var(--muted);stroke-width:1.6;opacity:.85}
     .diamond rect.lit{fill:#7ddf8e;stroke:#7ddf8e;opacity:1}
+    .mlb-live{margin:2px 0 4px}
+    .mlb-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+    .mlb-side{text-align:center;min-width:0}
+    .mlb-num{font-size:42px;font-weight:800;color:var(--ink);line-height:1.05;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+    .mlb-who{font-size:11px;font-weight:800;color:var(--muted);margin-top:3px;letter-spacing:.5px}
+    .mlb-mid{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 10px}
+    .mlb-inn{font-size:12.5px;font-weight:800;color:var(--muted);white-space:nowrap}
+    .mlb-sub{display:flex;justify-content:center;margin:8px 0 2px}
+    .mlb-ls{margin:8px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .mlb-ls table{border-collapse:collapse;margin:0 auto;font-size:11px;font-variant-numeric:tabular-nums}
+    .mlb-ls th,.mlb-ls td{padding:3px 5px;text-align:center;color:var(--muted);font-weight:600;min-width:19px}
+    .mlb-ls th.cur{color:var(--ink)}
+    .mlb-ls td.tm{text-align:left;font-weight:800;color:var(--ink);padding-right:8px}
+    .mlb-ls td.rhe{color:var(--ink);font-weight:800}
     .pbp{display:flex;flex-direction:column}
     .pbp-row{display:flex;gap:10px;padding:9px 2px;border-top:1px solid var(--line);font-size:13px;line-height:1.45;animation:pbpIn .3s ease}
     .pbp-row:first-child{border-top:0}
@@ -744,20 +758,53 @@
     hits.forEach(h=>{r[parseInt(h,10)-1]=true});
     return r;
   }
-  function countBugHTML(j){
-    const s=j.situation||{};
+  function cbDotsHTML(s){
     if(s.balls==null&&s.strikes==null&&s.outs==null)return '';
     const dots=(n,total,cls)=>{let h='';for(let i=0;i<total;i++)h+=`<span class="cb-dot${i<n?' '+cls:''}"></span>`;return h};
-    let h=`<div class="countbug"><div class="cb-dots"><span>B<b>${dots(s.balls||0,3,'on-b')}</b></span>`
+    return `<div class="cb-dots"><span>B<b>${dots(s.balls||0,3,'on-b')}</b></span>`
       +`<span>S<b>${dots(s.strikes||0,2,'on-s')}</b></span>`
       +`<span>O<b>${dots(s.outs||0,2,'on-o')}</b></span></div>`;
-    const bases=parseBases(s);
-    if(bases){
-      const d=(x,y,lit)=>`<rect x="${x}" y="${y}" width="6" height="6" transform="rotate(45 ${x+3} ${y+3})" class="${lit?'lit':''}"/>`;
-      h+=`<svg class="diamond" viewBox="0 0 40 40" width="46" height="46" role="img" aria-label="Base runners">`
-        +d(17,5,bases[1])+d(27,15,bases[0])+d(7,15,bases[2])+d(17,25,false)+`</svg>`;
-    }
-    return h+'</div>';
+  }
+  function diamondSVG(bases,size){
+    const d=(x,y,lit)=>`<rect x="${x}" y="${y}" width="6" height="6" transform="rotate(45 ${x+3} ${y+3})" class="${lit?'lit':''}"/>`;
+    return `<svg class="diamond" viewBox="0 0 40 40" width="${size}" height="${size}" role="img" aria-label="Base runners">`
+      +d(17,5,bases[1])+d(27,15,bases[0])+d(7,15,bases[2])+d(17,25,false)+`</svg>`;
+  }
+  /* Apple Sports-style MLB live header: big score numerals, inning + diamond
+     between them, count dots below, mini inning-by-inning line score.
+     All data comes from the summary response we already fetch — no new calls. */
+  function mlbLiveHTML(g,j){
+    try{
+      const comp=(((j.header||{}).competitions)||[])[0]||{};
+      const t={};for(const c of (comp.competitors||[]))t[c.homeAway]=c;
+      const A=t.away,H=t.home;
+      if(!A||!H||!A.team||!H.team)throw 0;
+      const st=(comp.status||{}).type||{};
+      let inn=(st.shortDetail||'').replace(/^(\d+)\/(\d+) - /,'');
+      inn=inn.replace(/^Top\b/,'▲').replace(/^Bot(tom)?\b/,'▼');
+      const s=j.situation||{};
+      const live=s.balls!=null||s.strikes!=null||s.outs!=null;
+      const dots=cbDotsHTML(s);
+      const dia=live?diamondSVG(parseBases(s),38):'';
+      const num=v=>(v==null||v==='')?'–':v;
+      let ls='';
+      const per=c=>{const m={};((c.linescores)||[]).forEach((x,i)=>{m[x.period||(i+1)]=x.displayValue});return m};
+      const pa=per(A),ph=per(H);
+      const maxP=Math.max(0,...Object.keys(pa).map(Number),...Object.keys(ph).map(Number));
+      if(maxP>0){
+        const cols=[];for(let i=1;i<=Math.min(Math.max(maxP,9),12);i++)cols.push(i);
+        const head=cols.map(i=>`<th${live&&i===maxP?' class="cur"':''}>${i}</th>`).join('')+'<th>R</th><th>H</th><th>E</th>';
+        const row=(c,p)=>`<tr><td class="tm">${escapeHTML(c.team.abbreviation)}</td>`
+          +cols.map(i=>`<td>${p[i]!=null?p[i]:'–'}</td>`).join('')
+          +`<td class="rhe">${num(c.score)}</td><td class="rhe">${num(c.hits)}</td><td class="rhe">${num(c.errors)}</td></tr>`;
+        ls=`<div class="mlb-ls"><table><thead><tr><th></th>${head}</tr></thead><tbody>${row(A,pa)}${row(H,ph)}</tbody></table></div>`;
+      }
+      return `<div class="mlb-live"><div class="mlb-top">`
+        +`<div class="mlb-side"><div class="mlb-num">${num(A.score)}</div><div class="mlb-who">${escapeHTML(A.team.abbreviation)}</div></div>`
+        +`<div class="mlb-mid">${inn?`<div class="mlb-inn">${escapeHTML(inn)}</div>`:''}${dia}</div>`
+        +`<div class="mlb-side"><div class="mlb-num">${num(H.score)}</div><div class="mlb-who">${escapeHTML(H.team.abbreviation)}</div></div>`
+        +`</div>${dots?`<div class="mlb-sub">${dots}</div>`:''}${ls}</div>`;
+    }catch(e){return cbDotsHTML((j&&j.situation)||{});}
   }
   function renderViz(g,j){
     const el=document.getElementById('liveViz');if(!el)return;
@@ -767,7 +814,7 @@
         const fs=fieldState(g,j);
         if(fs)html=fieldSVG(g,fs);
       }else if(g.sport==='mlb'){
-        html=countBugHTML(j);
+        html=mlbLiveHTML(g,j);
       }
       /* NBA: ESPN's free feed has no positional data — skip viz. */
     }catch(e){}
