@@ -739,7 +739,7 @@
     if(/Bases Loaded/i.test(notes))return [true,true,true];
     const seg=(notes.match(/\([^)]*\)/)||[notes])[0];
     const hits=seg.match(/[123](?:st|nd|rd)/gi);
-    if(!hits||!hits.length)return null;
+    if(!hits||!hits.length)return [false,false,false]; /* unparseable -> show empty diamond, never fake runners */
     const r=[false,false,false];
     hits.forEach(h=>{r[parseInt(h,10)-1]=true});
     return r;
