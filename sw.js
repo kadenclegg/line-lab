@@ -1,5 +1,5 @@
 // Line Lab service worker — cache the app shell so it installs and works offline.
-const CACHE = "line-lab-v3";
+const CACHE = "line-lab-v4";
 const ASSETS = [
   "./",
   "./index.html",

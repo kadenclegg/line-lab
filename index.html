@@ -94,7 +94,7 @@
     .method{margin-top:20px}.method summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--blue);padding:8px 2px}.method p{font-size:13px;line-height:1.5;color:var(--muted);margin:6px 2px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .game{position:relative;--ca:transparent;--cb:transparent}
-    .game::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,color-mix(in srgb,var(--ca) 78%,transparent),color-mix(in srgb,var(--cb) 78%,transparent));border-radius:4px 0 0 4px;pointer-events:none}
+    .game::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,color-mix(in srgb,var(--ca) 78%,transparent),color-mix(in srgb,var(--cb) 78%,transparent));border-radius:var(--radius) 0 0 var(--radius);pointer-events:none}
     .vs-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--ca),var(--cb));margin-right:7px;vertical-align:1px}
     .rec{font-family:"Source Sans 3",system-ui,sans-serif;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em;white-space:nowrap}
     .kickoff{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px 0;font-size:12.5px;color:var(--muted);font-weight:600}
@@ -133,7 +133,7 @@
     @keyframes backdropIn{from{opacity:0}}
     @keyframes backdropOut{to{opacity:0}}
     .sheet{position:relative;width:min(100%,560px);max-height:88vh;max-height:88dvh;overflow-y:auto;background:var(--surface);border-radius:22px 22px 0 0;padding:8px 20px calc(26px + env(safe-area-inset-bottom));box-shadow:0 -18px 60px rgba(0,0,0,.32);animation:sheetUp .42s cubic-bezier(.32,.9,.35,1);--ca:transparent;--cb:transparent}
-    .sheet::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,var(--ca),var(--cb));pointer-events:none}
+    .sheet::before{content:"";position:sticky;top:0;display:block;height:4px;margin:0 0 2px;border-radius:99px;background:linear-gradient(90deg,var(--ca),var(--cb));z-index:5;pointer-events:none}
     .sheet.closing{animation:sheetDown .24s ease-in forwards}
     .sheet-backdrop{animation:backdropIn .22s ease}
     .sheet-backdrop.closing{animation:backdropOut .24s ease forwards}
