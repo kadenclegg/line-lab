@@ -184,6 +184,12 @@
     .cb-dot.on-o{background:#ff6b74;border-color:#ff6b74}
     .diamond rect{fill:none;stroke:var(--muted);stroke-width:1.6;opacity:.85}
     .diamond rect.lit{fill:#7ddf8e;stroke:#7ddf8e;opacity:1}
+    .pace{margin:10px 0 2px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:7px}
+    .pace-row{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .pace-row b{color:var(--ink);font-size:14px}
+    .pace-k{font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+    .pace-p{color:var(--ink);font-weight:700}
+    .pace-vs{margin-left:auto}
     .mlb-live{margin:2px 0 4px}
     .mlb-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
     .mlb-side{text-align:center;min-width:0}
@@ -502,7 +508,7 @@
     h+=spreadDetail(g)+totalDetail(g)+variantLine(g)+movementDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
-    if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
+    if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div id="paceRow"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
     return h;
   }
   function openSheet(id){
@@ -808,6 +814,76 @@
     }catch(e){}
     el.innerHTML=html;
   }
+  /* ---------- live pace meter (drawer only, live games) ----------
+     Projected final = current score + our model's expectation for the game
+     remaining. "Land" odds via normal CDF, per-sport full-game sigma scaled
+     by sqrt(remaining). Sigmas are approximate league scoring std-devs —
+     a glanceable gauge, labeled as pace, not gospel:
+     NFL total/margin 13.5/13.5; CFB 16/16.5; MLB 6.5/4.6; NBA 22/13. */
+  const PACE_SIGMA={nfl:[13.5,13.5],cfb:[16,16.5],mlb:[6.5,4.6],nba:[22,13]};
+  function _erf(x){
+    const s=x<0?-1:1,ax=Math.abs(x),t=1/(1+0.3275911*ax);
+    const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429;
+    const poly=t*(a1+t*(a2+t*(a3+t*(a4+t*a5))));
+    return s*(1-poly*Math.exp(-ax*ax));
+  }
+  const _phi=z=>0.5*(1+_erf(z/Math.SQRT2));
+  function remainingFraction(sport,j){
+    try{
+      const comp=(((j.header||{}).competitions)||[])[0]||{};
+      const st=comp.status||{};
+      if(sport==='mlb'){
+        /* status.period = inning number, status.periodPrefix = Top/Bottom */
+        const inn=parseInt(st.period,10);
+        if(!inn||inn<1)return null;
+        const bot=/bottom/i.test(st.periodPrefix||'');
+        const outs=Math.min(3,Math.max(0,parseInt(((j.situation||{}).outs),10)||0));
+        const el=((inn-1)+(bot?0.5:0)+outs/6)/9;
+        return Math.min(0.98,Math.max(0.02,1-el));
+      }
+      /* NFL/CFB/NBA: status.period + status.displayClock ("7:32", counts down) */
+      const period=parseInt(st.period,10);
+      if(!period||period<1)return null;
+      if(period>4)return 0.05; /* OT — roughly a possession left */
+      const plen=sport==='nba'?720:900,total=sport==='nba'?2880:3600;
+      let clk=null;
+      const m=String(st.displayClock||'').match(/(\d+):(\d+)/);
+      if(m)clk=parseInt(m[1],10)*60+parseInt(m[2],10);
+      else if(Number.isFinite(+st.clock))clk=+st.clock;
+      if(clk==null)return null;
+      clk=Math.min(plen,Math.max(0,clk));
+      const el=((period-1)*plen+(plen-clk))/total;
+      return Math.min(0.98,Math.max(0.02,1-el));
+    }catch(e){return null}
+  }
+  function paceHTML(g,L,j){
+    try{
+      if(!L||L.state!=='in')return '';
+      if(g.our_total==null||g.our_spread==null)return '';
+      const rem=remainingFraction(g.sport,j);
+      if(rem==null||rem<=0||rem>=1)return '';
+      const sig=PACE_SIGMA[g.sport];if(!sig)return '';
+      const curTot=(+L.away||0)+(+L.home||0),curMar=(+L.home||0)-(+L.away||0);
+      const projTot=curTot+g.our_total*rem,projMar=curMar+g.our_spread*rem;
+      const sT=sig[0]*Math.sqrt(rem),sM=sig[1]*Math.sqrt(rem);
+      const pOver=Math.round((1-_phi((g.our_total-projTot)/sT))*100);
+      let pCover;
+      if(Math.abs(g.our_spread)<0.05)pCover=Math.round((1-_phi((0-projMar)/sM))*100);
+      else if(g.our_spread>0)pCover=Math.round((1-_phi((g.our_spread-projMar)/sM))*100);
+      else pCover=Math.round(_phi((g.our_spread-projMar)/sM)*100);
+      const sm=v=>Math.abs(v)<0.05?'PK':(v>0?'+':'−')+Math.abs(v).toFixed(1);
+      return `<div class="pace" role="img" aria-label="Live pace estimate">`
+        +`<div class="pace-row"><span class="pace-k">Total pace</span><b>${projTot.toFixed(1)}</b>`
+        +`<span class="pace-p">${pOver}% over</span><span class="pace-vs">our ${g.our_total.toFixed(1)}</span></div>`
+        +`<div class="pace-row"><span class="pace-k">Margin pace</span><b>${escapeHTML(g.home_team)} ${sm(projMar)}</b>`
+        +`<span class="pace-p">${pCover}% cover</span><span class="pace-vs">our ${sm(g.our_spread)}</span></div>`
+        +`</div>`;
+    }catch(e){return ''}
+  }
+  function renderPace(g,L,j){
+    const el=document.getElementById('paceRow');if(!el)return;
+    el.innerHTML=paceHTML(g,L,j);
+  }
   function renderPBPFeed(g,j){
     const f=document.getElementById('pbpFeed');if(!f)return;
     const rows=pbpRows(g,j);
@@ -826,6 +902,7 @@
       const j=await r.json();
       if(pbpGameId!==g.id)return;
       renderViz(g,j);
+      renderPace(g,L,j);
       renderPBPFeed(g,j);
     }catch(e){
       if(first){const f=document.getElementById('pbpFeed');if(f)f.innerHTML='<div class="pbp-note">Plays unavailable right now.</div>'}
