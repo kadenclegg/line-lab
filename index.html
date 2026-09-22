@@ -73,7 +73,9 @@
     .g-star[aria-pressed="true"]{color:var(--star);opacity:1}
     .g-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:14px 16px 2px}
     .g-team{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;text-align:center}
-    .g-logo{width:56px;height:56px;border-radius:50%;background:#fff;object-fit:contain;padding:7px}
+    .g-logowrap{position:relative;width:56px;height:56px;flex:none}
+    .g-mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:800;font-size:15px;letter-spacing:.02em;color:#fff;background:linear-gradient(135deg,#3d4b66,#232c42)}
+    .g-logo{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;background:#fff;object-fit:contain;padding:7px}
     .g-name{font-weight:800;font-size:15px;letter-spacing:-.01em}
     .g-rec{font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
     .rank-pill{font-size:11px;font-weight:800;color:var(--muted);background:var(--surface-2);border-radius:6px;padding:3px 7px;line-height:1}
@@ -142,6 +144,8 @@
     .sheet-teams .g-row{padding:0}
     .sheet-kick{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px}
     .sheet-kick .countdown{color:var(--blue);font-weight:700}
+    .sheet-venue{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:6px}
+    #wxLine{font-weight:700}
     .sheet h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:20px 0 8px;font-weight:800}
     .sheet-sec{background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55}
     .sheet-sec .vs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
@@ -175,6 +179,9 @@
     .ball-g{transition:transform .7s cubic-bezier(.3,.8,.3,1)}
     .field-ddt{text-align:center;font-size:12.5px;font-weight:800;margin-top:7px;letter-spacing:.02em}
     .field-poss{font-weight:600;color:var(--muted)}
+    .drives{display:flex;flex-wrap:wrap;gap:5px;margin:9px 2px 2px;align-items:center}
+    .drv-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .drv-dot.cur{outline:2px solid var(--ink);outline-offset:1px}
     .countbug{display:flex;align-items:center;gap:16px;margin:4px 0 6px}
     .cb-dots{display:flex;gap:12px;font-size:12px;font-weight:800;color:var(--muted)}
     .cb-dots b{display:inline-flex;gap:4px;margin-left:6px;align-items:center}
@@ -198,6 +205,10 @@
     .mlb-mid{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 10px}
     .mlb-inn{font-size:12.5px;font-weight:800;color:var(--muted);white-space:nowrap}
     .mlb-sub{display:flex;justify-content:center;margin:8px 0 2px}
+    .wpwrap{margin:10px 0 2px}
+    .wp-svg{width:100%;height:auto;display:block}
+    .wp-cap{font-size:12px;color:var(--muted);font-weight:700;margin-top:6px;text-align:center}
+    .wp-cap b{color:var(--ink)}
     .mlb-ls{margin:8px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
     .mlb-ls table{border-collapse:collapse;margin:0 auto;font-size:11px;font-variant-numeric:tabular-nums}
     .mlb-ls th,.mlb-ls td{padding:3px 5px;text-align:center;color:var(--muted);font-weight:600;min-width:19px}
@@ -354,9 +365,12 @@
   function teamBlock(g,side){
     const logo=g[side+'_logo'],rank=g[side+'_rank'];
     const rec=g[side+'_record']?`<div class="g-rec">${escapeHTML(g[side+'_record'])}</div>`:'';
-    const img=logo?`<img class="g-logo" src="${escapeHTML(logo)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'';
+    /* Monogram badge sits under the logo: visible when enrichment is missing
+       or the CDN image fails, so every card keeps its premium look. */
+    const mono=`<span class="g-mono" aria-hidden="true">${escapeHTML((g[side+'_team']||'').slice(0,4))}</span>`;
+    const img=logo?`<img class="g-logo" src="${escapeHTML(logo)}" alt="" loading="lazy" onerror="this.remove()">`:'';
     const pill=rank?`<span class="rank-pill">#${rank}</span>`:'';
-    return `<div class="g-team">${img}<div class="g-name">${pill}${escapeHTML(g[side+'_team'])}</div>${rec}</div>`;
+    return `<div class="g-team"><span class="g-logowrap">${mono}${img}</span><div class="g-name">${pill}${escapeHTML(g[side+'_team'])}</div>${rec}</div>`;
   }
   function variantLine(g){
     if(!g.variants||!g.variants.length)return '';
@@ -503,14 +517,38 @@
       ?`<div class="sheet-kick"><span class="live-badge"><span class="live-dot"></span>LIVE</span> ${escapeHTML(L.detail)}</div>`
       :g.kickoff_utc?`<div class="sheet-kick">${escapeHTML(kickoffWhen(g.kickoff_utc))} · <span class="countdown" data-ko="${escapeHTML(g.kickoff_utc)}">${countdownText(g.kickoff_utc)}</span></div>`:'';
     const ps=projectedScore(g);
-    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-row">${teamBlock(g,'away')}<div class="g-mid"><div class="g-time">vs</div></div>${teamBlock(g,'home')}</div></div><span class="signal ${s.cls}">${s.label}</span></div>${ko}`;
+    const venue=L&&L.venue?`<div class="sheet-venue">${escapeHTML(L.venue.name)}${L.venue.city?` · ${escapeHTML(L.venue.city)}${L.venue.state?', '+escapeHTML(L.venue.state):''}`:''}<span id="wxLine"></span></div>`:'';
+    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-row">${teamBlock(g,'away')}<div class="g-mid"><div class="g-time">vs</div></div>${teamBlock(g,'home')}</div></div><span class="signal ${s.cls}">${s.label}</span></div>${ko}${venue}`;
     h+=`<h4>Model projection</h4><div class="sheet-sec">Model projects: <b>${escapeHTML(g.home_team)} ${ps.home.toFixed(1)} – ${escapeHTML(g.away_team)} ${ps.away.toFixed(1)}</b><div class="edge-line">From our spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
     h+=spreadDetail(g)+totalDetail(g)+variantLine(g)+movementDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
-    if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div id="paceRow"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
+    if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div id="paceRow"></div><div id="winProb"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
     return h;
   }
+  /* ---------- venue weather (drawer only, once per open, outdoor games) ----------
+     Open-Meteo is free with no key and CORS-open. Domes are skipped via a
+     name list (ESPN's indoor flag is unreliable — SoFi reports indoor:false). */
+  const DOME_RE=/sofi|allegiant|at&t|ford field|lucas oil|u\.?\s?s\.?\s?bank|caesars|superdome|state farm|nrg|mercedes-benz/i;
+  const WX_WORD={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Rain',71:'Snow',73:'Snow',75:'Snow',80:'Showers',81:'Showers',82:'Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+  const wxCache=new Map(); /* game.id -> rendered html ('' = skip/failed) */
+  let wxAbort=null;
+  async function fetchWeather(g,v){
+    const done=h=>{wxCache.set(g.id,h);const e=document.getElementById('wxLine');if(e)e.innerHTML=h};
+    try{
+      if(wxCache.has(g.id)){const e=document.getElementById('wxLine');if(e)e.innerHTML=wxCache.get(g.id);return}
+      if(!v||!v.city||v.indoor||DOME_RE.test(v.name||'')){done('');return}
+      if(wxAbort)wxAbort.abort();
+      wxAbort=new AbortController();const sig=wxAbort.signal;
+      const geo=await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(v.city+(v.state?', '+v.state:''))}&count=1&language=en&format=json`,{signal:sig})).json();
+      const r=(geo.results||[])[0];if(!r||r.latitude==null)throw 0;
+      const w=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${r.latitude}&longitude=${r.longitude}&current=temperature_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto`,{signal:sig})).json();
+      const c=w.current||{};if(c.temperature_2m==null)throw 0;
+      const cond=WX_WORD[c.weather_code]||'';
+      done(` · ${Math.round(c.temperature_2m)}°F${cond?', '+cond:''} · wind ${Math.round(c.wind_speed_10m||0)} mph`);
+    }catch(e){done('')}
+  }
+
   function openSheet(id){
     const g=gamesData.find(x=>x.id===id);if(!g)return;
     const sh=document.getElementById('sheet');
@@ -522,10 +560,12 @@
     pbpGameId=g.id;
     const L=liveById.get(g.id);
     if(L&&(L.state==='in'||L.state==='post'))refreshPBP(true);
+    if(L&&L.venue)fetchWeather(g,L.venue);
   }
   function closeSheet(){
     pbpGameId=null;
     if(pbpAbort){pbpAbort.abort();pbpAbort=null}
+    if(wxAbort){wxAbort.abort();wxAbort=null}
     const bd=document.getElementById('sheetBackdrop'),sh=document.getElementById('sheet');
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){bd.hidden=true;document.body.style.overflow='';return}
     sh.classList.add('closing');setTimeout(()=>{bd.hidden=true;document.body.style.overflow='';sh.classList.remove('closing')},230);
@@ -618,9 +658,11 @@
         const g=gamesData.find(x=>x.sport===r.sport&&x.game_date===evDay
           &&pairKey(x.away_team,x.home_team)===pairKey(aA,hA));
         if(!g)continue;
+        const vn=comp.venue||{},va=vn.address||{};
         const entry={state:st.state||'pre',away:aS,home:hS,
           detail:(st.shortDetail||'').replace(/^(\d+)\/(\d+) - /,''),
-          eventId:ev.id,evTime:new Date(ev.date).getTime()||0};
+          eventId:ev.id,evTime:new Date(ev.date).getTime()||0,
+          venue:vn.fullName?{name:vn.fullName,city:va.city||'',state:va.state||'',indoor:!!vn.indoor}:null};
         if(!cands.has(g.id))cands.set(g.id,[]);
         cands.get(g.id).push(entry);
       }
@@ -764,6 +806,22 @@
     return `<svg class="diamond" viewBox="0 0 40 40" width="${size}" height="${size}" role="img" aria-label="Base runners">`
       +d(17,5,bases[1])+d(27,15,bases[0])+d(7,15,bases[2])+d(17,25,false)+`</svg>`;
   }
+  /* Resolve a bare ESPN playerId to a last name via the summary's boxscore
+     athlete map. Returns '' when unresolvable — callers omit, never show ids. */
+  function playerName(j,pid){
+    if(pid==null||pid==='')return '';
+    try{
+      const ps=((j.boxscore||{}).players)||[];
+      for(const tp of ps)for(const st of (tp.statistics||[]))for(const a of (st.athletes||[])){
+        const ath=a.athlete||{};
+        if(String(ath.id)===String(pid)){
+          const parts=String(ath.displayName||ath.shortName||'').trim().split(/\s+/);
+          return parts.length?parts[parts.length-1]:'';
+        }
+      }
+    }catch(e){}
+    return '';
+  }
   /* Apple Sports-style MLB live header: big score numerals, inning + diamond
      between them, count dots below, mini inning-by-inning line score.
      All data comes from the summary response we already fetch — no new calls. */
@@ -779,6 +837,8 @@
       const s=j.situation||{};
       const live=s.balls!=null||s.strikes!=null||s.outs!=null;
       const dots=cbDotsHTML(s);
+      const pnm=playerName(j,(s.pitcher||{}).playerId),bnm=playerName(j,(s.batter||{}).playerId);
+      const pab=[pnm?`P: <b>${escapeHTML(pnm)}</b>`:'',bnm?`AB: <b>${escapeHTML(bnm)}</b>`:''].filter(Boolean).join('');
       const dia=live?diamondSVG(parseBases(s),38):'';
       const num=v=>(v==null||v==='')?'–':v;
       let ls='';
@@ -797,8 +857,30 @@
         +`<div class="mlb-side"><div class="mlb-num">${num(A.score)}</div><div class="mlb-who">${escapeHTML(A.team.abbreviation)}</div></div>`
         +`<div class="mlb-mid">${inn?`<div class="mlb-inn">${escapeHTML(inn)}</div>`:''}${dia}</div>`
         +`<div class="mlb-side"><div class="mlb-num">${num(H.score)}</div><div class="mlb-who">${escapeHTML(H.team.abbreviation)}</div></div>`
-        +`</div>${dots?`<div class="mlb-sub">${dots}</div>`:''}${ls}</div>`;
+        +`</div>${dots?`<div class="mlb-sub">${dots}</div>`:''}${pab?`<div class="mlb-pab">${pab}</div>`:''}${ls}</div>`;
     }catch(e){return cbDotsHTML((j&&j.situation)||{});}
+  }
+  /* Compact drive-result strip for NFL/CFB, from the drives already fetched
+     for the field viz. One dot per drive, chronological, current drive ringed. */
+  const DRV_COLOR=[[/touchdown/i,'#3fd598'],[/field goal/i,'#ffbe5c'],[/safety/i,'#ff6b74'],[/interception|fumble/i,'#ff6b74'],[/missed/i,'#ff8a5c'],[/punt|downs/i,'#8a93a5']];
+  function driveChartHTML(g,j){
+    try{
+      const dr=j.drives||{},all=(dr.previous||[]).slice();
+      const cur=(dr.current&&dr.current.plays&&dr.current.plays.length)?dr.current:null;
+      if(cur)all.push(cur);
+      const dots=[];
+      for(const d of all.slice(-40)){
+        const res=d.displayResult||d.shortDisplayResult||d.result||'';
+        if(/end of half|end of game/i.test(res))continue;
+        let col='#8a93a5';
+        for(const [re,c] of DRV_COLOR)if(re.test(res)){col=c;break}
+        const lp=((d.plays||[]).slice(-1)[0]||{}),pn=(lp.period||{}).number;
+        const tip=`${pn?'Q'+pn+' · ':''}${res||'Drive'} · ${((d.team||{}).abbreviation)||''}`.trim();
+        dots.push(`<span class="drv-dot${d===cur?' cur':''}" style="background:${col}" title="${escapeHTML(tip)}"></span>`);
+      }
+      if(!dots.length)return '';
+      return `<div class="drives" role="img" aria-label="Drive chart">${dots.join('')}</div>`;
+    }catch(e){return ''}
   }
   function renderViz(g,j){
     const el=document.getElementById('liveViz');if(!el)return;
@@ -807,6 +889,7 @@
       if(g.sport==='nfl'||g.sport==='cfb'){
         const fs=fieldState(g,j);
         if(fs)html=fieldSVG(g,fs);
+        html+=driveChartHTML(g,j);
       }else if(g.sport==='mlb'){
         html=mlbLiveHTML(g,j);
       }
@@ -880,6 +963,73 @@
         +`</div>`;
     }catch(e){return ''}
   }
+  /* Home win-probability sparkline, from the PBP already fetched. Reuses the
+     pace meter's sigma constants and normal CDF — no duplicated math. */
+  function winProbHTML(g,L,j){
+    try{
+      if(!L||L.state!=='in')return '';
+      if(g.our_spread==null)return '';
+      const sig=PACE_SIGMA[g.sport];if(!sig)return '';
+      const sM=sig[1];
+      let plays=[];
+      if(g.sport==='nfl'||g.sport==='cfb'){
+        const dr=j.drives||{};
+        (dr.previous||[]).forEach(d=>(d.plays||[]).forEach(p=>plays.push(p)));
+        if(dr.current&&dr.current.plays)dr.current.plays.forEach(p=>plays.push(p));
+        plays.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
+      }else{
+        plays=(j.plays||[]).slice();
+        plays.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
+      }
+      if(!plays.length)return '';
+      const plen=g.sport==='nba'?720:900,total=g.sport==='nba'?2880:3600;
+      const pts=[];let lastProg=0,lastClk=null;
+      pts.push([0,1-_phi((0-g.our_spread)/sM)]); /* pregame point */
+      for(const p of plays){
+        const aS=parseInt(p.awayScore,10),hS=parseInt(p.homeScore,10);
+        if(!Number.isFinite(aS)||!Number.isFinite(hS))continue;
+        let prog=null;
+        const per=p.period||{};
+        if(g.sport==='mlb'){
+          const inn=parseInt(per.number,10);
+          if(inn>=1){
+            const bot=/bottom/i.test(per.type||'');
+            const outs=Math.min(2,Math.max(0,parseInt(p.outs,10)||0));
+            prog=((inn-1)+(bot?0.5:0)+outs/6)/9;
+          }
+        }else{
+          const pn=parseInt(per.number,10);
+          let clk=null;
+          const m=String(((p.clock||{}).displayValue)||'').match(/(\d+):(\d+)/);
+          if(m)clk=parseInt(m[1],10)*60+parseInt(m[2],10);
+          if(clk==null)clk=lastClk;else lastClk=clk;
+          if(pn>=1&&clk!=null)prog=((pn-1)*plen+(plen-Math.min(plen,Math.max(0,clk))))/total;
+        }
+        if(prog==null)prog=lastProg;
+        prog=Math.min(0.995,Math.max(0,prog));
+        lastProg=prog;
+        const rem=Math.min(0.98,Math.max(0.02,1-prog));
+        const projMar=(hS-aS)+g.our_spread*rem;
+        pts.push([prog,1-_phi((0-projMar)/(sM*Math.sqrt(rem)))]);
+      }
+      if(pts.length<3)return '';
+      let use=pts;
+      if(pts.length>60){const st=Math.ceil(pts.length/60);use=pts.filter((_,i)=>i%st===0);if(use[use.length-1]!==pts[pts.length-1])use.push(pts[pts.length-1])}
+      const X=v=>(v*100).toFixed(1),Y=v=>(34-v*32).toFixed(1);
+      const line=use.map(pt=>`${X(pt[0])},${Y(pt[1])}`).join(' ');
+      const col=g.home_color||'#5eb0ff';
+      const lastP=use[use.length-1][1];
+      return `<div class="wpwrap"><svg class="wp-svg" viewBox="0 0 100 36" role="img" aria-label="Home win probability">`
+        +`<polygon points="0,36 ${line} 100,36" style="fill:${col}" fill-opacity="0.14"/>`
+        +`<polyline points="${line}" fill="none" style="stroke:${col}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>`
+        +`<line x1="0" y1="${Y(0.5)}" x2="100" y2="${Y(0.5)}" style="stroke:var(--line)" stroke-width="0.5" stroke-dasharray="2,2"/></svg>`
+        +`<div class="wp-cap">${escapeHTML(g.home_team)} win probability · <b>${Math.round(lastP*100)}%</b></div></div>`;
+    }catch(e){return ''}
+  }
+  function renderWinProb(g,L,j){
+    const el=document.getElementById('winProb');if(!el)return;
+    el.innerHTML=winProbHTML(g,L,j);
+  }
   function renderPace(g,L,j){
     const el=document.getElementById('paceRow');if(!el)return;
     el.innerHTML=paceHTML(g,L,j);
@@ -903,6 +1053,7 @@
       if(pbpGameId!==g.id)return;
       renderViz(g,j);
       renderPace(g,L,j);
+      renderWinProb(g,L,j);
       renderPBPFeed(g,j);
     }catch(e){
       if(first){const f=document.getElementById('pbpFeed');if(f)f.innerHTML='<div class="pbp-note">Plays unavailable right now.</div>'}
