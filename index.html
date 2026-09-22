@@ -148,12 +148,23 @@
     #wxLine{font-weight:700}
     .sheet h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:20px 0 8px;font-weight:800}
     .sheet-sec{background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55}
-    .sheet-sec .vs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
-    .sheet-sec .vs div{font-size:12px;color:var(--muted);font-weight:700}
-    .sheet-sec .vs b{display:block;font-size:17px;margin-top:3px;color:var(--ink);font-variant-numeric:tabular-nums}
-    .sheet-sec .vs .delta b{color:var(--blue)}
     .sheet-sec .edge-line{margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
     .sheet-sec .edge-line b{color:var(--ink)}
+    .numrows{display:flex;flex-direction:column}
+    .numrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+    .numrow:first-child{border-top:0;padding-top:2px}
+    .numrow:last-child{padding-bottom:2px}
+    .numrow>span{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    .numrow>b{font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+    .numrow.edge>b{color:var(--blue)}
+    .numrow .leans{font-size:12.5px;color:var(--muted);font-weight:600;margin-left:8px;white-space:nowrap}
+    .numrow .leans b{color:var(--ink)}
+    .proj{display:flex;flex-direction:column}
+    .proj-row{display:flex;align-items:baseline;justify-content:space-between;padding:9px 0}
+    .proj-row+.proj-row{border-top:1px solid var(--line)}
+    .proj-row .pt{font-weight:800;font-size:16px;letter-spacing:.03em}
+    .proj-row .ps{font-size:23px;font-weight:800;font-variant-numeric:tabular-nums}
+    .proj-cap{margin-top:9px;color:var(--muted);font-size:12.5px;text-align:center}
     .sheet .signal{flex:0 0 auto;margin-top:12px}
     .ptr{height:0;overflow:hidden;display:flex;justify-content:center;transition:height .18s ease}
     .ptr-spin{width:26px;height:26px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--blue);margin:10px 0;animation:ptrSpin .8s linear infinite}
@@ -179,7 +190,7 @@
     .ball-g{transition:transform .7s cubic-bezier(.3,.8,.3,1)}
     .field-ddt{text-align:center;font-size:12.5px;font-weight:800;margin-top:7px;letter-spacing:.02em}
     .field-poss{font-weight:600;color:var(--muted)}
-    .drives{display:flex;flex-wrap:wrap;gap:5px;margin:9px 2px 2px;align-items:center}
+    .drives{display:flex;flex-wrap:wrap;gap:5px;margin:9px 2px 2px;align-items:center;justify-content:center}
     .drv-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
     .drv-dot.cur{outline:2px solid var(--ink);outline-offset:1px}
     .countbug{display:flex;align-items:center;gap:16px;margin:4px 0 6px}
@@ -191,9 +202,12 @@
     .cb-dot.on-o{background:#ff6b74;border-color:#ff6b74}
     .diamond rect{fill:none;stroke:var(--muted);stroke-width:1.6;opacity:.85}
     .diamond rect.lit{fill:#7ddf8e;stroke:#7ddf8e;opacity:1}
-    .pace{margin:10px 0 2px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:7px}
-    .pace-row{display:flex;align-items:baseline;gap:8px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-    .pace-row b{color:var(--ink);font-size:14px}
+    .pace{margin:10px 0 2px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+    .pace-grid{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px 10px;align-items:baseline;font-variant-numeric:tabular-nums}
+    .pace-k{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+    .pace-grid b{font-size:15px;color:var(--ink);text-align:right;white-space:nowrap}
+    .pace-p{font-size:12.5px;color:var(--ink);font-weight:600;white-space:nowrap}
+    .pace-vs{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
     .pace-k{font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
     .pace-p{color:var(--ink);font-weight:700}
     .pace-vs{margin-left:auto}
@@ -489,25 +503,33 @@
   /* ---------- detail sheet (drawer) ---------- */
   function projectedScore(g){return {home:(g.our_total+g.our_spread)/2,away:(g.our_total-g.our_spread)/2}}
   function spreadDetail(g){
-    const d=g.our_spread-g.market_spread;
-    const body=g.market_spread==null
-      ?`<div class="vs"><div>Model<b>${fmtLine(g,g.our_spread)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div>`
-      :`<div class="vs"><div>Model<b>${fmtLine(g,g.our_spread)}</b></div><div>Market<b>${fmtLine(g,g.market_spread)}</b></div><div class="delta">Δ<b>${Math.abs(d).toFixed(1)}</b></div></div><div class="edge-line">${Math.abs(d)<.05?'No edge — matches the market':'Leans <b>'+escapeHTML(Math.abs(d)>0&&d>0?g.home_team:g.away_team)+'</b>'}</div>`;
-    return `<h4>Spread</h4><div class="sheet-sec">${body}</div>`;
+    const d=g.our_spread-g.market_spread,hasMkt=g.market_spread!=null;
+    const edge=!hasMkt?'—':(Math.abs(d)<.05
+      ?`No edge <span class="leans">matches the market</span>`
+      :`${Math.abs(d).toFixed(1)} <span class="leans">Leans <b>${escapeHTML(d>0?g.home_team:g.away_team)}</b></span>`);
+    return `<h4>Spread</h4><div class="sheet-sec"><div class="numrows">`
+      +`<div class="numrow"><span>Model</span><b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`
+      +`<div class="numrow"><span>Market</span><b>${hasMkt?escapeHTML(fmtLine(g,g.market_spread)):'—'}</b></div>`
+      +`<div class="numrow edge"><span>Edge</span><b>${edge}</b></div>`
+      +`</div></div>`;
   }
   function totalDetail(g){
-    const d=g.our_total-g.market_total;
-    const body=g.market_total==null
-      ?`<div class="vs"><div>Model<b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div><div>Market<b>—</b></div><div class="delta">Δ<b>—</b></div></div>`
-      :`<div class="vs"><div>Model<b>${g.our_total.toFixed(1)}</b></div><div>Market<b>${g.market_total.toFixed(1)}</b></div><div class="delta">Δ<b>${Math.abs(d).toFixed(1)}</b></div></div><div class="edge-line">${Math.abs(d)<.05?'No edge — matches the market':'Leans <b>'+(d>0?'Over':'Under')+'</b>'}</div>`;
-    return `<h4>Total</h4><div class="sheet-sec">${body}</div>`;
+    const d=g.our_total-g.market_total,hasMkt=g.market_total!=null;
+    const edge=!hasMkt?'—':(Math.abs(d)<.05
+      ?`No edge <span class="leans">matches the market</span>`
+      :`${Math.abs(d).toFixed(1)} <span class="leans">Leans <b>${d>0?'Over':'Under'}</b></span>`);
+    return `<h4>Total</h4><div class="sheet-sec"><div class="numrows">`
+      +`<div class="numrow"><span>Model</span><b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div>`
+      +`<div class="numrow"><span>Market</span><b>${hasMkt?g.market_total.toFixed(1):'—'}</b></div>`
+      +`<div class="numrow edge"><span>Edge</span><b>${edge}</b></div>`
+      +`</div></div>`;
   }
   function movementDetail(g){
-    const bits=[];
-    if(g.open_spread!=null&&g.market_spread!=null)bits.push(`Spread opened <b>${signedNum(g.open_spread)}</b> → now <b>${signedNum(g.market_spread)}</b>`);
-    if(g.open_total!=null&&g.market_total!=null)bits.push(`Total opened <b>${g.open_total.toFixed(1)}</b> → now <b>${g.market_total.toFixed(1)}</b>`);
-    if(!bits.length)return '';
-    return `<h4>Line movement</h4><div class="sheet-sec">${bits.map(b=>`<div>${b}</div>`).join('')}</div>`;
+    const rows=[];
+    if(g.open_spread!=null&&g.market_spread!=null)rows.push(`<div class="numrow"><span>Spread</span><b>${signedNum(g.open_spread)} → ${signedNum(g.market_spread)}</b></div>`);
+    if(g.open_total!=null&&g.market_total!=null)rows.push(`<div class="numrow"><span>Total</span><b>${g.open_total.toFixed(1)} → ${g.market_total.toFixed(1)}</b></div>`);
+    if(!rows.length)return '';
+    return `<h4>Line movement</h4><div class="sheet-sec"><div class="numrows">${rows.join('')}</div></div>`;
   }
   function sheetHTML(g){
     const s=signal(g),graded=g.home_score!=null&&g.away_score!=null;
@@ -519,7 +541,10 @@
     const ps=projectedScore(g);
     const venue=L&&L.venue?`<div class="sheet-venue">${escapeHTML(L.venue.name)}${L.venue.city?` · ${escapeHTML(L.venue.city)}${L.venue.state?', '+escapeHTML(L.venue.state):''}`:''}<span id="wxLine"></span></div>`:'';
     let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-row">${teamBlock(g,'away')}<div class="g-mid"><div class="g-time">vs</div></div>${teamBlock(g,'home')}</div></div><span class="signal ${s.cls}">${s.label}</span></div>${ko}${venue}`;
-    h+=`<h4>Model projection</h4><div class="sheet-sec">Model projects: <b>${escapeHTML(g.home_team)} ${ps.home.toFixed(1)} – ${escapeHTML(g.away_team)} ${ps.away.toFixed(1)}</b><div class="edge-line">From our spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
+    h+=`<h4>Model projection</h4><div class="sheet-sec"><div class="proj">`
+      +`<div class="proj-row"><span class="pt">${escapeHTML(g.home_team)}</span><span class="ps">${ps.home.toFixed(1)}</span></div>`
+      +`<div class="proj-row"><span class="pt">${escapeHTML(g.away_team)}</span><span class="ps">${ps.away.toFixed(1)}</span></div>`
+      +`</div><div class="proj-cap">From our spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
     h+=spreadDetail(g)+totalDetail(g)+variantLine(g)+movementDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
@@ -967,11 +992,12 @@
       else pCover=Math.round(_phi((g.our_spread-projMar)/sM)*100);
       const sm=v=>Math.abs(v)<0.05?'PK':(v>0?'+':'−')+Math.abs(v).toFixed(1);
       return `<div class="pace" role="img" aria-label="Live pace estimate">`
-        +`<div class="pace-row"><span class="pace-k">Total pace</span><b>${projTot.toFixed(1)}</b>`
-        +`<span class="pace-p">${pOver}% over</span><span class="pace-vs">our ${g.our_total.toFixed(1)}</span></div>`
-        +`<div class="pace-row"><span class="pace-k">Margin pace</span><b>${escapeHTML(g.home_team)} ${sm(projMar)}</b>`
-        +`<span class="pace-p">${pCover}% cover</span><span class="pace-vs">our ${sm(g.our_spread)}</span></div>`
-        +`</div>`;
+        +`<div class="pace-grid">`
+        +`<span class="pace-k">Total pace</span><b>${projTot.toFixed(1)}</b>`
+        +`<span class="pace-p">${pOver}% over</span><span class="pace-vs">our ${g.our_total.toFixed(1)}</span>`
+        +`<span class="pace-k">Margin pace</span><b>${escapeHTML(g.home_team)} ${sm(projMar)}</b>`
+        +`<span class="pace-p">${pCover}% cover</span><span class="pace-vs">our ${sm(g.our_spread)}</span>`
+        +`</div></div>`;
     }catch(e){return ''}
   }
   /* Home win-probability sparkline, from the PBP already fetched. Reuses the
