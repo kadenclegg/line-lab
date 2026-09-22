@@ -166,6 +166,9 @@
     .proj-row .ps{font-size:23px;font-weight:800;font-variant-numeric:tabular-nums}
     .proj-cap{margin-top:9px;color:var(--muted);font-size:12.5px;text-align:center}
     .sheet .signal{flex:0 0 auto;margin-top:12px}
+    .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:14px 0 6px;padding:13px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+    .share-btn:active{transform:scale(.98)}
+    .share-btn:disabled{opacity:.6;cursor:default}
     .ptr{height:0;overflow:hidden;display:flex;justify-content:center;transition:height .18s ease}
     .ptr-spin{width:26px;height:26px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--blue);margin:10px 0;animation:ptrSpin .8s linear infinite}
     @keyframes ptrSpin{to{transform:rotate(360deg)}}
@@ -549,6 +552,7 @@
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
     if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div id="paceRow"></div><div id="winProb"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
+    h+=`<button class="share-btn" id="shareCardBtn" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0L7 9m5-5l5 5"/><path d="M4 15v5h16v-5"/></svg>Share matchup card</button>`;
     return h;
   }
   /* ---------- venue weather (drawer only, once per open, outdoor games) ----------
@@ -574,12 +578,87 @@
     }catch(e){done('')}
   }
 
+  /* ---------- shareable matchup card (canvas -> system share sheet) ---------- */
+  function loadImg(url){return new Promise(res=>{if(!url)return res(null);const im=new Image();im.crossOrigin='anonymous';im.onload=()=>res(im);im.onerror=()=>res(null);im.src=url;});}
+  function drawCard(g,aL,hL){
+    const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;
+    const x=cv.getContext('2d'),INK='#f2f5fa',MUT='#8f9ab0',LINE='#232c42';
+    const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#0e1626');bg.addColorStop(1,'#080d18');
+    x.fillStyle=bg;x.fillRect(0,0,W,H);
+    x.fillStyle=g.away_color||'#33415c';x.fillRect(0,0,W/2,16);
+    x.fillStyle=g.home_color||'#33415c';x.fillRect(W/2,0,W/2,16);
+    const C=(t,cx,y,f,c)=>{x.font=f;x.fillStyle=c;x.textAlign='center';x.textBaseline='alphabetic';x.fillText(t,cx,y);};
+    C('LINE LAB',W/2,122,'700 38px system-ui',MUT);
+    const drawLogo=(img,cx,color,abbr)=>{
+      x.save();x.beginPath();x.arc(cx,330,100,0,7);x.fillStyle='#fff';x.fill();x.clip();
+      if(img){const sc=150/Math.max(img.width,img.height),dw=img.width*sc,dh=img.height*sc;
+        x.drawImage(img,cx-dw/2,330-dh/2,dw,dh);}
+      else{x.fillStyle=color||'#44546e';x.fillRect(cx-100,230,200,200);C(abbr,cx,354,'800 62px system-ui','#fff');}
+      x.restore();
+      x.beginPath();x.arc(cx,330,100,0,7);x.strokeStyle='rgba(255,255,255,.25)';x.lineWidth=3;x.stroke();
+    };
+    drawLogo(aL,390,g.away_color,g.away_team);
+    drawLogo(hL,690,g.home_color,g.home_team);
+    C(`${g.away_team} @ ${g.home_team}`,W/2,532,'800 88px system-ui',INK);
+    const rec=[g.away_record,g.home_record].filter(Boolean).join('   ·   ');
+    let y=588;
+    if(rec){C(rec,W/2,y,'600 38px system-ui',MUT);y+=56;}
+    C(dateLabel(g.game_date)+(g.kickoff_utc?' · '+kickoffTime(g.kickoff_utc):''),W/2,y,'500 36px system-ui',MUT);
+    x.strokeStyle=LINE;x.lineWidth=2;x.beginPath();x.moveTo(90,692);x.lineTo(W-90,692);x.stroke();
+    const col=(cx,label,our,mkt)=>{
+      C(label,cx,772,'700 34px system-ui',MUT);
+      C(our,cx,862,'800 72px system-ui',INK);
+      C('Market '+mkt,cx,922,'500 38px system-ui',MUT);
+    };
+    col(300,'SPREAD',fmtLine(g,g.our_spread),g.market_spread==null?'—':fmtLine(g,g.market_spread));
+    col(780,'TOTAL',g.our_total==null?'—':g.our_total.toFixed(1),g.market_total==null?'—':g.market_total.toFixed(1));
+    const sd=g.market_spread==null?0:Math.abs(g.our_spread-g.market_spread);
+    const td=(g.market_total==null||g.our_total==null)?0:Math.abs(g.our_total-g.market_total);
+    let edge='Awaiting market lines';
+    if(g.market_spread!=null){
+      edge=sd>=td
+        ?`Edge ${sd.toFixed(1)} · Leans ${sd<.05?'neither':((g.our_spread-g.market_spread)>0?g.home_team:g.away_team)}`
+        :`Edge ${td.toFixed(1)} · Leans ${td<.05?'neither':((g.our_total-g.market_total)>0?'Over':'Under')}`;
+    }
+    C(edge,W/2,1012,'700 44px system-ui','#5eb0ff');
+    const lbl=signal(g).label.toUpperCase();
+    x.font='800 40px system-ui';
+    const pw=x.measureText(lbl).width+100,ph=86,px=W/2-pw/2,py=1056;
+    x.beginPath();
+    if(x.roundRect)x.roundRect(px,py,pw,ph,43);else x.rect(px,py,pw,ph);
+    x.fillStyle='rgba(255,255,255,.06)';x.fill();
+    x.strokeStyle=g.home_color||'#5eb0ff';x.lineWidth=4;x.stroke();
+    C(lbl,W/2,py+56,'800 40px system-ui',INK);
+    C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1262,'500 32px system-ui','#5c6a86');
+    return cv;
+  }
+  async function shareCard(g){
+    const btn=document.getElementById('shareCardBtn'),old=btn?btn.innerHTML:'';
+    if(btn){btn.disabled=true;btn.textContent='Making card…';}
+    try{
+      const [aL,hL]=await Promise.all([loadImg(g.away_logo),loadImg(g.home_logo)]);
+      const cv=drawCard(g,aL,hL);
+      const blob=await new Promise(r=>{try{cv.toBlob(r,'image/png');}catch(e){r(null);}});
+      if(!blob)throw 0;
+      const file=new File([blob],`line-lab-${g.away_team}-${g.home_team}.png`,{type:'image/png'});
+      if(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]})){
+        try{await navigator.share({files:[file],title:'Line Lab matchup'});}catch(e){/* dismissed */}
+      }else{
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+        a.download=file.name;document.body.appendChild(a);a.click();a.remove();
+        setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+      }
+    }catch(e){/* stay silent on failure */}
+    if(btn){btn.disabled=false;btn.innerHTML=old;}
+  }
   function openSheet(id){
     const g=gamesData.find(x=>x.id===id);if(!g)return;
     const sh=document.getElementById('sheet');
     sh.style.setProperty('--ca',g.away_color||'transparent');
     sh.style.setProperty('--cb',g.home_color||'transparent');
     document.getElementById('sheetBody').innerHTML=sheetHTML(g);
+    const scb=document.getElementById('shareCardBtn');
+    if(scb)scb.addEventListener('click',()=>shareCard(g));
     const bd=document.getElementById('sheetBackdrop');bd.hidden=false;
     document.body.style.overflow='hidden';sh.focus({preventScroll:true});
     pbpGameId=g.id;
