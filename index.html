@@ -712,14 +712,22 @@
   });
 
   /* ---------- play-by-play + field viz (drawer only) ---------- */
+  /* Football: ESPN lists the in-progress drive in BOTH drives.previous (as the
+     last entry) and drives.current. Merge without doubling plays. */
+  function fbAllPlays(dr){
+    const cur=(dr.current&&dr.current.plays&&dr.current.plays.length)?dr.current:null;
+    const all=[],seen=new Set();
+    const push=p=>{const k=p.id!=null?p.id:('s'+p.sequenceNumber);if(seen.has(k))return;seen.add(k);all.push(p);};
+    (dr.previous||[]).forEach(d=>{if(cur&&d.id!=null&&d.id===cur.id)return;(d.plays||[]).forEach(push);});
+    if(cur)(cur.plays||[]).forEach(push);
+    all.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
+    return {all,cur};
+  }
   function pbpRows(g,j){
     const rows=[];
     try{
       if(g.sport==='nfl'||g.sport==='cfb'){
-        const dr=j.drives||{},all=[];
-        (dr.previous||[]).forEach(d=>(d.plays||[]).forEach(p=>all.push(p)));
-        if(dr.current&&dr.current.plays)dr.current.plays.forEach(p=>all.push(p));
-        all.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
+        const {all}=fbAllPlays(j.drives||{});
         for(const p of all.slice(-12).reverse()){
           const q='Q'+(((p.period||{}).number)||'');
           const clk=((p.clock||{}).displayValue)||'';
@@ -746,9 +754,7 @@
     /* Last play's field position for NFL/CFB. TV-style: attacking end zone on
        the right, ball at (100 - yardsToEndzone). */
     try{
-      const dr=j.drives||{};let plays=[];
-      (dr.previous||[]).forEach(d=>(d.plays||[]).forEach(p=>plays.push(p)));
-      if(dr.current&&dr.current.plays)dr.current.plays.forEach(p=>plays.push(p));
+      let plays=fbAllPlays(j.drives||{}).all;
       plays=plays.filter(p=>(p.end&&p.end.yardsToEndzone!=null)||(p.start&&p.start.yardsToEndzone!=null));
       if(!plays.length)return null;
       const p=plays[plays.length-1],e=p.end||p.start,s=p.start||p.end;
@@ -778,7 +784,7 @@
         +`<text x="${x}" y="${H-7}" fill="rgba(255,255,255,.6)" font-size="4.6" text-anchor="middle" font-weight="700">${num}</text>`;
     }
     inner+=`<line x1="${ltgX}" y1="1.5" x2="${ltgX}" y2="${H-1.5}" stroke="#ffd166" stroke-width="1.4"/>`;
-    inner+=`<g class="ball-g" style="transform:translate(${ballX}px,15px)"><circle r="2.6" fill="${pc}" stroke="rgba(0,0,0,.55)" stroke-width=".8"/></g>`;
+    inner+=`<g class="ball-g" style="transform:translate(${ballX}px,15px)"><circle r="1.7" fill="${pc}" stroke="rgba(0,0,0,.55)" stroke-width=".8"/></g>`;
     const possTxt=fs.possAbbr?` · <span class="field-poss">${escapeHTML(fs.possAbbr)} ball</span>`:'';
     return `<div class="fieldwrap"><svg class="field-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Field position">${inner}</svg>`
       +`<div class="field-ddt">${escapeHTML(fs.ddt)}${possTxt}</div></div>`;
@@ -867,7 +873,12 @@
     try{
       const dr=j.drives||{},all=(dr.previous||[]).slice();
       const cur=(dr.current&&dr.current.plays&&dr.current.plays.length)?dr.current:null;
-      if(cur)all.push(cur);
+      if(cur){
+        /* ESPN also lists the in-progress drive as the last of previous —
+           replace the duplicate with the live object instead of doubling it. */
+        const ci=all.findIndex(d=>d.id!=null&&d.id===cur.id);
+        if(ci>=0)all[ci]=cur;else all.push(cur);
+      }
       const dots=[];
       for(const d of all.slice(-40)){
         const res=d.displayResult||d.shortDisplayResult||d.result||'';
@@ -973,10 +984,7 @@
       const sM=sig[1];
       let plays=[];
       if(g.sport==='nfl'||g.sport==='cfb'){
-        const dr=j.drives||{};
-        (dr.previous||[]).forEach(d=>(d.plays||[]).forEach(p=>plays.push(p)));
-        if(dr.current&&dr.current.plays)dr.current.plays.forEach(p=>plays.push(p));
-        plays.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
+        plays=fbAllPlays(j.drives||{}).all;
       }else{
         plays=(j.plays||[]).slice();
         plays.sort((a,b)=>(parseInt(a.sequenceNumber,10)||0)-(parseInt(b.sequenceNumber,10)||0));
