@@ -67,3 +67,42 @@ self.addEventListener("fetch", (event) => {
     })()
   );
 });
+
+/* ---------- web push (product layer 2026-09-28) ----------
+   Caching behavior above is untouched. Payloads come from the Cloudflare
+   Worker (built in parallel); the in-app bell feed is the full history,
+   push is just the timely ping. data.url is a deep link (./#game-<id>). */
+self.addEventListener("push", (event) => {
+  let d = {};
+  try { d = event.data ? event.data.json() : {}; } catch (e) { d = {}; }
+  const title = d.title || "Line Lab";
+  const body = d.body || "Something moved on the board.";
+  const url = d.url || "./";
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: body,
+      icon: "./icon-192.png",
+      badge: "./icon-192.png",
+      data: { url: url },
+      tag: d.tag || "line-lab",
+      renotify: !!d.renotify
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "./";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
+      for (const c of list) {
+        if ("focus" in c) {
+          c.focus();
+          if ("navigate" in c && url !== "./") return c.navigate(url);
+          return;
+        }
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(url);
+    })
+  );
+});
