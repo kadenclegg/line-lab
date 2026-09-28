@@ -409,11 +409,11 @@
     .chart-wrap svg{width:100%;height:auto;display:block}
 
     /* ---------- Boards / teams / recap ---------- */
-    .board-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;min-width:0;transition:transform .18s var(--spring)}
+    .board-row{display:block;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;min-width:0;transition:transform .18s var(--spring)}
     .board-row:active{transform:scale(.985)}
-    .br-match{min-width:0;font-size:14px;font-weight:800}
-    .br-match .br-sport{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
-    .br-nums{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .br-match{min-width:0;font-size:14.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .br-match .br-sport{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;white-space:normal}
+    .br-nums{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-top:9px;font-size:12.5px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
     .br-nums b{color:var(--ink)}
     .br-gap{color:var(--blue)}
     .board-list{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
@@ -426,6 +426,11 @@
     .biasline{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.55;margin:12px 0 18px}
     .biasline b{font-variant-numeric:tabular-nums}
     .recap{margin-bottom:18px}
+    .recap-row{display:block}
+    .recap-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+    .recap-top i{font-style:normal;font-weight:600;color:var(--faint);font-size:11.5px}
+    .recap-nums{margin-top:4px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .recap-nums b{color:var(--ink);font-weight:800}
 
     /* ---------- product layer (2026-09-28): onboarding, briefing, search, feed, push ---------- */
     .mast-actions{display:flex;align-items:center;gap:6px}
@@ -608,6 +613,13 @@
   font-variant-numeric:tabular-nums;
 }
 .inj-sum b{font-variant-numeric:tabular-nums;}
+/* Injury rows: name + status on one line, point translation below — never truncated. */
+.numrow.inj-row{display:block;padding:9px 0}
+.inj-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.inj-top>span{min-width:0;font-weight:700;font-size:13px;letter-spacing:0;text-transform:none;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inj-top>span i{font-size:11.5px;color:var(--faint);font-weight:600}
+.inj-top>b{flex:0 0 auto;font-size:12px;text-transform:none;letter-spacing:0}
+.inj-tr{margin-top:3px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .inj-pend{color:var(--muted);font-weight:400;font-size:12.5px;}
 .inj-cap{color:var(--muted);font-weight:400;font-size:12.5px;}
 
@@ -769,6 +781,7 @@ html[data-theme="light"] .icon-btn{background:rgba(255,255,255,.7)}
 .health{padding:20px}
 .bet{padding:20px}
 .gplay,.slate-leg{padding:14px 16px}
+.gplay{padding-right:52px} /* clear the absolute share button */
 .board-row,.team-row{padding:14px 16px}
 .hchip{padding:12px 14px}
 .pace{padding:14px 16px}
@@ -888,7 +901,209 @@ details.method summary{font-size:13px}
   body::after{display:none}
   .view.active,.cards .game,.nav-btn,.nav-btn svg,.sheet-backdrop,.feed-backdrop,.ob-backdrop{animation:none;transition:none}
 }
+    /* ============================================================
+       Craft layer 2026-09-28 — cinematic pass (Kaden: go bigger).
+       Presentation-only: hero staging, edge meters, sparklines, live
+       glow, ambient team color, motion system, chart craft, empty art.
+       One design language: layered navy depth, one confident accent,
+       spring physics, whisper team color. Nothing here touches data.
+       ============================================================ */
+    :root{--springy:cubic-bezier(.3,1.35,.42,1);--ease-out:cubic-bezier(.22,1,.36,1)}
 
+    /* ---------- ambient team color: a whisper, never a flood ---------- */
+    .game::before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:3px;border-radius:99px;
+      background:linear-gradient(180deg,var(--ca),var(--cb));opacity:.32;transition:opacity .35s var(--ease-out)}
+    .game:hover::before,.game.top-pick::before{opacity:.9}
+    .game.live::before{background:linear-gradient(180deg,#ff5b6a,#ff8a3d);opacity:.95;
+      box-shadow:0 0 14px rgba(255,91,106,.55)}
+
+    /* ---------- game-of-the-day hero: the slate gets a headline act ---------- */
+    .game.craft-hero{border:1px solid rgba(140,170,255,.22);border-bottom:0;border-radius:22px;
+      padding:20px 18px 16px;margin:16px 0 8px;overflow:hidden;
+      background:
+        radial-gradient(120% 85% at 50% -12%,color-mix(in srgb,var(--ca) 20%,transparent),transparent 60%),
+        radial-gradient(120% 85% at 50% 112%,color-mix(in srgb,var(--cb) 20%,transparent),transparent 60%),
+        linear-gradient(180deg,var(--surface-2),var(--surface));
+      box-shadow:0 30px 80px -24px rgba(0,0,0,.7),0 0 48px -20px color-mix(in srgb,var(--ca) 50%,transparent);
+    html[data-theme="light"] .game.craft-hero{box-shadow:0 18px 44px -20px rgba(30,60,120,.28),0 0 32px -18px color-mix(in srgb,var(--ca) 40%,transparent)}
+      animation:heroIn .85s var(--springy) backwards}
+    @keyframes heroIn{from{opacity:0;transform:translateY(28px) scale(.965)}to{opacity:1;transform:none}}
+    .game.craft-hero::before{left:0;top:0;bottom:0;width:100%;border-radius:inherit;opacity:1;
+      background:
+        radial-gradient(90% 55% at 10% 0%,color-mix(in srgb,var(--ca) 15%,transparent),transparent 62%),
+        radial-gradient(90% 55% at 90% 100%,color-mix(in srgb,var(--cb) 15%,transparent),transparent 62%)}
+    .game.craft-hero::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.06) 47%,transparent 62%);
+      background-size:280% 100%;animation:heroSheen 7s ease-in-out infinite}
+    @keyframes heroSheen{0%,100%{background-position:125% 0}50%{background-position:-25% 0}}
+    .craft-eyebrow{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .craft-eyebrow span{font-size:10.5px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;white-space:nowrap;
+      background:linear-gradient(90deg,#8fb8ff,#c4aaff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .craft-eyebrow::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(143,184,255,.45),transparent)}
+    .craft-teach{position:relative;z-index:1;font-size:12.5px;line-height:1.55;color:var(--muted);margin:2px 0 6px;max-width:36ch}
+    .craft-hero .g-name{font-size:18px}
+    .craft-hero .g-logo{width:48px;height:48px}
+    .craft-hero .g-score{font-size:46px}
+    .craft-hero .g-state{font-size:12.5px}
+
+    /* ---------- edge visualization: conviction you can feel ---------- */
+    .g-foot{flex-wrap:wrap}
+    .craft-edge{flex:1 1 100%;margin:10px 0 2px;display:grid;gap:7px}
+    .craft-edge-row{display:grid;grid-template-columns:52px 1fr 34px;align-items:center;gap:9px}
+    .craft-edge-row>span{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+    .craft-edge-row>b{font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;font-weight:700}
+    .craft-edge-track{height:4px;border-radius:99px;background:color-mix(in srgb,currentColor 11%,transparent);overflow:hidden}
+    .craft-edge-track i{display:block;height:100%;width:0;border-radius:99px;
+      background:linear-gradient(90deg,#5eb0ff,#a78bfa);transition:width 1.15s var(--ease-out)}
+    .craft-edge.rank3 .craft-edge-track i{box-shadow:0 0 12px rgba(94,176,255,.6)}
+    .craft-edge.rank2 .craft-edge-track i{background:linear-gradient(90deg,#4d8fd6,#8b7bd8)}
+    .craft-edge.rank1 .craft-edge-track i{background:linear-gradient(90deg,#5a6b84,#7d748f);box-shadow:none}
+    .craft-hero .craft-edge{margin-top:14px}
+    .craft-hero .craft-edge-track{height:6px}
+    .craft-hero .craft-edge-row>span{font-size:11px}
+    .craft-hero .craft-edge-row>b{font-size:13px;color:var(--ink)}
+
+    /* ---------- line-movement sparklines: glanceable travel ---------- */
+    .g-mkt{display:flex;align-items:center;gap:10px}
+    .craft-spark{margin-left:auto;flex:0 0 auto;width:74px;height:22px;color:#7d8aa0;opacity:.92}
+    .craft-spark.up{color:#5eb0ff}
+    .craft-spark.dn{color:#b48cf2}
+    .craft-spark circle{filter:drop-shadow(0 0 4px currentColor)}
+
+    /* ---------- live: the LIVE pill is the best-looking element here ---------- */
+    .live-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;letter-spacing:.14em;
+      text-transform:uppercase;color:#fff;padding:5px 12px 5px 10px;border-radius:999px;
+      background:linear-gradient(135deg,#c81e3f,#d92045);
+      box-shadow:0 0 0 3px rgba(217,32,69,.16),0 4px 18px rgba(217,32,69,.45);
+      animation:liveBreathe 2.4s ease-in-out infinite}
+    @keyframes liveBreathe{0%,100%{box-shadow:0 0 0 3px rgba(217,32,69,.16),0 4px 18px rgba(217,32,69,.45)}
+      50%{box-shadow:0 0 0 8px rgba(217,32,69,.04),0 4px 28px rgba(217,32,69,.7)}}
+    .game.live .g-clockline{font-size:15px;font-weight:800;color:#ffb3bb;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+    html[data-theme="light"] .game.live .g-clockline{color:#c81e3f}
+    .game.live .g-state{gap:10px}
+    .game.live{animation:liveGlow 3.2s ease-in-out infinite}
+    @keyframes liveGlow{0%,100%{background-color:transparent}50%{background-color:rgba(255,45,85,.045)}}
+    .craft-flow{display:flex;height:5px;border-radius:99px;overflow:hidden;margin:12px 2px 0;
+      background:rgba(127,138,160,.16);position:relative}
+    .craft-flow i{display:block;height:100%;transition:width .9s var(--ease-out)}
+    .craft-flow .fa{background:linear-gradient(90deg,color-mix(in srgb,var(--ca) 55%,transparent),var(--ca))}
+    .craft-flow .fh{background:linear-gradient(90deg,var(--cb),color-mix(in srgb,var(--cb) 55%,transparent))}
+    .craft-flow::after{content:"";position:absolute;inset:0;
+      background:linear-gradient(100deg,transparent 25%,rgba(255,255,255,.28) 50%,transparent 75%);
+      background-size:220% 100%;animation:flowSheen 2.8s linear infinite}
+    @keyframes flowSheen{from{background-position:190% 0}to{background-position:-90% 0}}
+    /* sheet win-probability: make it breathe */
+    .wpwrap{border-radius:16px;padding:12px 12px 8px;
+      background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border:1px solid var(--line)}
+    .wp-svg polygon{animation:wpBreathe 3.4s ease-in-out infinite}
+    @keyframes wpBreathe{0%,100%{opacity:.5}50%{opacity:1}}
+    .wp-cap{font-size:12.5px;color:var(--muted);margin-top:6px}
+    .wp-cap b{color:var(--ink);font-size:14px;font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(94,176,255,.5)}
+
+    /* ---------- motion system: springs, stagger, tactile press ---------- */
+    .cards .game{animation:cardIn .55s var(--springy) backwards}
+    @keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+    .tappable{transition:transform .3s var(--springy)}
+    .game.tappable:active{transform:scale(.972)}
+    .game.tappable:active .g-mid{transform:none}
+    .sheet,.feed,.ob{animation:sheetUp .55s var(--springy)}
+    /* sliding spring tab indicator — pure CSS, zero JS */
+    .bottom-nav{isolation:isolate}
+    .bottom-nav::before{content:"";position:absolute;top:7px;bottom:calc(7px + env(safe-area-inset-bottom));left:12px;width:calc((100% - 24px)/7);
+      box-sizing:border-box;
+      border-radius:15px;background:rgba(94,176,255,.13);border:1px solid rgba(94,176,255,.2);
+      transition:transform .55s var(--springy);z-index:0;pointer-events:none}
+    html[data-theme="light"] .bottom-nav::before{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.18)}
+    /* tab-indicator geometry must match each breakpoint's nav padding */
+    @media(max-width:680px){.bottom-nav::before{left:6px;width:calc((100% - 12px)/7);top:8px;bottom:calc(8px + env(safe-area-inset-bottom))}}
+    @media(min-width:780px){.bottom-nav::before{left:7px;width:calc((100% - 14px)/7);top:7px;bottom:7px}}
+    .nav-btn{position:relative;z-index:1}
+    .nav-btn[aria-selected="true"] svg{animation:tabPop .55s var(--springy)}
+    @keyframes tabPop{0%{transform:scale(.55)}55%{transform:scale(1.22)}100%{transform:scale(1.1)}}
+    .bottom-nav:has([data-view="games"][aria-selected="true"])::before{transform:translateX(0)}
+    .bottom-nav:has([data-view="signals"][aria-selected="true"])::before{transform:translateX(100%)}
+    .bottom-nav:has([data-view="picks"][aria-selected="true"])::before{transform:translateX(200%)}
+    .bottom-nav:has([data-view="results"][aria-selected="true"])::before{transform:translateX(300%)}
+    .bottom-nav:has([data-view="health"][aria-selected="true"])::before{transform:translateX(400%)}
+    .bottom-nav:has([data-view="bets"][aria-selected="true"])::before{transform:translateX(500%)}
+    .bottom-nav:has([data-view="boards"][aria-selected="true"])::before{transform:translateX(600%)}
+    /* sticky section titles glide over the list */
+    .group-title{margin:14px -4px 4px;padding:10px 6px;
+      background:color-mix(in srgb,var(--bg) 84%,transparent);
+      backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
+      border-bottom:.5px solid var(--line)}
+    /* collapsing home header */
+    .summary{transition:padding .35s var(--ease-out)}
+    .summary h2{transition:font-size .35s var(--ease-out),margin .35s var(--ease-out)}
+    body.is-scrolled .summary h2{font-size:12px}
+    body.is-scrolled .summary p{opacity:.75}
+
+    /* ---------- chart craft: Bloomberg terminal × Apple Sports ---------- */
+    .chart-wrap{position:relative;border-radius:18px;padding:16px 14px 10px;overflow:hidden;
+      background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.006));
+      border:1px solid var(--line);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 18px 44px -22px rgba(0,0,0,.6)}
+    .chart-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(85% 60% at 50% 0%,rgba(94,176,255,.08),transparent 70%)}
+    .chart-wrap svg{position:relative}
+    .chart-wrap text{font-variant-numeric:tabular-nums;font-weight:600}
+    .craft-draw{stroke-dasharray:1;stroke-dashoffset:1;animation:chartDraw 1.5s var(--ease-out) .15s forwards}
+    @keyframes chartDraw{to{stroke-dashoffset:0}}
+    .craft-area{animation:areaIn 1.3s var(--ease-out) .55s backwards}
+    @keyframes areaIn{from{opacity:0}to{opacity:1}}
+    #bankrollChart{margin-bottom:6px}
+    .tspark{background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);
+      border:1px solid var(--line);border-radius:16px;padding:12px 14px 8px}
+    .tspark h4{margin:0 0 2px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .tspark .tlegend{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+    .tspark .tlab{fill:var(--faint);font-size:10px;font-weight:600;letter-spacing:.05em}
+    .mv-wrap{background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);
+      border:1px solid var(--line);border-radius:14px;padding:10px 12px 6px}
+
+    /* ---------- detail sheet: ambient team wash + edge duel ---------- */
+    #sheet{overflow-x:hidden}
+    #sheet::after{content:"";position:absolute;inset:0 0 auto 0;height:150px;pointer-events:none;z-index:0;border-radius:22px 22px 0 0;
+      background:radial-gradient(95% 100% at 50% 0%,color-mix(in srgb,var(--ca) 20%,transparent),transparent 72%)}
+    #sheetBody{position:relative;z-index:1}
+    .sheet-kick{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+    .craft-duel{margin:12px 0 6px;display:grid;gap:12px}
+    .craft-duel-row{display:grid;grid-template-columns:46px 1fr;gap:10px;align-items:start}
+    .craft-duel-row>span{font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;padding-top:2px}
+    .craft-duel-track{position:relative;height:6px;margin:0 8px;border-radius:99px;background:color-mix(in srgb,currentColor 10%,transparent)}
+    .craft-duel-track i{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%)}
+    .craft-duel-track i.mkt{background:#8b93a3;box-shadow:0 0 0 4px rgba(139,147,163,.18)}
+    .craft-duel-track i.ours{width:15px;height:15px;z-index:1;
+      background:linear-gradient(135deg,#5eb0ff,#a78bfa);box-shadow:0 0 14px rgba(94,176,255,.85)}
+    .craft-duel-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);
+      margin-top:7px;font-variant-numeric:tabular-nums;font-weight:600}
+
+    /* ---------- empty states with personality: no dead screens ---------- */
+    .empty.craft-empty{position:relative;overflow:hidden;padding:46px 24px 42px}
+    .empty.craft-empty::before{content:attr(data-glyph);position:relative;z-index:1;display:block;
+      font-size:48px;line-height:1;margin-bottom:16px;
+      background:linear-gradient(135deg,#8fb8ff,#c4aaff);-webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 8px 20px rgba(94,176,255,.35));
+      animation:emptyFloat 5.5s ease-in-out infinite}
+    @keyframes emptyFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+    .empty.craft-empty::after{content:"";position:absolute;left:50%;top:26px;width:170px;height:170px;
+      transform:translateX(-50%);pointer-events:none;
+      background:radial-gradient(closest-side,rgba(94,176,255,.13),transparent 72%)}
+    .empty.craft-empty h2{position:relative;z-index:1;font-size:18px;margin:0 0 8px;letter-spacing:-.01em}
+    .empty.craft-empty p{position:relative;z-index:1;max-width:32ch;margin:0 auto;font-size:13.5px;line-height:1.55}
+
+    /* ---------- Field viz craft (Kaden: a real football, not a dot) ---------- */
+    .ltg-g{transition:transform .7s cubic-bezier(.3,.8,.3,1)}
+    .ball-halo{transform-box:fill-box;transform-origin:center;animation:ballPulse 2.6s ease-in-out infinite}
+    @keyframes ballPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.95;transform:scale(1.22)}}
+    @media (prefers-reduced-motion:reduce){
+      .game.craft-hero,.game.craft-hero::after,.live-badge,.game.live,.craft-flow::after,
+      .craft-edge-track i,.empty.craft-empty::before,.craft-draw,.craft-area,.wp-svg polygon,
+      .nav-btn[aria-selected="true"] svg,.bottom-nav::before,.ball-halo,
+      .cards .game,.sheet,.feed,.ob,.tappable,.game::before,.craft-flow i{animation:none !important;transition:none !important}
+      .ball-g,.ltg-g{transition:none !important}
+      .craft-draw{stroke-dashoffset:0}
+      .craft-edge-track i{transition:none}
+    }
 </style>
 </head>
 <body>
@@ -931,11 +1146,11 @@ details.method summary{font-size:13px}
       <div class="summary"><h2 id="gamesTitle">Today's games</h2><p id="gameCount" aria-live="polite"></p></div>
       <div id="healthStrip" aria-live="polite"></div>
       <div id="games"></div>
-      <details class="method"><summary>How paper markers work</summary><p><b>Strong</b> means the model differs from the market by at least 5 points on the spread or 4 on the total. <b>Lean</b> means at least 3 on the spread or 2.5 on the total. <b>Coin flip</b> means the numbers are close. Test lines are active experiments tracked separately from the production model.</p></details>
+      <details class="method"><summary>How signals work</summary><p><b>Strong signal</b> means the model differs from the market by at least 5 points on the spread or 4 on the total. <b>Lean</b> means at least 3 on the spread or 2.5 on the total. <b>Coin flip</b> means the numbers are close. Experimental variants are tracked separately from the main model.</p></details>
     </section>
 
     <section id="signalsView" class="view" aria-label="Signals">
-      <div class="section-head"><h2>Paper signals</h2><p>Every game where the model meaningfully disagrees with the market — the watchlist we're grading over time.</p></div>
+      <div class="section-head"><h2>Model signals</h2><p>Every game where the model meaningfully disagrees with the market — the watchlist we're grading over time.</p></div>
       <div id="gated"></div>
       <div id="slate"></div>
       <div id="signals"></div>
@@ -944,7 +1159,7 @@ details.method summary{font-size:13px}
     <section id="picksView" class="view" aria-label="Picks">
       <div class="section-head"><h2>Model picks</h2><p>Biggest model-vs-market disagreements, ranked as calibration candidates. These are model leans, not betting picks — the model has never beaten the closing line.</p></div>
       <div id="picks"></div>
-      <details class="method"><summary>How picks are ranked</summary><p><b>Overs</b> and <b>Unders</b> rank games where our total differs from the market by at least 2.5 points. <b>Spreads</b> rank games where our spread differs by at least 3 points. Same thresholds as Paper lean markers.</p></details>
+      <details class="method"><summary>How picks are ranked</summary><p><b>Overs</b> and <b>Unders</b> rank games where the model&rsquo;s total differs from the market by at least 2.5 points. <b>Spreads</b> rank games where the model&rsquo;s spread differs by at least 3 points. Same thresholds as the Lean signal.</p></details>
     </section>
 
     <section id="resultsView" class="view" aria-label="Results">
@@ -956,14 +1171,14 @@ details.method summary{font-size:13px}
     <section id="healthView" class="view" aria-label="Model health">
       <div class="section-head"><h2>Model health</h2></div>
       <div class="health-grid">
-        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Naive baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread bias</span><b>&asymp; 0</b></div><div class="caution">Retuned totals: error 10.57 pts vs naive 10.98, bias &asymp; 0.</div></article>
-        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Naive baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Retuned totals: error 12.64 pts vs naive 12.95, bias &asymp; 0.</div></article>
+        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Simple baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread bias</span><b>&asymp; 0</b></div><div class="caution">Totals re-tuned: average miss 10.57 pts vs 10.98 baseline, bias &asymp; 0.</div></article>
+        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Simple baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Totals re-tuned: average miss 12.64 pts vs 12.95 baseline, bias &asymp; 0.</div></article>
         <article class="health"><div class="health-head"><h3>MLB</h3><span class="status tested">Backtested</span></div><div class="version">2,267 games</div><div class="metric"><span>Total bias</span><b>&asymp; 0</b></div><div class="metric"><span>Total error</span><b>3.55 runs</b></div><div class="metric"><span>Spread error</span><b>unchanged</b></div><div class="caution">Hot-total bias fixed (symmetric home-field + shrinkage). Starting pitchers still unmodeled.</div></article>
         <article class="health"><div class="health-head"><h3>NBA</h3><span class="status">Learning</span></div><div class="version">unvalidated</div><div class="metric"><span>Season begins</span><b>Oct 20</b></div><div class="metric"><span>Roster changes</span><b>Not modeled</b></div></article>
       </div>
     </section>
     <section id="betsView" class="view" aria-label="My bets">
-      <div class="section-head"><h2>My bets</h2><p>Your tracked positions, graded against finals. Top Picks stay paper signals — this tab just keeps score.</p></div>
+      <div class="section-head"><h2>My bets</h2><p>Your tracked positions, graded against finals. Top Picks stay model signals — this tab just keeps score.</p></div>
       <div class="stats"><div class="stat"><b id="betCount">0</b><span>Bets tracked</span></div><div class="stat"><b id="betRecord">—</b><span>Record</span></div><div class="stat"><b id="betPnl">—</b><span>Total P&amp;L</span></div></div>
 
       <div class="subhead"><h3>Check a bet</h3><p>3-second edge check · info only</p></div>
@@ -996,7 +1211,7 @@ details.method summary{font-size:13px}
     </section>
 
     <section id="boardsView" class="view" aria-label="Boards">
-      <div class="section-head"><h2>Boards</h2><p>Where our numbers disagree with the market the most — and per-team pages with our recent totals bias on each team.</p></div>
+      <div class="section-head"><h2>Boards</h2><p>Where the model&rsquo;s numbers disagree with the market the most — plus per-team pages with the model&rsquo;s recent totals bias on each team.</p></div>
       <div id="boards"></div>
     </section>
   </main>
@@ -1072,7 +1287,7 @@ details.method summary{font-size:13px}
      the journal, recapData parsed from the latest calibration report).
      Placeholders are replaced in place; the app guards if a fetch failed. */
   const teamBias={"nfl":{"NYJ":{"n":373,"sp":0.72,"tp":0.42},"WAS":{"n":373,"sp":0.14,"tp":0.44},"NE":{"n":373,"sp":-2.2,"tp":0.94},"BUF":{"n":372,"sp":-0.16,"tp":0.0},"JAX":{"n":373,"sp":0.4,"tp":0.99},"CAR":{"n":373,"sp":-0.01,"tp":-0.67},"DEN":{"n":373,"sp":0.3,"tp":-0.04},"CIN":{"n":372,"sp":-0.93,"tp":0.36},"IND":{"n":373,"sp":0.21,"tp":0.04},"CLE":{"n":373,"sp":1.23,"tp":0.62},"ARI":{"n":373,"sp":1.07,"tp":-3.88},"DET":{"n":373,"sp":0.28,"tp":-2.94},"MIN":{"n":373,"sp":-0.22,"tp":-2.02},"GB":{"n":373,"sp":-0.28,"tp":1.36},"LAC":{"n":373,"sp":-0.51,"tp":1.01},"KC":{"n":373,"sp":-0.24,"tp":2.64},"HOU":{"n":373,"sp":0.12,"tp":0.02},"MIA":{"n":373,"sp":-0.01,"tp":0.57},"LAR":{"n":373,"sp":0.15,"tp":-1.71},"NYG":{"n":373,"sp":0.59,"tp":-0.71},"BAL":{"n":373,"sp":-0.25,"tp":-0.07},"PIT":{"n":373,"sp":-0.29,"tp":2.27},"ATL":{"n":373,"sp":-0.11,"tp":0.09},"DAL":{"n":373,"sp":-0.36,"tp":-0.22},"NO":{"n":373,"sp":-1.14,"tp":-1.29},"SEA":{"n":373,"sp":-0.85,"tp":0.55},"CHI":{"n":373,"sp":0.32,"tp":-2.87},"SF":{"n":373,"sp":0.21,"tp":-0.08},"LV":{"n":373,"sp":0.61,"tp":0.68},"TEN":{"n":373,"sp":0.55,"tp":-0.45},"TB":{"n":373,"sp":0.69,"tp":-1.11},"PHI":{"n":373,"sp":-0.07,"tp":-1.29}},"cfb":{"EMU":{"n":151,"sp":1.41,"tp":-2.15},"BALL":{"n":150,"sp":2.27,"tp":1.71},"UCF":{"n":156,"sp":0.79,"tp":-0.18},"AKR":{"n":151,"sp":2.96,"tp":0.28},"SC":{"n":153,"sp":-2.85,"tp":0.88},"VAN":{"n":152,"sp":-2.17,"tp":-0.26},"UCLA":{"n":162,"sp":-1.26,"tp":-0.9},"RICE":{"n":155,"sp":2.51,"tp":-1.57},"MASS":{"n":148,"sp":4.22,"tp":-2.74},"CONN":{"n":143,"sp":0.83,"tp":0.76},"WSU":{"n":147,"sp":-0.57,"tp":-0.03},"BYU":{"n":155,"sp":-1.51,"tp":0.55},"MINN":{"n":155,"sp":-1.64,"tp":-0.64},"UNLV":{"n":154,"sp":-0.09,"tp":-0.71},"NCSU":{"n":154,"sp":0.97,"tp":0.88},"TENN":{"n":153,"sp":-0.02,"tp":-2.13},"BOIS":{"n":164,"sp":0.68,"tp":-0.04},"MSU":{"n":158,"sp":-0.84,"tp":0.82},"SJSU":{"n":150,"sp":0.68,"tp":-1.63},"STAN":{"n":161,"sp":-1.19,"tp":-2.73},"ND":{"n":166,"sp":-4.54,"tp":-1.38},"NAVY":{"n":157,"sp":0.66,"tp":-2.98},"WMU":{"n":151,"sp":2.5,"tp":-0.68},"ILL":{"n":155,"sp":-0.4,"tp":-0.5},"TROY":{"n":157,"sp":0.8,"tp":-0.6},"UAB":{"n":131,"sp":1.9,"tp":-2.01},"NU":{"n":155,"sp":-1.24,"tp":1.16},"SYR":{"n":154,"sp":2.05,"tp":0.78},"BUFF":{"n":148,"sp":3.08,"tp":0.3},"UGA":{"n":161,"sp":-2.92,"tp":-1.06},"OHIO":{"n":149,"sp":0.76,"tp":-0.43},"PSU":{"n":163,"sp":-2.71,"tp":1.5},"MRSH":{"n":154,"sp":1.53,"tp":0.73},"WVU":{"n":150,"sp":0.71,"tp":0.11},"M-OH":{"n":153,"sp":0.06,"tp":-0.31},"OSU":{"n":165,"sp":-4.33,"tp":-0.75},"UTSA":{"n":156,"sp":0.91,"tp":-1.92},"USA":{"n":155,"sp":1.8,"tp":-0.92},"NEV":{"n":152,"sp":1.12,"tp":-0.51},"CAL":{"n":148,"sp":1.37,"tp":-1.02},"TLSA":{"n":157,"sp":2.18,"tp":-0.14},"ISU":{"n":155,"sp":-2.27,"tp":-0.8},"BGSU":{"n":152,"sp":0.83,"tp":1.34},"FLA":{"n":154,"sp":-1.37,"tp":-0.61},"IOWA":{"n":158,"sp":-4.09,"tp":0.88},"NIU":{"n":156,"sp":0.75,"tp":1.22},"MIA":{"n":153,"sp":-0.29,"tp":-0.34},"BC":{"n":154,"sp":-0.56,"tp":0.32},"USM":{"n":154,"sp":3.59,"tp":-2.59},"NEB":{"n":157,"sp":0.02,"tp":0.39},"CSU":{"n":148,"sp":-0.19,"tp":-2.24},"COLO":{"n":154,"sp":-0.11,"tp":-1.38},"FIU":{"n":148,"sp":2.37,"tp":-3.61},"DUKE":{"n":156,"sp":1.2,"tp":0.52},"CLEM":{"n":159,"sp":-1.53,"tp":2.22},"AUB":{"n":155,"sp":-2.38,"tp":-0.52},"UNT":{"n":155,"sp":1.15,"tp":-0.17},"LSU":{"n":154,"sp":-1.9,"tp":0.5},"HAW":{"n":160,"sp":1.24,"tp":-1.75},"USC":{"n":166,"sp":-2.79,"tp":-1.32},"RUTG":{"n":154,"sp":1.2,"tp":0.94},"TULN":{"n":160,"sp":-0.06,"tp":0.4},"TXST":{"n":155,"sp":1.59,"tp":-2.55},"HOU":{"n":156,"sp":-0.14,"tp":-0.43},"MICH":{"n":165,"sp":-3.39,"tp":0.48},"ALA":{"n":162,"sp":-3.92,"tp":-1.25},"WYO":{"n":150,"sp":0.68,"tp":-1.74},"TEX":{"n":168,"sp":-4.24,"tp":-0.26},"SDSU":{"n":154,"sp":-0.9,"tp":-0.85},"WASH":{"n":152,"sp":-1.81,"tp":-0.59},"OU":{"n":163,"sp":-2.27,"tp":-0.59},"UTEP":{"n":154,"sp":1.41,"tp":-4.83},"TOL":{"n":152,"sp":1.98,"tp":0.01},"ARIZ":{"n":150,"sp":-0.48,"tp":-2.2},"ARST":{"n":152,"sp":1.64,"tp":-1.57},"ORE":{"n":154,"sp":-1.94,"tp":0.55},"UK":{"n":153,"sp":-1.81,"tp":-1.21},"LOU":{"n":157,"sp":0.32,"tp":-1.7},"SMU":{"n":156,"sp":0.42,"tp":-2.51},"BAY":{"n":154,"sp":0.76,"tp":1.49},"GT":{"n":153,"sp":-1.02,"tp":-0.75},"VT":{"n":155,"sp":-0.16,"tp":-0.0},"PITT":{"n":154,"sp":-1.22,"tp":-0.39},"CIN":{"n":154,"sp":-0.25,"tp":0.61},"UTAH":{"n":153,"sp":-2.39,"tp":-2.12},"USU":{"n":152,"sp":0.79,"tp":-0.5},"KSU":{"n":154,"sp":-3.0,"tp":-2.63},"UVA":{"n":152,"sp":-0.05,"tp":0.95},"MD":{"n":150,"sp":0.53,"tp":1.26},"TEM":{"n":153,"sp":0.47,"tp":-0.02},"MSST":{"n":153,"sp":0.46,"tp":-0.07},"ECU":{"n":151,"sp":1.28,"tp":-1.91},"WKU":{"n":160,"sp":-0.8,"tp":-0.75},"CMU":{"n":150,"sp":0.58,"tp":0.66},"IU":{"n":153,"sp":-1.0,"tp":1.35},"TA&M":{"n":151,"sp":-1.21,"tp":0.02},"PUR":{"n":155,"sp":-0.26,"tp":0.27},"KU":{"n":152,"sp":-1.27,"tp":-0.45},"AFA":{"n":150,"sp":1.84,"tp":-2.39},"USF":{"n":150,"sp":-0.58,"tp":-0.16},"UNC":{"n":152,"sp":-1.79,"tp":1.28},"WAKE":{"n":151,"sp":0.24,"tp":1.02},"WIS":{"n":162,"sp":-0.5,"tp":0.49},"ORST":{"n":150,"sp":-0.2,"tp":-1.56},"FRES":{"n":153,"sp":0.41,"tp":1.09},"MEM":{"n":154,"sp":-1.41,"tp":-2.23},"ULM":{"n":157,"sp":2.04,"tp":-1.64},"ARK":{"n":153,"sp":-0.83,"tp":-1.84},"NMSU":{"n":147,"sp":2.48,"tp":-4.31},"IDHO":{"n":66,"sp":3.3,"tp":-3.44},"TTU":{"n":153,"sp":0.6,"tp":-0.06},"UL":{"n":157,"sp":0.34,"tp":-2.21},"FAU":{"n":156,"sp":1.38,"tp":-1.92},"MTSU":{"n":154,"sp":0.98,"tp":0.86},"MISS":{"n":152,"sp":-1.59,"tp":1.6},"ARMY":{"n":146,"sp":2.62,"tp":-0.84},"KENT":{"n":148,"sp":2.88,"tp":-0.65},"MIZ":{"n":155,"sp":-1.24,"tp":0.97},"LT":{"n":154,"sp":1.95,"tp":-1.12},"UNM":{"n":153,"sp":0.59,"tp":-2.16},"OKST":{"n":156,"sp":-0.05,"tp":0.7},"ASU":{"n":152,"sp":-1.4,"tp":-2.17},"TCU":{"n":155,"sp":-0.54,"tp":0.15},"FSU":{"n":154,"sp":-2.87,"tp":-0.07},"GAST":{"n":140,"sp":0.55,"tp":-1.0},"APP":{"n":132,"sp":1.53,"tp":-0.61},"GASO":{"n":132,"sp":2.34,"tp":-1.56},"ODU":{"n":123,"sp":0.06,"tp":-0.26},"CLT":{"n":116,"sp":4.15,"tp":-0.55},"CCU":{"n":98,"sp":3.69,"tp":-2.67},"LIB":{"n":84,"sp":2.82,"tp":-0.31},"JMU":{"n":44,"sp":-1.4,"tp":-2.5},"JVST":{"n":36,"sp":0.44,"tp":0.39},"SHSU":{"n":35,"sp":3.31,"tp":-2.53}}};
-  const injuryData={"_asof":"2026-09-28T06:19:02Z","_leagues":{"nfl":{"teams":32,"entries":267},"cfb":{"teams":1,"entries":1},"nba":{"teams":27,"entries":70},"mlb":{"teams":13,"entries":16}},"nfl":{"ARI":[{"p":"Andrew Billings","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Carson Beck","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dadrion Taylor-Demerson","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Josh Fryar","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Reggie Virgil","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Will Johnson","s":"Injured Reserve","d":"2026-09-23","det":"Neck"}],"ATL":[{"p":"Cooper Rush","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Ethan Onianwa","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Jack Strand","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Malcolm DeWalt IV","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Robert Longerbeam","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Samson Ebukam","s":"Out","d":"2026-09-23","det":"Hamstring"}],"BAL":[{"p":"Aeneas Peebles","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Carl Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Elijah Sarratt","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Joe Fagnano","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"K'Von Wallace","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ronnie Stanley","s":"Out","d":"2026-09-27","det":"Toe"}],"BUF":[{"p":"Ar'maj Reed-Adams","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"Jalon Kilgore","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jordan Hancock","s":"Injured Reserve","d":"2026-09-26","det":"Hamstring"},{"p":"Jude Bowry","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mike Danna","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Skyler Bell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"T.J. Sanders","s":"Out","d":"2026-09-27","det":""},{"p":"Christian Benford","s":"Questionable","d":"2026-09-27","det":"Toe"}],"CAR":[{"p":"Albert Reese IV","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Cam Jackson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Claudin Cherelus","s":"Injured Reserve","d":"2026-09-26","det":"Shoulder"},{"p":"Devin Lloyd","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Haynes King","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ja'Tavion Sanders","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jonathon Brooks","s":"Injured Reserve","d":"2026-09-23","det":"Abdomen"},{"p":"Nick Scott","s":"Out","d":"2026-09-27","det":"Ribs"},{"p":"Xavier Legette","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Damien Lewis","s":"Questionable","d":"2026-09-27","det":"Elbow"},{"p":"Jalen Coker","s":"Questionable","d":"2026-09-27","det":"Quadriceps"},{"p":"Mike Jackson","s":"Questionable","d":"2026-09-27","det":"Groin"}],"CHI":[{"p":"Anthony Johnson Jr.","s":"Out","d":"2026-09-28","det":"Undisclosed"},{"p":"Caleb Williams","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Noah Sewell","s":"Out","d":"2026-09-23","det":"Achilles"},{"p":"Shemar Turner","s":"Out","d":"2026-09-24","det":"Knee - ACL"}],"CIN":[{"p":"Andrei Iosivas","s":"Injured Reserve","d":"2026-09-26","det":"Thumb"},{"p":"B.J. Hill","s":"Out","d":"2026-09-27","det":"Achilles"},{"p":"Connor Lew","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Endries","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josh Newton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Landon Robinson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Myles Hinton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Colbie Young","s":"Questionable","d":"2026-09-27","det":"Knee"},{"p":"Jalen Davis","s":"Questionable","d":"2026-09-27","det":"Hamstring"}],"CLE":[{"p":"Justin Jefferson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Parker Brailsford","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Taylen Green","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Teven Jenkins","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Tyson Campbell","s":"Out","d":"2026-09-27","det":"Hip"}],"DAL":[{"p":"Ajani Cornelius","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Camden Brown","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Cobie Durant","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"DeMarvion Overshown","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Emari Demercado","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Malik Hooker","s":"Out","d":"2026-09-27","det":"Forearm"},{"p":"P.J. Locke","s":"Injured Reserve","d":"2026-09-26","det":"Foot"},{"p":"Jalen Thompson","s":"Questionable","d":"2026-09-27","det":"Hamstring"}],"DEN":[{"p":"Dallen Bentley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jonah Coleman","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Kage Casey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Lil'Jordan Humphrey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Marvin Mims Jr.","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Sai'vion Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Sam Ehlinger","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyler Onyedim","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"DET":[{"p":"Ahmed Hassanein","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Avonte Maddox","s":"Injured Reserve","d":"2026-09-23","det":"Foot"},{"p":"Ben Bartch","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Bishop Fitzgerald","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Devin White","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mekhi Wingo","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Thomas Harper","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Tyler Conklin","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"GB":[{"p":"Aaron Banks","s":"Out","d":"2026-09-24","det":"Toe"},{"p":"Anthony Campbell","s":"Out","d":"2026-09-24","det":"Ankle"},{"p":"Jayden Reed","s":"Out","d":"2026-09-24","det":"Neck"},{"p":"Zach Bako-Bewele","s":"Out","d":"2026-09-24","det":"Knee"},{"p":"Edgerrin Cooper","s":"Questionable","d":"2026-09-25","det":"Head"},{"p":"Jacob Monk","s":"Questionable","d":"2026-09-25","det":"Undisclosed"}],"HOU":[{"p":"Brevin Jordan","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Collin Wright","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ed Ingram","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Henry To'oTo'o","s":"Injured Reserve","d":"2026-09-16","det":"Shoulder"},{"p":"Jadeveon Clowney","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Jake Hummel","s":"Injured Reserve","d":"2026-09-26","det":"Groin"},{"p":"M.J. Stewart","s":"Out","d":"2026-09-24","det":"Knee"},{"p":"Nate Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nico Collins","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Mario Edwards Jr.","s":"Questionable","d":"2026-09-27","det":"Knee"}],"IND":[{"p":"Alec Pierce","s":"Injured Reserve","d":"2026-09-26","det":"Heel"},{"p":"Ashton Dulin","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"DJ Giddens","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalton Tucker","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Darius Slayton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"George Gumbs Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Micheal Clemons","s":"Injured Reserve","d":"2026-09-23","det":"Toe"},{"p":"Riley Leonard","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"JAX":[{"p":"Albert Regis","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"B.J. Green II","s":"Injured Reserve","d":"2026-09-17","det":"Elbow"},{"p":"CJ Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Daniel Faalele","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Kiser","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jalen Huskey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Wesley Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"KC":[{"p":"Chamarri Conner","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Diego Pounds","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Garrett Nussmeier","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Pyburn","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jared Wiley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josh Simmons","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Tyreke Smith","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"LV":[{"p":"Aidan O'Connell","s":"Out","d":"2026-09-26","det":"Personal"},{"p":"Bryce Cabeldue","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalton Johnson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Darrell Luter Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"JJ Pegues","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Treydan Stukes","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Jack Bech","s":"Doubtful","d":"2026-09-27","det":"Forearm"},{"p":"Jackson Powers-Johnson","s":"Questionable","d":"2026-09-27","det":"Groin"}],"LAC":[{"p":"Alex Harkey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brenen Thompson","s":"Out","d":"2026-09-27","det":"Quadriceps"},{"p":"Charlie Kolar","s":"Out","d":"2026-09-27","det":"Forearm"},{"p":"DJ Uiagalelei","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalvin Tomlinson","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"David Njoku","s":"Injured Reserve","d":"2026-09-23","det":"Lower Leg"},{"p":"Elijah Molden","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Kayode Awosika","s":"Out","d":"2026-09-27","det":"Lower Leg"},{"p":"Trey Pipkins III","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Donte Jackson","s":"Questionable","d":"2026-09-27","det":"Concussion"}],"LAR":[{"p":"Bill Murray","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"CJ Daniels","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kamren Kinchens","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Maximus Pulley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Myles Garrett","s":"Injured Reserve","d":"2026-09-27","det":"Knee"},{"p":"Puka Nacua","s":"Out","d":"2026-09-27","det":"Hip"},{"p":"Ronnie Rivers","s":"Injured Reserve","d":"2026-09-24","det":"Calf"},{"p":"Tutu Atwell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ty Simpson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylen Watson","s":"Questionable","d":"2026-09-28","det":"Shoulder"}],"MIA":[{"p":"Brady Cook","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Caleb Douglas","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"Chukwuebuka Godrick","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"DJ Campbell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylen Wright","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Marcellas Dial Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Robert Beal Jr.","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Ronnie Harrison Jr.","s":"Injured Reserve","d":"2026-09-19","det":"Hamstring"},{"p":"De'Von Achane","s":"Doubtful","d":"2026-09-27","det":"Knee"}],"MIN":[{"p":"Brett Thorson","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Caleb Tiernan","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Elijah Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"J.J. McCarthy","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jakobe Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nick Samac","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Tavierre Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Zemaiah Vaughn","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Charles Demmings","s":"Questionable","d":"2026-09-27","det":"Hamstring"},{"p":"Josh Oliver","s":"Questionable","d":"2026-09-27","det":"Arm"},{"p":"Justin Jefferson","s":"Questionable","d":"2026-09-28","det":"Ankle"}],"NE":[{"p":"Behren Morton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brenden Schooler","s":"Out","d":"2026-09-24","det":"Back"},{"p":"Craig Woodson","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Dametrious Crownover","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dell Pettus","s":"Injured Reserve","d":"2026-09-24","det":"Ankle"},{"p":"Dre'Mont Jones","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Eli Raridon","s":"Out","d":"2026-09-27","det":"Thigh"},{"p":"Leonard Taylor III","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mike Onwenu","s":"Injured Reserve","d":"2026-09-23","det":"Ankle"},{"p":"Quintayvious Hutchins","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Christian Barmore","s":"Questionable","d":"2026-09-27","det":"Shoulder"},{"p":"Greg Van Roten","s":"Questionable","d":"2026-09-27","det":"Thigh"}],"NO":[{"p":"Barion Brown","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Christen Miller","s":"Out","d":"2026-09-27","det":"Toe"},{"p":"John Ridgeway III","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kelvin Banks Jr.","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Martin Emerson Jr.","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Treyton Welch","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyree Wilson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Zach Wilson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Anfernee Jennings","s":"Questionable","d":"2026-09-27","det":"Knee"},{"p":"Pete Werner","s":"Questionable","d":"2026-09-27","det":"Neck"},{"p":"Travis Etienne Jr.","s":"Questionable","d":"2026-09-28","det":"Hamstring"}],"NYG":[{"p":"Bobby Jamison-Travis","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Deonte Banks","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Devin Singletary","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"J.C. Davis","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaxson Dart","s":"Injured Reserve","d":"2026-09-24","det":"Knee - Meniscus"},{"p":"Josh Tupou","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Thomas Fidone II","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyler Nubin","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Brian Burns","s":"Questionable","d":"2026-09-27","det":"Knee"}],"NYJ":[{"p":"Adonai Mitchell","s":"Out","d":"2026-09-27","det":"Finger"},{"p":"Arian Smith","s":"Injured Reserve","d":"2026-09-23","det":"Knee - ACL"},{"p":"Blake Grupe","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"David Onyemata","s":"Injured Reserve","d":"2026-09-23","det":"Groin"},{"p":"Kene Nwangwu","s":"Out","d":"2026-09-26","det":"Back"},{"p":"Kiko Mauigoa","s":"Out","d":"2026-09-27","det":"Quadriceps"},{"p":"Marcelino McCrary-Ball","s":"Injured Reserve","d":"2026-09-23","det":"Ankle"},{"p":"Mason Taylor","s":"Out","d":"2026-09-27","det":"Thumb"},{"p":"Minkah Fitzpatrick","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Nahshon Wright","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Breece Hall","s":"Questionable","d":"2026-09-27","det":"Thigh"},{"p":"Dylan Parham","s":"Questionable","d":"2026-09-27","det":"Knee"}],"PHI":[{"p":"Dallas Goedert","s":"Out","d":"2026-09-26","det":"Knee - MCL"},{"p":"Fred Johnson","s":"Out","d":"2026-09-26","det":"Knee"},{"p":"Hollywood Brown","s":"Out","d":"2026-09-26","det":"Ankle"},{"p":"Jonathan Greenard","s":"Questionable","d":"2026-09-26","det":"Pectoral"}],"PIT":[{"p":"Drew Allar","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Eli Heidenreich","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Gabriel Rubio","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Gennings Dunker","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Joey Porter Jr.","s":"Out","d":"2026-09-27","det":"Undisclosed"},{"p":"Kevin Jobity Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rico Dowdle","s":"Out","d":"2026-09-27","det":"Toe"},{"p":"Will Howard","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandin Echols","s":"Questionable","d":"2026-09-27","det":"Head"}],"SF":[{"p":"C.J. West","s":"Injured Reserve","d":"2026-09-23","det":"Undisclosed"},{"p":"Demarcus Robinson","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Enrique Cruz Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ephesians Prysock","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"James Thompson Jr.","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"Kurtis Rourke","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nick Bosa","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Romello Height","s":"Out","d":"2026-09-27","det":"Hand"},{"p":"Tatum Bethune","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dre Greenlaw","s":"Questionable","d":"2026-09-27","det":"Quadriceps"},{"p":"Gracen Halton","s":"Questionable","d":"2026-09-27","det":"Ankle"},{"p":"Mike Evans","s":"Questionable","d":"2026-09-27","det":"Ribs"},{"p":"Trent Williams","s":"Questionable","d":"2026-09-27","det":"Neck"}],"SEA":[{"p":"Anthony Bradford","s":"Injured Reserve","d":"2026-09-24","det":"Knee"},{"p":"Avery Smith","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandon Pili","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Connor O'Toole","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jalen Milroe","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Julian Love","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Montorie Foster Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ty Okada","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Zach Charbonnet","s":"Out","d":"2026-09-25","det":"Knee - ACL"}],"TB":[{"p":"Ayden Garnes","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Billy Schrauth","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josiah Trotter","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Luke Haggard","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rakeem Nunez-Roches","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rueben Bain Jr.","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Baker Mayfield","s":"Questionable","d":"2026-09-27","det":"Thumb"},{"p":"Jalen McMillan","s":"Questionable","d":"2026-09-27","det":"Knee"}],"TEN":[{"p":"Atonio Mafi","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandon Crenshaw-Dickson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jackie Marshall","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylon Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kylen Granson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Michael Carter","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Fernando Carmona","s":"Questionable","d":"2026-09-28","det":"Ankle"}],"WSH":[{"p":"Chig Okonkwo","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Frankie Luvu","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Javontae Jean-Baptiste","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jayden Daniels","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"Nick Cross","s":"Out","d":"2026-09-27","det":"Illness"},{"p":"Sam Cosmi","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Leo Chenal","s":"Questionable","d":"2026-09-27","det":"Neck"}]},"cfb":{"FLA":[{"p":"Kahleil Jackson","s":"Out","d":"2020-11-21","det":""}]},"nba":{"ATL":[{"p":"Henri Veesaar","s":"Out","d":"2026-09-21","det":"Knee"},{"p":"Keshon Gilbert","s":"Day-To-Day","d":"2026-07-18","det":"Hip"},{"p":"Mouhamed Gueye","s":"Day-To-Day","d":"2026-07-19","det":"Foot"},{"p":"RayJ Dennis","s":"Day-To-Day","d":"2026-07-18","det":"Achilles"}],"BKN":[{"p":"Nolan Traore","s":"Day-To-Day","d":"2026-06-30","det":"Knee"}],"CHA":[{"p":"Brandon Miller","s":"Day-To-Day","d":"2026-08-25","det":"Shoulder"},{"p":"Grant Williams","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"},{"p":"Kon Knueppel","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"},{"p":"PJ Hall","s":"Day-To-Day","d":"2026-06-16","det":"Ankle"},{"p":"Rob Dillingham","s":"Day-To-Day","d":"2026-09-26","det":"Wrist"}],"CHI":[{"p":"Dailyn Swain","s":"Day-To-Day","d":"2026-07-17","det":"Wrist"},{"p":"Josh Giddey","s":"Day-To-Day","d":"2026-06-24","det":"Ankle"},{"p":"Zach Collins","s":"Day-To-Day","d":"2026-07-01","det":"Toe"}],"CLE":[{"p":"Peyton Watson","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"}],"DAL":[{"p":"Dereck Lively II","s":"Day-To-Day","d":"2026-09-25","det":"Foot"},{"p":"Kyrie Irving","s":"Day-To-Day","d":"2026-09-25","det":"Knee"},{"p":"Santi Aldama","s":"Day-To-Day","d":"2026-09-26","det":"Knee"}],"DEN":[{"p":"Trevon Brazile","s":"Day-To-Day","d":"2026-07-19","det":"Undisclosed"}],"GS":[{"p":"Jimmy Butler III","s":"Out","d":"2026-08-24","det":"Knee"},{"p":"Moses Moody","s":"Out","d":"2026-03-24","det":"Knee"}],"HOU":[{"p":"Steven Adams","s":"Day-To-Day","d":"2026-09-27","det":"Ankle"}],"IND":[{"p":"Johnny Furphy","s":"Out","d":"2026-02-09","det":"Knee"}],"LAC":[{"p":"Jordan Miller","s":"Out","d":"2026-08-26","det":"Shoulder"},{"p":"Bradley Beal","s":"Day-To-Day","d":"2026-08-14","det":"Hip"},{"p":"Brandon Ingram","s":"Day-To-Day","d":"2026-09-23","det":"Heel"},{"p":"Yanic Konan Niederhauser","s":"Day-To-Day","d":"2026-06-16","det":"Foot"}],"MEM":[{"p":"Richie Saunders","s":"Out","d":"2026-06-25","det":"Knee"},{"p":"Jaylen Wells","s":"Day-To-Day","d":"2026-06-24","det":"Toe"},{"p":"Karim Lopez","s":"Day-To-Day","d":"2026-07-20","det":"Undisclosed"},{"p":"Scotty Pippen Jr.","s":"Day-To-Day","d":"2026-07-27","det":"Toe"},{"p":"Walter Clayton Jr.","s":"Day-To-Day","d":"2026-07-20","det":"Knee"},{"p":"Zach Edey","s":"Day-To-Day","d":"2026-06-24","det":"Ankle"}],"MIA":[{"p":"Bam Adebayo","s":"Day-To-Day","d":"2026-07-28","det":"Back"},{"p":"Giannis Antetokounmpo","s":"Day-To-Day","d":"2026-09-02","det":"Knee"},{"p":"Myron Gardner","s":"Day-To-Day","d":"2026-07-08","det":"Ankle"},{"p":"Ryan Conwell","s":"Day-To-Day","d":"2026-07-15","det":"Hip"}],"MIL":[{"p":"Kevin Porter Jr.","s":"Day-To-Day","d":"2026-06-26","det":"Knee"}],"MIN":[{"p":"Donte DiVincenzo","s":"Out","d":"2026-04-26","det":"Achilles"}],"NO":[{"p":"Bryce McGowens","s":"Day-To-Day","d":"2026-06-16","det":"Toe"}],"NY":[{"p":"Mohamed Diawara","s":"Day-To-Day","d":"2026-07-18","det":"Finger"}],"OKC":[{"p":"Ajay Mitchell","s":"Day-To-Day","d":"2026-09-24","det":"Calf"},{"p":"Isaiah Hartenstein","s":"Day-To-Day","d":"2026-09-07","det":"Ankle"},{"p":"Nikola Topic","s":"Day-To-Day","d":"2026-09-24","det":"Back"},{"p":"Otega Oweh","s":"Day-To-Day","d":"2026-07-19","det":"Lower Leg"},{"p":"Thomas Sorber","s":"Day-To-Day","d":"2026-09-24","det":"Knee"}],"ORL":[{"p":"Franz Wagner","s":"Day-To-Day","d":"2026-09-02","det":"Calf"},{"p":"Izaiyah Nelson","s":"Day-To-Day","d":"2026-07-13","det":"Ankle"},{"p":"Jonathan Isaac","s":"Day-To-Day","d":"2026-07-01","det":"Knee"}],"PHI":[{"p":"Adem Bona","s":"Day-To-Day","d":"2026-09-17","det":"Foot"},{"p":"Kentavious Caldwell-Pope","s":"Day-To-Day","d":"2026-07-25","det":"Finger"}],"PHX":[{"p":"Mark Williams","s":"Out","d":"2026-09-11","det":"Shoulder"},{"p":"CJ Huntley","s":"Day-To-Day","d":"2026-07-19","det":"Hamstring"},{"p":"Duop Reath","s":"Day-To-Day","d":"2026-09-17","det":"Foot"}],"POR":[{"p":"Shaedon Sharpe","s":"Out","d":"2026-08-24","det":"Knee"},{"p":"Ja Morant","s":"Day-To-Day","d":"2026-09-04","det":"Elbow"}],"SAC":[{"p":"De'Andre Hunter","s":"Day-To-Day","d":"2026-06-25","det":"Eye"},{"p":"Keegan Murray","s":"Day-To-Day","d":"2026-07-31","det":"Ankle"},{"p":"Zach LaVine","s":"Day-To-Day","d":"2026-06-29","det":"Hand"}],"SA":[{"p":"Jayden Quaintance","s":"Out","d":"2026-07-19","det":"Knee"},{"p":"David Jones Garcia","s":"Day-To-Day","d":"2026-07-22","det":"Ankle"}],"TOR":[{"p":"Alijah Martin","s":"Day-To-Day","d":"2026-07-19","det":"Knee"},{"p":"Chucky Hepburn","s":"Day-To-Day","d":"2026-07-19","det":"Knee"},{"p":"Collin Murray-Boyles","s":"Day-To-Day","d":"2026-07-19","det":"Finger"},{"p":"Nate Bittle","s":"Day-To-Day","d":"2026-09-10","det":"Lower Leg"}],"UTAH":[{"p":"Jaren Jackson Jr.","s":"Day-To-Day","d":"2026-09-10","det":"Knee"},{"p":"Trey Alexander","s":"Day-To-Day","d":"2026-07-17","det":"Ribs"}],"WSH":[{"p":"Jamir Watkins","s":"Out","d":"2026-07-30","det":"Knee"},{"p":"Alex Sarr","s":"Day-To-Day","d":"2026-09-24","det":"Foot"},{"p":"Anthony Davis","s":"Day-To-Day","d":"2026-09-24","det":"Finger"},{"p":"Trae Young","s":"Day-To-Day","d":"2026-09-21","det":"Quadriceps"}]},"mlb":{"ARI":[{"p":"Gabriel Moreno","s":"Day-To-Day","d":"2026-09-27","det":"Hamstring"}],"ATH":[{"p":"Alika Williams","s":"Day-To-Day","d":"2026-09-26","det":"Upper Body"}],"ATL":[{"p":"Jurickson Profar","s":"Suspended","d":"2026-05-08","det":"Suspension"}],"CHC":[{"p":"Kevin Gausman","s":"Day-To-Day","d":"2026-09-24","det":"Shoulder"}],"CHW":[{"p":"Chase Meidroth","s":"Day-To-Day","d":"2026-09-26","det":"Hamstring"}],"MIA":[{"p":"Kyle Stowers","s":"Day-To-Day","d":"2026-09-27","det":"Abdomen"},{"p":"Xavier Edwards","s":"Day-To-Day","d":"2026-09-26","det":"Thumb"}],"MIL":[{"p":"Joey Ortiz","s":"Day-To-Day","d":"2026-09-27","det":"Knee"}],"PHI":[{"p":"Jonathan Bowlan","s":"Day-To-Day","d":"2026-09-18","det":"Groin"},{"p":"Luis Arraez","s":"Day-To-Day","d":"2026-09-27","det":"Ankle"}],"PIT":[{"p":"Oneil Cruz","s":"Day-To-Day","d":"2026-09-27","det":"Knee"}],"SF":[{"p":"Landen Roupp","s":"Out","d":"2026-09-22","det":"Rest"}],"SEA":[{"p":"Kade Anderson","s":"Day-To-Day","d":"2026-09-27","det":"Forearm"}],"STL":[{"p":"Masyn Winn","s":"Out","d":"2026-09-26","det":"Thumb"}],"TB":[{"p":"Chandler Simpson","s":"Day-To-Day","d":"2026-09-26","det":"Foot"},{"p":"Griffin Jax","s":"Day-To-Day","d":"2026-09-27","det":"Back"}]}};
+  const injuryData={"_asof":"2026-09-28T06:43:58Z","_leagues":{"nfl":{"teams":32,"entries":267},"cfb":{"teams":1,"entries":1},"nba":{"teams":27,"entries":70},"mlb":{"teams":13,"entries":16}},"nfl":{"ARI":[{"p":"Andrew Billings","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Carson Beck","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dadrion Taylor-Demerson","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Josh Fryar","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Reggie Virgil","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Will Johnson","s":"Injured Reserve","d":"2026-09-23","det":"Neck"}],"ATL":[{"p":"Cooper Rush","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Ethan Onianwa","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Jack Strand","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Malcolm DeWalt IV","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Robert Longerbeam","s":"Out","d":"2026-09-24","det":"Coach's Decision"},{"p":"Samson Ebukam","s":"Out","d":"2026-09-23","det":"Hamstring"}],"BAL":[{"p":"Aeneas Peebles","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Carl Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Elijah Sarratt","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Joe Fagnano","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"K'Von Wallace","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ronnie Stanley","s":"Out","d":"2026-09-27","det":"Toe"}],"BUF":[{"p":"Ar'maj Reed-Adams","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"Jalon Kilgore","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jordan Hancock","s":"Injured Reserve","d":"2026-09-26","det":"Hamstring"},{"p":"Jude Bowry","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mike Danna","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Skyler Bell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"T.J. Sanders","s":"Out","d":"2026-09-27","det":""},{"p":"Christian Benford","s":"Questionable","d":"2026-09-27","det":"Toe"}],"CAR":[{"p":"Albert Reese IV","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Cam Jackson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Claudin Cherelus","s":"Injured Reserve","d":"2026-09-26","det":"Shoulder"},{"p":"Devin Lloyd","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Haynes King","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ja'Tavion Sanders","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jonathon Brooks","s":"Injured Reserve","d":"2026-09-23","det":"Abdomen"},{"p":"Nick Scott","s":"Out","d":"2026-09-27","det":"Ribs"},{"p":"Xavier Legette","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Damien Lewis","s":"Questionable","d":"2026-09-27","det":"Elbow"},{"p":"Jalen Coker","s":"Questionable","d":"2026-09-27","det":"Quadriceps"},{"p":"Mike Jackson","s":"Questionable","d":"2026-09-27","det":"Groin"}],"CHI":[{"p":"Anthony Johnson Jr.","s":"Out","d":"2026-09-28","det":"Undisclosed"},{"p":"Caleb Williams","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Noah Sewell","s":"Out","d":"2026-09-23","det":"Achilles"},{"p":"Shemar Turner","s":"Out","d":"2026-09-24","det":"Knee - ACL"}],"CIN":[{"p":"Andrei Iosivas","s":"Injured Reserve","d":"2026-09-26","det":"Thumb"},{"p":"B.J. Hill","s":"Out","d":"2026-09-27","det":"Achilles"},{"p":"Connor Lew","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Endries","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josh Newton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Landon Robinson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Myles Hinton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Colbie Young","s":"Questionable","d":"2026-09-27","det":"Knee"},{"p":"Jalen Davis","s":"Questionable","d":"2026-09-27","det":"Hamstring"}],"CLE":[{"p":"Justin Jefferson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Parker Brailsford","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Taylen Green","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Teven Jenkins","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Tyson Campbell","s":"Out","d":"2026-09-27","det":"Hip"}],"DAL":[{"p":"Ajani Cornelius","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Camden Brown","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Cobie Durant","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"DeMarvion Overshown","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Emari Demercado","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Malik Hooker","s":"Out","d":"2026-09-27","det":"Forearm"},{"p":"P.J. Locke","s":"Injured Reserve","d":"2026-09-26","det":"Foot"},{"p":"Jalen Thompson","s":"Questionable","d":"2026-09-27","det":"Hamstring"}],"DEN":[{"p":"Dallen Bentley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jonah Coleman","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Kage Casey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Lil'Jordan Humphrey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Marvin Mims Jr.","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Sai'vion Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Sam Ehlinger","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyler Onyedim","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"DET":[{"p":"Ahmed Hassanein","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Avonte Maddox","s":"Injured Reserve","d":"2026-09-23","det":"Foot"},{"p":"Ben Bartch","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Bishop Fitzgerald","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Devin White","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mekhi Wingo","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Thomas Harper","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Tyler Conklin","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"GB":[{"p":"Aaron Banks","s":"Out","d":"2026-09-24","det":"Toe"},{"p":"Anthony Campbell","s":"Out","d":"2026-09-24","det":"Ankle"},{"p":"Jayden Reed","s":"Out","d":"2026-09-24","det":"Neck"},{"p":"Zach Bako-Bewele","s":"Out","d":"2026-09-24","det":"Knee"},{"p":"Edgerrin Cooper","s":"Questionable","d":"2026-09-25","det":"Head"},{"p":"Jacob Monk","s":"Questionable","d":"2026-09-25","det":"Undisclosed"}],"HOU":[{"p":"Brevin Jordan","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Collin Wright","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ed Ingram","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Henry To'oTo'o","s":"Injured Reserve","d":"2026-09-16","det":"Shoulder"},{"p":"Jadeveon Clowney","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Jake Hummel","s":"Injured Reserve","d":"2026-09-26","det":"Groin"},{"p":"M.J. Stewart","s":"Out","d":"2026-09-24","det":"Knee"},{"p":"Nate Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nico Collins","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Mario Edwards Jr.","s":"Questionable","d":"2026-09-27","det":"Knee"}],"IND":[{"p":"Alec Pierce","s":"Injured Reserve","d":"2026-09-26","det":"Heel"},{"p":"Ashton Dulin","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"DJ Giddens","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalton Tucker","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Darius Slayton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"George Gumbs Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Micheal Clemons","s":"Injured Reserve","d":"2026-09-23","det":"Toe"},{"p":"Riley Leonard","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"JAX":[{"p":"Albert Regis","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"B.J. Green II","s":"Injured Reserve","d":"2026-09-17","det":"Elbow"},{"p":"CJ Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Daniel Faalele","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Kiser","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jalen Huskey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Wesley Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"KC":[{"p":"Chamarri Conner","s":"Out","d":"2026-09-27","det":"Knee"},{"p":"Diego Pounds","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Garrett Nussmeier","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jack Pyburn","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jared Wiley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josh Simmons","s":"Out","d":"2026-09-27","det":"Back"},{"p":"Tyreke Smith","s":"Out","d":"2026-09-27","det":"Coach's Decision"}],"LV":[{"p":"Aidan O'Connell","s":"Out","d":"2026-09-26","det":"Personal"},{"p":"Bryce Cabeldue","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalton Johnson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Darrell Luter Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"JJ Pegues","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Treydan Stukes","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Jack Bech","s":"Doubtful","d":"2026-09-27","det":"Forearm"},{"p":"Jackson Powers-Johnson","s":"Questionable","d":"2026-09-27","det":"Groin"}],"LAC":[{"p":"Alex Harkey","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brenen Thompson","s":"Out","d":"2026-09-27","det":"Quadriceps"},{"p":"Charlie Kolar","s":"Out","d":"2026-09-27","det":"Forearm"},{"p":"DJ Uiagalelei","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dalvin Tomlinson","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"David Njoku","s":"Injured Reserve","d":"2026-09-23","det":"Lower Leg"},{"p":"Elijah Molden","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Kayode Awosika","s":"Out","d":"2026-09-27","det":"Lower Leg"},{"p":"Trey Pipkins III","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Donte Jackson","s":"Questionable","d":"2026-09-27","det":"Concussion"}],"LAR":[{"p":"Bill Murray","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"CJ Daniels","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kamren Kinchens","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Maximus Pulley","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Myles Garrett","s":"Injured Reserve","d":"2026-09-27","det":"Knee"},{"p":"Puka Nacua","s":"Out","d":"2026-09-27","det":"Hip"},{"p":"Ronnie Rivers","s":"Injured Reserve","d":"2026-09-24","det":"Calf"},{"p":"Tutu Atwell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ty Simpson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylen Watson","s":"Questionable","d":"2026-09-28","det":"Shoulder"}],"MIA":[{"p":"Brady Cook","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Caleb Douglas","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"Chukwuebuka Godrick","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"DJ Campbell","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylen Wright","s":"Out","d":"2026-09-27","det":"Foot"},{"p":"Marcellas Dial Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Robert Beal Jr.","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Ronnie Harrison Jr.","s":"Injured Reserve","d":"2026-09-19","det":"Hamstring"},{"p":"De'Von Achane","s":"Doubtful","d":"2026-09-27","det":"Knee"}],"MIN":[{"p":"Brett Thorson","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Caleb Tiernan","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Elijah Williams","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"J.J. McCarthy","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jakobe Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nick Samac","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Tavierre Thomas","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Zemaiah Vaughn","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Charles Demmings","s":"Questionable","d":"2026-09-27","det":"Hamstring"},{"p":"Josh Oliver","s":"Questionable","d":"2026-09-27","det":"Arm"},{"p":"Justin Jefferson","s":"Questionable","d":"2026-09-28","det":"Ankle"}],"NE":[{"p":"Behren Morton","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brenden Schooler","s":"Out","d":"2026-09-24","det":"Back"},{"p":"Craig Woodson","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Dametrious Crownover","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dell Pettus","s":"Injured Reserve","d":"2026-09-24","det":"Ankle"},{"p":"Dre'Mont Jones","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Eli Raridon","s":"Out","d":"2026-09-27","det":"Thigh"},{"p":"Leonard Taylor III","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Mike Onwenu","s":"Injured Reserve","d":"2026-09-23","det":"Ankle"},{"p":"Quintayvious Hutchins","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Christian Barmore","s":"Questionable","d":"2026-09-27","det":"Shoulder"},{"p":"Greg Van Roten","s":"Questionable","d":"2026-09-27","det":"Thigh"}],"NO":[{"p":"Barion Brown","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Christen Miller","s":"Out","d":"2026-09-27","det":"Toe"},{"p":"John Ridgeway III","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kelvin Banks Jr.","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Martin Emerson Jr.","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Treyton Welch","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyree Wilson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Zach Wilson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Anfernee Jennings","s":"Questionable","d":"2026-09-27","det":"Knee"},{"p":"Pete Werner","s":"Questionable","d":"2026-09-27","det":"Neck"},{"p":"Travis Etienne Jr.","s":"Questionable","d":"2026-09-28","det":"Hamstring"}],"NYG":[{"p":"Bobby Jamison-Travis","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Deonte Banks","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Devin Singletary","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"J.C. Davis","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaxson Dart","s":"Injured Reserve","d":"2026-09-24","det":"Knee - Meniscus"},{"p":"Josh Tupou","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Thomas Fidone II","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Tyler Nubin","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Brian Burns","s":"Questionable","d":"2026-09-27","det":"Knee"}],"NYJ":[{"p":"Adonai Mitchell","s":"Out","d":"2026-09-27","det":"Finger"},{"p":"Arian Smith","s":"Injured Reserve","d":"2026-09-23","det":"Knee - ACL"},{"p":"Blake Grupe","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"David Onyemata","s":"Injured Reserve","d":"2026-09-23","det":"Groin"},{"p":"Kene Nwangwu","s":"Out","d":"2026-09-26","det":"Back"},{"p":"Kiko Mauigoa","s":"Out","d":"2026-09-27","det":"Quadriceps"},{"p":"Marcelino McCrary-Ball","s":"Injured Reserve","d":"2026-09-23","det":"Ankle"},{"p":"Mason Taylor","s":"Out","d":"2026-09-27","det":"Thumb"},{"p":"Minkah Fitzpatrick","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Nahshon Wright","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Breece Hall","s":"Questionable","d":"2026-09-27","det":"Thigh"},{"p":"Dylan Parham","s":"Questionable","d":"2026-09-27","det":"Knee"}],"PHI":[{"p":"Dallas Goedert","s":"Out","d":"2026-09-26","det":"Knee - MCL"},{"p":"Fred Johnson","s":"Out","d":"2026-09-26","det":"Knee"},{"p":"Hollywood Brown","s":"Out","d":"2026-09-26","det":"Ankle"},{"p":"Jonathan Greenard","s":"Questionable","d":"2026-09-26","det":"Pectoral"}],"PIT":[{"p":"Drew Allar","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Eli Heidenreich","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Gabriel Rubio","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Gennings Dunker","s":"Injured Reserve","d":"2026-09-26","det":"Knee"},{"p":"Joey Porter Jr.","s":"Out","d":"2026-09-27","det":"Undisclosed"},{"p":"Kevin Jobity Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rico Dowdle","s":"Out","d":"2026-09-27","det":"Toe"},{"p":"Will Howard","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandin Echols","s":"Questionable","d":"2026-09-27","det":"Head"}],"SF":[{"p":"C.J. West","s":"Injured Reserve","d":"2026-09-23","det":"Undisclosed"},{"p":"Demarcus Robinson","s":"Injured Reserve","d":"2026-09-26","det":"Ankle"},{"p":"Enrique Cruz Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ephesians Prysock","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"James Thompson Jr.","s":"Out","d":"2026-09-27","det":"Ankle"},{"p":"Kurtis Rourke","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Nick Bosa","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Romello Height","s":"Out","d":"2026-09-27","det":"Hand"},{"p":"Tatum Bethune","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Dre Greenlaw","s":"Questionable","d":"2026-09-27","det":"Quadriceps"},{"p":"Gracen Halton","s":"Questionable","d":"2026-09-27","det":"Ankle"},{"p":"Mike Evans","s":"Questionable","d":"2026-09-27","det":"Ribs"},{"p":"Trent Williams","s":"Questionable","d":"2026-09-27","det":"Neck"}],"SEA":[{"p":"Anthony Bradford","s":"Injured Reserve","d":"2026-09-24","det":"Knee"},{"p":"Avery Smith","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandon Pili","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Connor O'Toole","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jalen Milroe","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Julian Love","s":"Out","d":"2026-09-27","det":"Calf"},{"p":"Montorie Foster Jr.","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Ty Okada","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Zach Charbonnet","s":"Out","d":"2026-09-25","det":"Knee - ACL"}],"TB":[{"p":"Ayden Garnes","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Billy Schrauth","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Josiah Trotter","s":"Out","d":"2026-09-27","det":"Shoulder"},{"p":"Luke Haggard","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rakeem Nunez-Roches","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Rueben Bain Jr.","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Baker Mayfield","s":"Questionable","d":"2026-09-27","det":"Thumb"},{"p":"Jalen McMillan","s":"Questionable","d":"2026-09-27","det":"Knee"}],"TEN":[{"p":"Atonio Mafi","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Brandon Crenshaw-Dickson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jackie Marshall","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jaylon Jones","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Kylen Granson","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Michael Carter","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Fernando Carmona","s":"Questionable","d":"2026-09-28","det":"Ankle"}],"WSH":[{"p":"Chig Okonkwo","s":"Out","d":"2026-09-27","det":"Hamstring"},{"p":"Frankie Luvu","s":"Out","d":"2026-09-27","det":"Groin"},{"p":"Javontae Jean-Baptiste","s":"Out","d":"2026-09-27","det":"Coach's Decision"},{"p":"Jayden Daniels","s":"Out","d":"2026-09-27","det":"Elbow"},{"p":"Nick Cross","s":"Out","d":"2026-09-27","det":"Illness"},{"p":"Sam Cosmi","s":"Out","d":"2026-09-27","det":"Concussion"},{"p":"Leo Chenal","s":"Questionable","d":"2026-09-27","det":"Neck"}]},"cfb":{"FLA":[{"p":"Kahleil Jackson","s":"Out","d":"2020-11-21","det":""}]},"nba":{"ATL":[{"p":"Henri Veesaar","s":"Out","d":"2026-09-21","det":"Knee"},{"p":"Keshon Gilbert","s":"Day-To-Day","d":"2026-07-18","det":"Hip"},{"p":"Mouhamed Gueye","s":"Day-To-Day","d":"2026-07-19","det":"Foot"},{"p":"RayJ Dennis","s":"Day-To-Day","d":"2026-07-18","det":"Achilles"}],"BKN":[{"p":"Nolan Traore","s":"Day-To-Day","d":"2026-06-30","det":"Knee"}],"CHA":[{"p":"Brandon Miller","s":"Day-To-Day","d":"2026-08-25","det":"Shoulder"},{"p":"Grant Williams","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"},{"p":"Kon Knueppel","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"},{"p":"PJ Hall","s":"Day-To-Day","d":"2026-06-16","det":"Ankle"},{"p":"Rob Dillingham","s":"Day-To-Day","d":"2026-09-26","det":"Wrist"}],"CHI":[{"p":"Dailyn Swain","s":"Day-To-Day","d":"2026-07-17","det":"Wrist"},{"p":"Josh Giddey","s":"Day-To-Day","d":"2026-06-24","det":"Ankle"},{"p":"Zach Collins","s":"Day-To-Day","d":"2026-07-01","det":"Toe"}],"CLE":[{"p":"Peyton Watson","s":"Day-To-Day","d":"2026-09-25","det":"Hamstring"}],"DAL":[{"p":"Dereck Lively II","s":"Day-To-Day","d":"2026-09-25","det":"Foot"},{"p":"Kyrie Irving","s":"Day-To-Day","d":"2026-09-25","det":"Knee"},{"p":"Santi Aldama","s":"Day-To-Day","d":"2026-09-26","det":"Knee"}],"DEN":[{"p":"Trevon Brazile","s":"Day-To-Day","d":"2026-07-19","det":"Undisclosed"}],"GS":[{"p":"Jimmy Butler III","s":"Out","d":"2026-08-24","det":"Knee"},{"p":"Moses Moody","s":"Out","d":"2026-03-24","det":"Knee"}],"HOU":[{"p":"Steven Adams","s":"Day-To-Day","d":"2026-09-27","det":"Ankle"}],"IND":[{"p":"Johnny Furphy","s":"Out","d":"2026-02-09","det":"Knee"}],"LAC":[{"p":"Jordan Miller","s":"Out","d":"2026-08-26","det":"Shoulder"},{"p":"Bradley Beal","s":"Day-To-Day","d":"2026-08-14","det":"Hip"},{"p":"Brandon Ingram","s":"Day-To-Day","d":"2026-09-23","det":"Heel"},{"p":"Yanic Konan Niederhauser","s":"Day-To-Day","d":"2026-06-16","det":"Foot"}],"MEM":[{"p":"Richie Saunders","s":"Out","d":"2026-06-25","det":"Knee"},{"p":"Jaylen Wells","s":"Day-To-Day","d":"2026-06-24","det":"Toe"},{"p":"Karim Lopez","s":"Day-To-Day","d":"2026-07-20","det":"Undisclosed"},{"p":"Scotty Pippen Jr.","s":"Day-To-Day","d":"2026-07-27","det":"Toe"},{"p":"Walter Clayton Jr.","s":"Day-To-Day","d":"2026-07-20","det":"Knee"},{"p":"Zach Edey","s":"Day-To-Day","d":"2026-06-24","det":"Ankle"}],"MIA":[{"p":"Bam Adebayo","s":"Day-To-Day","d":"2026-07-28","det":"Back"},{"p":"Giannis Antetokounmpo","s":"Day-To-Day","d":"2026-09-02","det":"Knee"},{"p":"Myron Gardner","s":"Day-To-Day","d":"2026-07-08","det":"Ankle"},{"p":"Ryan Conwell","s":"Day-To-Day","d":"2026-07-15","det":"Hip"}],"MIL":[{"p":"Kevin Porter Jr.","s":"Day-To-Day","d":"2026-06-26","det":"Knee"}],"MIN":[{"p":"Donte DiVincenzo","s":"Out","d":"2026-04-26","det":"Achilles"}],"NO":[{"p":"Bryce McGowens","s":"Day-To-Day","d":"2026-06-16","det":"Toe"}],"NY":[{"p":"Mohamed Diawara","s":"Day-To-Day","d":"2026-07-18","det":"Finger"}],"OKC":[{"p":"Ajay Mitchell","s":"Day-To-Day","d":"2026-09-24","det":"Calf"},{"p":"Isaiah Hartenstein","s":"Day-To-Day","d":"2026-09-07","det":"Ankle"},{"p":"Nikola Topic","s":"Day-To-Day","d":"2026-09-24","det":"Back"},{"p":"Otega Oweh","s":"Day-To-Day","d":"2026-07-19","det":"Lower Leg"},{"p":"Thomas Sorber","s":"Day-To-Day","d":"2026-09-24","det":"Knee"}],"ORL":[{"p":"Franz Wagner","s":"Day-To-Day","d":"2026-09-02","det":"Calf"},{"p":"Izaiyah Nelson","s":"Day-To-Day","d":"2026-07-13","det":"Ankle"},{"p":"Jonathan Isaac","s":"Day-To-Day","d":"2026-07-01","det":"Knee"}],"PHI":[{"p":"Adem Bona","s":"Day-To-Day","d":"2026-09-17","det":"Foot"},{"p":"Kentavious Caldwell-Pope","s":"Day-To-Day","d":"2026-07-25","det":"Finger"}],"PHX":[{"p":"Mark Williams","s":"Out","d":"2026-09-11","det":"Shoulder"},{"p":"CJ Huntley","s":"Day-To-Day","d":"2026-07-19","det":"Hamstring"},{"p":"Duop Reath","s":"Day-To-Day","d":"2026-09-17","det":"Foot"}],"POR":[{"p":"Shaedon Sharpe","s":"Out","d":"2026-08-24","det":"Knee"},{"p":"Ja Morant","s":"Day-To-Day","d":"2026-09-04","det":"Elbow"}],"SAC":[{"p":"De'Andre Hunter","s":"Day-To-Day","d":"2026-06-25","det":"Eye"},{"p":"Keegan Murray","s":"Day-To-Day","d":"2026-07-31","det":"Ankle"},{"p":"Zach LaVine","s":"Day-To-Day","d":"2026-06-29","det":"Hand"}],"SA":[{"p":"Jayden Quaintance","s":"Out","d":"2026-07-19","det":"Knee"},{"p":"David Jones Garcia","s":"Day-To-Day","d":"2026-07-22","det":"Ankle"}],"TOR":[{"p":"Alijah Martin","s":"Day-To-Day","d":"2026-07-19","det":"Knee"},{"p":"Chucky Hepburn","s":"Day-To-Day","d":"2026-07-19","det":"Knee"},{"p":"Collin Murray-Boyles","s":"Day-To-Day","d":"2026-07-19","det":"Finger"},{"p":"Nate Bittle","s":"Day-To-Day","d":"2026-09-10","det":"Lower Leg"}],"UTAH":[{"p":"Jaren Jackson Jr.","s":"Day-To-Day","d":"2026-09-10","det":"Knee"},{"p":"Trey Alexander","s":"Day-To-Day","d":"2026-07-17","det":"Ribs"}],"WSH":[{"p":"Jamir Watkins","s":"Out","d":"2026-07-30","det":"Knee"},{"p":"Alex Sarr","s":"Day-To-Day","d":"2026-09-24","det":"Foot"},{"p":"Anthony Davis","s":"Day-To-Day","d":"2026-09-24","det":"Finger"},{"p":"Trae Young","s":"Day-To-Day","d":"2026-09-21","det":"Quadriceps"}]},"mlb":{"ARI":[{"p":"Gabriel Moreno","s":"Day-To-Day","d":"2026-09-27","det":"Hamstring"}],"ATH":[{"p":"Alika Williams","s":"Day-To-Day","d":"2026-09-26","det":"Upper Body"}],"ATL":[{"p":"Jurickson Profar","s":"Suspended","d":"2026-05-08","det":"Suspension"}],"CHC":[{"p":"Kevin Gausman","s":"Day-To-Day","d":"2026-09-24","det":"Shoulder"}],"CHW":[{"p":"Chase Meidroth","s":"Day-To-Day","d":"2026-09-26","det":"Hamstring"}],"MIA":[{"p":"Kyle Stowers","s":"Day-To-Day","d":"2026-09-27","det":"Abdomen"},{"p":"Xavier Edwards","s":"Day-To-Day","d":"2026-09-26","det":"Thumb"}],"MIL":[{"p":"Joey Ortiz","s":"Day-To-Day","d":"2026-09-27","det":"Knee"}],"PHI":[{"p":"Jonathan Bowlan","s":"Day-To-Day","d":"2026-09-18","det":"Groin"},{"p":"Luis Arraez","s":"Day-To-Day","d":"2026-09-27","det":"Ankle"}],"PIT":[{"p":"Oneil Cruz","s":"Day-To-Day","d":"2026-09-27","det":"Knee"}],"SF":[{"p":"Landen Roupp","s":"Out","d":"2026-09-22","det":"Rest"}],"SEA":[{"p":"Kade Anderson","s":"Day-To-Day","d":"2026-09-27","det":"Forearm"}],"STL":[{"p":"Masyn Winn","s":"Out","d":"2026-09-26","det":"Thumb"}],"TB":[{"p":"Chandler Simpson","s":"Day-To-Day","d":"2026-09-26","det":"Foot"},{"p":"Griffin Jax","s":"Day-To-Day","d":"2026-09-27","det":"Back"}]}};
   /* Bet literals (frontend-owned). refresh.py embeds tracked_bets.json as
      betsData and pending_bets.json (or []) as pendingBets each run. The app
      treats every bet field as optional and renders "—" when absent. */
@@ -1085,7 +1300,7 @@ details.method summary{font-size:13px}
   const trendData={"generated":"2026-09-28","sports":{"nfl":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28"],"our_mae":[null,13.7,13.7,13.7,8.35,8.35,8.35,11.41],"market_mae":[null,null,null,null,null,null,null,10.53],"bias":[null,null,null,null,null,null,null,-0.01],"n":[null,1,1,1,2,2,2,15]},"cfb":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28"],"our_mae":[null,null,null,null,2.9,6.08,11.75,11.6],"market_mae":[null,null,null,null,null,null,null,10.64],"bias":[null,null,null,null,null,null,null,-2.49],"n":[null,null,null,null,1,5,68,71]},"mlb":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28"],"our_mae":[null,2.03,2.86,2.93,3.17,3.54,3.49,3.2],"market_mae":[null,null,null,null,null,null,null,null],"bias":[null,null,null,null,null,null,null,-0.89],"n":[null,3,16,30,40,55,66,78]},"nba":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28"],"our_mae":[null,null,null,null,null,null,null,null],"market_mae":[null,null,null,null,null,null,null,null],"bias":[null,null,null,null,null,null,null,null],"n":[null,null,null,null,null,null,null,null]}}};
   const whatIfData=null;
   const injuryAdjData={"nfl-2026-03-PHI-CHI":{"adj":-1.0,"applied":false,"parts":[{"p":"Fred Johnson","t":"PHI","s":"out","pts":-1.0,"code":"INJ_LT_OUT"}]},"nfl-2026-04-PIT-CLE":{"adj":-4.0,"applied":false,"parts":[{"p":"Brandin Echols","t":"PIT","s":"questionable","pts":0.5,"code":"INJ_CB1_OUT"},{"p":"Will Howard","t":"PIT","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Joey Porter Jr.","t":"PIT","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Gabriel Rubio","t":"PIT","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Drew Allar","t":"PIT","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Tyson Campbell","t":"CLE","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Taylen Green","t":"CLE","s":"out","pts":-2.5,"code":"INJ_QB_OUT"}]},"cfb-401856708":{"adj":-1.5,"applied":false,"parts":[{"p":"Kahleil Jackson","t":"FLA","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]},"nfl-2026-04-IND-WAS":{"adj":-4.0,"applied":false,"parts":[{"p":"Darius Slayton","t":"IND","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Riley Leonard","t":"IND","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Ashton Dulin","t":"IND","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]},"nfl-2026-04-TEN-BAL":{"adj":-4.0,"applied":false,"parts":[{"p":"Brandon Crenshaw-Dickson","t":"TEN","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Elijah Sarratt","t":"BAL","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Joe Fagnano","t":"BAL","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Ronnie Stanley","t":"BAL","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"K'Von Wallace","t":"BAL","s":"out","pts":1.0,"code":"INJ_CB1_OUT"}]},"nfl-2026-04-NE-BUF":{"adj":-4.0,"applied":false,"parts":[{"p":"Behren Morton","t":"NE","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Dametrious Crownover","t":"NE","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Christian Benford","t":"BUF","s":"questionable","pts":0.5,"code":"INJ_CB1_OUT"},{"p":"Skyler Bell","t":"BUF","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Jude Bowry","t":"BUF","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Mike Danna","t":"BUF","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"}]},"nfl-2026-04-NYJ-CHI":{"adj":-0.5,"applied":false,"parts":[{"p":"Nahshon Wright","t":"NYJ","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Adonai Mitchell","t":"NYJ","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]},"nfl-2026-04-JAX-CIN":{"adj":-2.25,"applied":false,"parts":[{"p":"CJ Williams","t":"JAX","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Colbie Young","t":"CIN","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Josh Newton","t":"CIN","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Myles Hinton","t":"CIN","s":"out","pts":-1.0,"code":"INJ_LT_OUT"}]},"nfl-2026-04-DAL-HOU":{"adj":-3.0,"applied":false,"parts":[{"p":"Ajani Cornelius","t":"DAL","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Camden Brown","t":"DAL","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Nico Collins","t":"HOU","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Collin Wright","t":"HOU","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Nate Thomas","t":"HOU","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Jadeveon Clowney","t":"HOU","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"}]},"nfl-2026-04-ARI-NYG":{"adj":-4.0,"applied":false,"parts":[{"p":"Carson Beck","t":"ARI","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Reggie Virgil","t":"ARI","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Josh Fryar","t":"ARI","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Deonte Banks","t":"NYG","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"J.C. Davis","t":"NYG","s":"out","pts":-1.0,"code":"INJ_LT_OUT"}]},"nfl-2026-04-LAR-PHI":{"adj":-4.0,"applied":false,"parts":[{"p":"Jaylen Watson","t":"LAR","s":"questionable","pts":0.5,"code":"INJ_CB1_OUT"},{"p":"Ty Simpson","t":"LAR","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"CJ Daniels","t":"LAR","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Puka Nacua","t":"LAR","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Fred Johnson","t":"PHI","s":"out","pts":-1.0,"code":"INJ_LT_OUT"}]},"nfl-2026-04-GB-TB":{"adj":-0.75,"applied":false,"parts":[{"p":"Baker Mayfield","t":"TB","s":"questionable","pts":-1.0,"code":"INJ_QB_Q"},{"p":"Jalen McMillan","t":"TB","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Ayden Garnes","t":"TB","s":"out","pts":1.0,"code":"INJ_CB1_OUT"}]},"nfl-2026-04-MIA-MIN":{"adj":-4.0,"applied":false,"parts":[{"p":"Brady Cook","t":"MIA","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Marcellas Dial Jr.","t":"MIA","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Caleb Douglas","t":"MIA","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Chukwuebuka Godrick","t":"MIA","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Robert Beal Jr.","t":"MIA","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Charles Demmings","t":"MIN","s":"questionable","pts":0.5,"code":"INJ_CB1_OUT"},{"p":"Zemaiah Vaughn","t":"MIN","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Elijah Williams","t":"MIN","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Caleb Tiernan","t":"MIN","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"J.J. McCarthy","t":"MIN","s":"out","pts":-2.5,"code":"INJ_QB_OUT"}]},"nfl-2026-04-KC-LV":{"adj":-4.0,"applied":false,"parts":[{"p":"Diego Pounds","t":"KC","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Josh Simmons","t":"KC","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Garrett Nussmeier","t":"KC","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Jack Bech","t":"LV","s":"doubtful","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Darrell Luter Jr.","t":"LV","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Aidan O'Connell","t":"LV","s":"out","pts":-2.5,"code":"INJ_QB_OUT"}]},"nfl-2026-04-LAC-SEA":{"adj":-4.0,"applied":false,"parts":[{"p":"DJ Uiagalelei","t":"LAC","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Brenen Thompson","t":"LAC","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Elijah Molden","t":"LAC","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Montorie Foster Jr.","t":"SEA","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Jalen Milroe","t":"SEA","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Avery Smith","t":"SEA","s":"out","pts":1.0,"code":"INJ_CB1_OUT"}]},"nfl-2026-04-DEN-SF":{"adj":-4.0,"applied":false,"parts":[{"p":"Marvin Mims Jr.","t":"DEN","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Sai'vion Jones","t":"DEN","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Sam Ehlinger","t":"DEN","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Lil'Jordan Humphrey","t":"DEN","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"},{"p":"Kage Casey","t":"DEN","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Ephesians Prysock","t":"SF","s":"out","pts":1.0,"code":"INJ_CB1_OUT"},{"p":"Kurtis Rourke","t":"SF","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Romello Height","t":"SF","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Nick Bosa","t":"SF","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Enrique Cruz Jr.","t":"SF","s":"out","pts":-1.0,"code":"INJ_LT_OUT"}]},"nfl-2026-04-DET-CAR":{"adj":-3.25,"applied":false,"parts":[{"p":"Ahmed Hassanein","t":"DET","s":"out","pts":1.0,"code":"INJ_EDGE_OUT"},{"p":"Jalen Coker","t":"CAR","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Mike Jackson","t":"CAR","s":"questionable","pts":0.5,"code":"INJ_CB1_OUT"},{"p":"Haynes King","t":"CAR","s":"out","pts":-2.5,"code":"INJ_QB_OUT"},{"p":"Xavier Legette","t":"CAR","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]}};
-  const splitsData={"nfl-2026-03-PHI-CHI":{"t_over":39,"h_over":39,"t_home":28,"h_home":22,"asof":"2026-09-28T06:19:35Z"},"cfb-401858476":{"t_over":62,"h_over":60,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401856707":{"t_over":25,"h_over":17,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401858249":{"t_over":30,"h_over":33,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401858250":{"t_over":54,"h_over":47,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401856708":{"t_over":38,"h_over":30,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401856710":{"t_over":16,"h_over":11,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401858473":{"t_over":84,"h_over":85,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"},"cfb-401858474":{"t_over":85,"h_over":85,"t_home":null,"h_home":null,"asof":"2026-09-28T06:19:38Z"}};
+  const splitsData={"nfl-2026-03-PHI-CHI":{"t_over":50,"h_over":46,"t_home":22,"h_home":27,"asof":"2026-09-28T06:44:16Z"},"cfb-401862786":{"t_over":28,"h_over":26,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401871049":{"t_over":52,"h_over":51,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858245":{"t_over":54,"h_over":62,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858476":{"t_over":41,"h_over":42,"t_home":47,"h_home":51,"asof":"2026-09-28T06:44:17Z"},"cfb-401871050":{"t_over":54,"h_over":56,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856705":{"t_over":44,"h_over":32,"t_home":62,"h_home":71,"asof":"2026-09-28T06:44:17Z"},"cfb-401856707":{"t_over":37,"h_over":35,"t_home":28,"h_home":18,"asof":"2026-09-28T06:44:17Z"},"cfb-401858249":{"t_over":24,"h_over":24,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858250":{"t_over":51,"h_over":54,"t_home":67,"h_home":46,"asof":"2026-09-28T06:44:17Z"},"cfb-401856708":{"t_over":20,"h_over":17,"t_home":20,"h_home":6,"asof":"2026-09-28T06:44:17Z"},"cfb-401856709":{"t_over":26,"h_over":27,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856710":{"t_over":18,"h_over":18,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856711":{"t_over":57,"h_over":56,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856807":{"t_over":45,"h_over":44,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856817":{"t_over":47,"h_over":40,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856818":{"t_over":18,"h_over":18,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856819":{"t_over":48,"h_over":45,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856821":{"t_over":26,"h_over":28,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401856822":{"t_over":48,"h_over":48,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858246":{"t_over":40,"h_over":34,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858247":{"t_over":24,"h_over":23,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858253":{"t_over":30,"h_over":30,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858472":{"t_over":29,"h_over":26,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858473":{"t_over":68,"h_over":72,"t_home":50,"h_home":64,"asof":"2026-09-28T06:44:17Z"},"cfb-401858474":{"t_over":81,"h_over":84,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401858479":{"t_over":59,"h_over":60,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401860899":{"t_over":32,"h_over":29,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401860900":{"t_over":25,"h_over":31,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401860921":{"t_over":64,"h_over":65,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401862788":{"t_over":30,"h_over":32,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401862791":{"t_over":40,"h_over":38,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401862792":{"t_over":53,"h_over":54,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401864513":{"t_over":56,"h_over":58,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401864514":{"t_over":45,"h_over":42,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401864515":{"t_over":64,"h_over":63,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866430":{"t_over":56,"h_over":56,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866431":{"t_over":46,"h_over":46,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866432":{"t_over":61,"h_over":62,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866433":{"t_over":45,"h_over":44,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866434":{"t_over":42,"h_over":49,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401866477":{"t_over":50,"h_over":44,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401869842":{"t_over":65,"h_over":68,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401869932":{"t_over":69,"h_over":68,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401869956":{"t_over":48,"h_over":47,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401869962":{"t_over":32,"h_over":29,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"},"cfb-401871089":{"t_over":45,"h_over":55,"t_home":null,"h_home":null,"asof":"2026-09-28T06:44:17Z"}};
   const labNotebookData=[{"version":"spread-gate-shadow","date":"2026-09-28","title":"Spread gating: rejected on evidence \u2014 shadow logger goes observation-only","what_changed":"Hypothetical spread picks at |gap|>=T showed the market beating our spread by ~1.9-3.2 pts at every threshold -- large gaps mark our worst games, not market mistakes. No spread picks ship; a shadow logger records the hypotheticals (reasons captured at gate time) for re-evaluation at n>=200.","evidence":{"metric":"spread MAE, ours vs market (n=70 graded NFL+CFB games)","before":"13.50 (ours)","after":"11.61 (market)","source":"reports/finish-up-2026-09-28.md \u00a75"},"status":"observation"},{"version":"pick-gating-v1","date":"2026-09-27","title":"Pick gating: reason-gated paper totals go live","what_changed":"Totals within |gap| of the market now need a machine-readable reason code (injury tags live; weather/pace deferred) to earn lean (>=3.0 pts NFL/CFB, >=2.0 MLB) or strong (>=5.0 / >=3.5) -- reasonless picks cap at coin_flip. Paper only; nothing is wagered. Live run: 17 rows -> 12 pass / 4 lean / 1 strong_play.","evidence":null,"status":"shipped"},{"version":"mlb-srs-v2+pitcher1","date":"2026-09-27","title":"MLB: probable-pitcher adjustment goes live (postseason capped at lean)","what_changed":"Total adjusts by 0.4x sum(ERA_blend - lgERA) per probable starter (+/-2 run band); unannounced probables fall back to 0.0 with a PITCH_UNKNOWN tag. Postseason paper picks capped at lean -- small samples, aces on short rest.","evidence":null,"status":"shipped"},{"version":"nfl-srs-v2+inj1","date":"2026-09-27","title":"NFL: automated injury adjustments","what_changed":"Free ESPN injury feed drives point adjustments: QB out -2.5, WR1 out -1.5, starting OT out -1.0, CB1/edge out +1.0; questionable = half; combined cap +/-4.0/game. Dry run: Daniels caught (-2.5), Collins correctly ignored.","evidence":null,"status":"shipped"},{"version":"cfb-srs-v2+inj1","date":"2026-09-27","title":"CFB: automated injury adjustments (feed currently dead)","what_changed":"Same injury-adjustment path as NFL (QB out -2.5, WR1 -1.5, OT -1.0, CB1/edge +1.0; cap +/-4.0/game). Caveat: ESPN's CFB injury feed is effectively dead, so the CFB path no-ops until it recovers.","evidence":null,"status":"shipped"},{"version":"cfb-rolling-bias-cal","date":"2026-09-27","title":"REJECTED: CFB rolling totals-bias calibration","what_changed":"Trailing-28-day (final - our_total) correction, min 20 prior graded games. Chronological walk-forward on 68 games: MAE 11.75 -> 11.75 -- the 20-game minimum never triggered, so the layer never activated out of sample. Not wired; guarded module stays ready for re-evaluation.","evidence":{"metric":"CFB totals MAE, chronological walk-forward (68 games)","before":"11.75","after":"11.75","source":"reports/impl-2026-09-27.md Item 1"},"status":"rejected"},{"version":"mlb-srs-v2","date":"2026-09-22","title":"MLB engine v2: bias-tamed totals","what_changed":"Totals retuned against the same hot-totals pattern v2 fixed in NFL/CFB. Spread edge over naive also grew (3.522 -> 3.495).","evidence":{"metric":"MLB totals MAE, walk-forward (2,338 games)","before":"3.622","after":"3.588","source":"reports/mlb-validation-2026-09-21.md \u00a73"},"status":"shipped"},{"version":"nfl-srs-v2 \u00b7 cfb-srs-v2","date":"2026-09-21","title":"Totals v2: symmetric HFA + pace + shrinkage","what_changed":"v1 inflated every total by stuffing all home-field edge into the home score. v2 splits HFA symmetrically (spread-neutral), adds pace modeling, shrinks toward the league-mean total, and calibrates residual bias -- killing the hot-totals bias (+1.74 NFL, +1.86 CFB) with no spread regression.","evidence":{"metric":"totals MAE, split-half walk-forward (272 NFL / 906 CFB games)","before":"11.17 / 13.51","after":"10.57 / 12.64","source":"reports/totals_v2_promotion.md"},"status":"shipped"}];
   const receiptsData={"summary":{"n_graded":164,"n_with_market":84},"recent":[{"game_id":"mlb-822679","sport":"mlb","date":"2026-09-27","away":"NYM","home":"WSH","our_total":9.5,"market_total":null,"final_total":10.0,"our_err":0.5,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-822761","sport":"mlb","date":"2026-09-27","away":"CIN","home":"TOR","our_total":8.8,"market_total":null,"final_total":6.0,"our_err":2.8,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823084","sport":"mlb","date":"2026-09-27","away":"LAA","home":"SEA","our_total":8.5,"market_total":null,"final_total":10.0,"our_err":1.5,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823164","sport":"mlb","date":"2026-09-27","away":"LAD","home":"SF","our_total":8.6,"market_total":null,"final_total":6.0,"our_err":2.6,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823408","sport":"mlb","date":"2026-09-27","away":"TB","home":"PHI","our_total":8.7,"market_total":null,"final_total":10.0,"our_err":1.3,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823650","sport":"mlb","date":"2026-09-27","away":"TEX","home":"MIN","our_total":9.2,"market_total":null,"final_total":10.0,"our_err":0.8,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823731","sport":"mlb","date":"2026-09-27","away":"STL","home":"MIL","our_total":8.8,"market_total":null,"final_total":10.0,"our_err":1.2,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-823814","sport":"mlb","date":"2026-09-27","away":"ATL","home":"MIA","our_total":8.5,"market_total":null,"final_total":8.0,"our_err":0.5,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-824055","sport":"mlb","date":"2026-09-27","away":"CLE","home":"KC","our_total":8.8,"market_total":null,"final_total":5.0,"our_err":3.8,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-824217","sport":"mlb","date":"2026-09-27","away":"PIT","home":"DET","our_total":8.8,"market_total":null,"final_total":6.0,"our_err":2.8,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-824705","sport":"mlb","date":"2026-09-27","away":"CHC","home":"BOS","our_total":8.8,"market_total":null,"final_total":8.0,"our_err":0.8,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"mlb-824948","sport":"mlb","date":"2026-09-27","away":"HOU","home":"ATH","our_total":9.7,"market_total":null,"final_total":9.0,"our_err":0.7,"market_err":null,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-ARI-SF","sport":"nfl","date":"2026-09-27","away":"ARI","home":"SF","our_total":50.0,"market_total":48.0,"final_total":66.0,"our_err":16.0,"market_err":18.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-BAL-DAL","sport":"nfl","date":"2026-09-27","away":"BAL","home":"DAL","our_total":52.8,"market_total":53.5,"final_total":65.0,"our_err":12.2,"market_err":11.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-CAR-CLE","sport":"nfl","date":"2026-09-27","away":"CAR","home":"CLE","our_total":40.4,"market_total":42.0,"final_total":39.0,"our_err":1.4,"market_err":3.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-CIN-PIT","sport":"nfl","date":"2026-09-27","away":"CIN","home":"PIT","our_total":46.2,"market_total":42.5,"final_total":57.0,"our_err":10.8,"market_err":14.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-HOU-IND","sport":"nfl","date":"2026-09-27","away":"HOU","home":"IND","our_total":45.6,"market_total":42.5,"final_total":36.0,"our_err":9.6,"market_err":6.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-KC-MIA","sport":"nfl","date":"2026-09-27","away":"KC","home":"MIA","our_total":47.8,"market_total":45.0,"final_total":34.0,"our_err":13.8,"market_err":11.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-LAC-BUF","sport":"nfl","date":"2026-09-27","away":"LAC","home":"BUF","our_total":48.9,"market_total":50.0,"final_total":40.0,"our_err":8.9,"market_err":10.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-LAR-DEN","sport":"nfl","date":"2026-09-27","away":"LAR","home":"DEN","our_total":43.3,"market_total":44.0,"final_total":56.0,"our_err":12.7,"market_err":12.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-LV-NO","sport":"nfl","date":"2026-09-27","away":"LV","home":"NO","our_total":39.3,"market_total":43.5,"final_total":62.0,"our_err":22.7,"market_err":18.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-MIN-TB","sport":"nfl","date":"2026-09-27","away":"MIN","home":"TB","our_total":41.8,"market_total":42.5,"final_total":39.0,"our_err":2.8,"market_err":3.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-NE-JAX","sport":"nfl","date":"2026-09-27","away":"NE","home":"JAX","our_total":48.1,"market_total":46.0,"final_total":41.0,"our_err":7.1,"market_err":5.0,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-NYJ-DET","sport":"nfl","date":"2026-09-27","away":"NYJ","home":"DET","our_total":46.9,"market_total":48.5,"final_total":55.0,"our_err":8.1,"market_err":6.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-TEN-NYG","sport":"nfl","date":"2026-09-27","away":"TEN","home":"NYG","our_total":47.4,"market_total":37.5,"final_total":19.0,"our_err":28.4,"market_err":18.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856696","sport":"cfb","date":"2026-09-26","away":"SC","home":"ALA","our_total":53.5,"market_total":54.2,"final_total":67.0,"our_err":13.5,"market_err":12.8,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856697","sport":"cfb","date":"2026-09-26","away":"TLSA","home":"ARK","our_total":55.9,"market_total":50.5,"final_total":40.0,"our_err":15.9,"market_err":10.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856698","sport":"cfb","date":"2026-09-26","away":"VAN","home":"AUB","our_total":54.8,"market_total":55.5,"final_total":36.0,"our_err":18.8,"market_err":19.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856699","sport":"cfb","date":"2026-09-26","away":"MISS","home":"FLA","our_total":56.2,"market_total":58.8,"final_total":80.0,"our_err":23.8,"market_err":21.2,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856700","sport":"cfb","date":"2026-09-26","away":"OU","home":"UGA","our_total":49.6,"market_total":44.2,"final_total":54.0,"our_err":4.4,"market_err":9.8,"pick_side":null,"pick_line":null,"pick_result":null}],"biggest_hits":[{"game_id":"cfb-401868188","sport":"cfb","date":"2026-09-26","away":"GWEB","home":"MRSH","our_total":65.2,"market_total":53.8,"final_total":71.0,"our_err":5.8,"market_err":17.2,"pick_side":null,"pick_line":null,"pick_result":null,"edge_vs_market":11.4},{"game_id":"cfb-401869961","sport":"cfb","date":"2026-09-26","away":"JMU","home":"ODU","our_total":51.4,"market_total":43.8,"final_total":66.0,"our_err":14.6,"market_err":22.2,"pick_side":null,"pick_line":null,"pick_result":null,"edge_vs_market":7.6},{"game_id":"cfb-401862783","sport":"cfb","date":"2026-09-26","away":"HCU","home":"UNT","our_total":65.7,"market_total":60.2,"final_total":77.0,"our_err":11.3,"market_err":16.8,"pick_side":null,"pick_line":null,"pick_result":null,"edge_vs_market":5.5},{"game_id":"cfb-401856700","sport":"cfb","date":"2026-09-26","away":"OU","home":"UGA","our_total":49.6,"market_total":44.2,"final_total":54.0,"our_err":4.4,"market_err":9.8,"pick_side":null,"pick_line":null,"pick_result":null,"edge_vs_market":5.4},{"game_id":"cfb-401860891","sport":"cfb","date":"2026-09-26","away":"RICE","home":"FRES","our_total":48.4,"market_total":43.5,"final_total":62.0,"our_err":13.6,"market_err":18.5,"pick_side":null,"pick_line":null,"pick_result":null,"edge_vs_market":4.9}],"biggest_misses":[{"game_id":"cfb-401860896","sport":"cfb","date":"2026-09-26","away":"CSU","home":"UTSA","our_total":54.4,"market_total":57.2,"final_total":104.0,"our_err":49.6,"market_err":46.8,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401862785","sport":"cfb","date":"2026-09-26","away":"USF","home":"BGSU","our_total":55.0,"market_total":48.8,"final_total":20.0,"our_err":35.0,"market_err":28.8,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401867909","sport":"cfb","date":"2026-09-26","away":"LIU","home":"FIU","our_total":53.6,"market_total":53.5,"final_total":23.0,"our_err":30.6,"market_err":30.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"nfl-2026-03-TEN-NYG","sport":"nfl","date":"2026-09-27","away":"TEN","home":"NYG","our_total":47.4,"market_total":37.5,"final_total":19.0,"our_err":28.4,"market_err":18.5,"pick_side":null,"pick_line":null,"pick_result":null},{"game_id":"cfb-401856699","sport":"cfb","date":"2026-09-26","away":"MISS","home":"FLA","our_total":56.2,"market_total":58.8,"final_total":80.0,"our_err":23.8,"market_err":21.2,"pick_side":null,"pick_line":null,"pick_result":null}]};
   const TODAY=_dstr(_now),YESTERDAY=_dstr(new Date(_now.getTime()-864e5));
@@ -1131,8 +1346,8 @@ details.method summary{font-size:13px}
   function signal(g){
     if(g.market_spread==null&&g.market_total==null)return {rank:0,cls:'wait',label:'Awaiting line'};
     const sd=g.market_spread==null?0:Math.abs(g.our_spread-g.market_spread),td=g.market_total==null?0:Math.abs(g.our_total-g.market_total);
-    if(sd>=5||td>=4)return {rank:3,cls:'strong',label:'Paper strong'};
-    if(sd>=3||td>=2.5)return {rank:2,cls:'lean',label:'Paper lean'};
+    if(sd>=5||td>=4)return {rank:3,cls:'strong',label:'Strong signal'};
+    if(sd>=3||td>=2.5)return {rank:2,cls:'lean',label:'Lean'};
     return {rank:1,cls:'coin',label:'Coin flip'};
   }
   function marketLine(g){
@@ -1171,7 +1386,7 @@ details.method summary{font-size:13px}
     return g.variants.map(v=>{
       const sd=g.market_spread==null?0:Math.abs(v.our_spread-g.market_spread),
             td=g.market_total==null?0:Math.abs(v.our_total-g.market_total);
-      const lbl=(sd>=5||td>=4)?'Paper strong':(sd>=3||td>=2.5)?'Paper lean':'Coin flip';
+      const lbl=(sd>=5||td>=4)?'Strong signal':(sd>=3||td>=2.5)?'Lean':'Coin flip';
       const d=Math.max(sd,td);
       const totalTxt=v.our_total==null?'—':v.our_total.toFixed(1);
       return `<div class="test-variant">🧪 test <b>${escapeHTML(v.label)}</b>: ${escapeHTML(fmtLine(g,v.our_spread))} / ${totalTxt} · ${lbl} (Δ ${d.toFixed(1)})</div>`;
@@ -1191,7 +1406,7 @@ details.method summary{font-size:13px}
       return `<div class="g-state">Final</div>`+teamRowsHTML(g,L.away,L.home,false)+`<div class="g-mkt">${escapeHTML(marketLine(g))}</div>`;
     return `<div class="g-state live-state"><span class="live-badge"><span class="live-dot"></span>Live</span><span class="g-clockline">${escapeHTML(L.detail)}</span></div>`
       +teamRowsHTML(g,L.away,L.home,true)
-      +`<div class="g-mkt">${escapeHTML(marketLine(g))} · Ours <b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`;
+      +`<div class="g-mkt">${escapeHTML(marketLine(g))} · Model <b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`;
   }
   function gameCard(g,i){
     const s=signal(g);
@@ -1201,7 +1416,7 @@ details.method summary{font-size:13px}
     const L=liveById.get(g.id);
     const live=L&&(L.state==='in'||L.state==='post')&&!graded;
     const mid=live?liveMidHTML(g,L):defaultMidHTML(g,graded);
-    const ours=`Ours <b>${fmtLine(g,g.our_spread)}</b> · <b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b>`;
+    const ours=`Model <b>${fmtLine(g,g.our_spread)}</b> · <b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b>`;
     return `<article class="game tappable${live&&L.state==='in'?' live':''}" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min((i||0)*40,400)}ms">
       <button class="g-star" data-fav-a="${escapeHTML(favA)}" data-fav-b="${escapeHTML(favB)}" aria-pressed="${favOn}" aria-label="Favorite team">★</button>
       <div class="g-mid">${mid}</div>
@@ -1219,7 +1434,7 @@ details.method summary{font-size:13px}
     (w.sp||[]).forEach(p=>{
       if(!p[1]||Math.abs(p[2])<0.05)return;
       items.push({m:Math.abs(p[2]),
-        t:`<b>${escapeHTML(p[1])}&rsquo;s ${escapeHTML(String(p[0]).toLowerCase())}</b> moves our spread ${Math.abs(p[2]).toFixed(1)} pts their way`});
+        t:`<b>${escapeHTML(p[1])}&rsquo;s ${escapeHTML(String(p[0]).toLowerCase())}</b> moves the model&rsquo;s spread ${Math.abs(p[2]).toFixed(1)} pts their way`});
     });
     (w.tp||[]).forEach(p=>{
       if(Math.abs(p[1])<0.05)return;
@@ -1265,13 +1480,13 @@ details.method summary{font-size:13px}
     const others=rest.filter(g=>signal(g).rank!==3);
     if(sigs.length){
       sigs.sort(byDay);
-      html+=groupSection('Paper signals',sigs.length+' strongest model disagreement'+(sigs.length===1?'':'s'),sigs,true);
+      html+=groupSection('Top signals',sigs.length+' strongest model disagreement'+(sigs.length===1?'':'s'),sigs,true);
     }
     others.sort((a,b)=>byDay(a,b)||a.sport.localeCompare(b.sport));
     const groups={};others.forEach(g=>(groups[g.sport]=groups[g.sport]||[]).push(g));
     html+=Object.entries(groups).map(([sport,rows])=>groupSection(sportNames[sport]||sport,rows.length+' game'+(rows.length===1?'':'s'),rows,false)).join('');
     const host=document.getElementById('games');
-    host.innerHTML=html||'<div class="empty"><h2>No games here</h2><p>Try another day or sport.</p></div>';
+    host.innerHTML=html||'<div class="empty"><h2>No games here</h2><p>Try another day or sport — or search a team above to jump straight to its games.</p></div>';
     const fs=document.getElementById('favSection');if(fs)fs.innerHTML='';
     renderHealthStrip();
   }
@@ -1312,7 +1527,7 @@ details.method summary{font-size:13px}
         +`<p class="note mover-note">Moves refresh with each daily data pull &mdash; enable notifications in Settings for timely pings. Live-game pace notes also land in the bell feed.</p>`;
     }
     const host=document.getElementById('signals');
-    host.innerHTML=html||'<div class="empty"><h2>No signals right now</h2><p>No upcoming game disagrees with the market enough to flag.</p></div>';
+    host.innerHTML=html||'<div class="empty"><h2>No signals right now</h2><p>No upcoming game disagrees with the market enough to flag. New signals land with the morning model run — meanwhile, tap any game to compare the model&rsquo;s number with the sportsbook&rsquo;s.</p></div>';
   }
   /* Picks view: Overs / Unders / Spreads ranked by model-vs-market gap.
      Calibration candidates only — labels say "model lean", never a bet. */
@@ -1326,10 +1541,10 @@ details.method summary{font-size:13px}
       .sort((a,b)=>Math.abs(b.our_spread-b.market_spread)-Math.abs(a.our_spread-a.market_spread));
     const host=document.getElementById('picks');
     const sec=(title,sub,rows)=>rows.length?groupSection(title,sub+' · model leans, not bets',rows,true):'';
-    host.innerHTML=sec('Overs','our total ≥ 2.5 over market',over)
-      +sec('Unders','our total ≥ 2.5 under market',under)
-      +sec('Spreads','our spread ≥ 3 off market',spr)
-      ||'<div class="empty"><h2>No picks right now</h2><p>No upcoming game disagrees with the market enough to rank.</p></div>';
+    host.innerHTML=sec('Overs','model total ≥ 2.5 over market',over)
+      +sec('Unders','model total ≥ 2.5 under market',under)
+      +sec('Spreads','model spread ≥ 3 off market',spr)
+      ||'<div class="empty"><h2>No picks right now</h2><p>No upcoming game disagrees with the market enough to rank. The model re-ranks every game each morning — check back after the next data pull.</p></div>';
   }
   /* Morning-after recap: parsed by refresh.py from the latest calibration
      report into recapData. Null/absent → the lands-later note. */
@@ -1338,7 +1553,7 @@ details.method summary{font-size:13px}
     if(!r||!r.sports||!Object.keys(r.sports).length)
       return `<div class="recap"><div class="subhead"><h3>Morning-after recap</h3><p>&nbsp;</p></div><p class="note">Recap lands after tonight&rsquo;s grading run.</p></div>`;
     const rows=Object.entries(r.sports).map(([sp,d])=>
-      `<div class="numrow"><span>${escapeHTML(sportNames[sp]||sp)} <i>· ${d.n} graded</i></span><span>Ours <b>${d.ourTotalMae==null?'—':(+d.ourTotalMae).toFixed(2)}</b> · Mkt <b>${d.mktTotalMae==null?'—':(+d.mktTotalMae).toFixed(2)}</b></span></div>`).join('');
+      `<div class="numrow recap-row"><div class="recap-top"><span>${escapeHTML(sportNames[sp]||sp)}</span><i>${d.n} graded</i></div><div class="recap-nums">Model <b>${d.ourTotalMae==null?'—':(+d.ourTotalMae).toFixed(2)}</b> · Market <b>${d.mktTotalMae==null?'—':(+d.mktTotalMae).toFixed(2)}</b></div></div>`).join('');
     return `<div class="recap"><div class="subhead"><h3>Morning-after recap</h3><p>${escapeHTML(dateLabel(r.date||YESTERDAY))}</p></div><div class="numrows">${rows}</div></div>`;
   }
   /* ---------- PWA health strip / gated plays / trends (worker B) ----------
@@ -1358,19 +1573,25 @@ details.method summary{font-size:13px}
       const mkt=d.market_mae==null?'—':(+d.market_mae).toFixed(2);
       const cls=(d.our_mae!=null&&d.market_mae!=null)?(d.our_mae<=d.market_mae?'ok':'bad'):'';
       const bias=d.bias==null?'—':((+d.bias>=0?'+':'')+(+d.bias).toFixed(2));
-      return `<div class="hchip"><b>${name}</b><span class="hv">n=${d.graded} · ours <b class="${cls}">${(+d.our_mae).toFixed(2)}</b> vs mkt ${mkt} · bias ${bias}</span></div>`;
+      return `<div class="hchip"><b>${name}</b><span class="hv">${d.graded} graded · model <b class="${cls}">${(+d.our_mae).toFixed(2)}</b> vs market ${mkt} · bias ${bias}</span></div>`;
     }).join('')+'</div>';
   }
   function gpReasons(notes){
     const m=/\[reasons:([^\]]*)\]/.exec(notes||'');
     return m?m[1].split(',').map(s=>s.trim()).filter(Boolean):[];
   }
+  /* Gate reason codes are machine-readable; users get plain English. */
+  function plainReason(r){
+    const m={'INJ_QB_OUT':'QB out','INJ_WR1_OUT':'WR1 out','INJ_RB1_OUT':'RB1 out','INJ_TE1_OUT':'TE1 out','INJ_LT_OUT':'LT out','INJ_OT_OUT':'OT out','INJ_CB1_OUT':'CB1 out','INJ_EDGE_OUT':'Edge rusher out','PITCH_UNKNOWN':'Pitcher unconfirmed','PACE_UP':'Faster pace','PACE_DOWN':'Slower pace','WEATHER_WIND':'Wind a factor'};
+    if(m[r])return m[r];
+    return String(r).replace(/^INJ_/,'').replace(/_/g,' ').toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
+  }
   function renderGatedPlays(){
     const host=document.getElementById('gated');if(!host)return;
     const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
-    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Paper signals &mdash; calibration only, not proven bets</p></div>`;
+    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Model signals &mdash; tracked for calibration, not proven bets</p></div>`;
     if(!plays.length)
-      html+='<div class="empty"><h2>No gated plays yet</h2><p>Gated plays appear after the morning model run.</p></div>';
+      html+='<div class="empty"><h2>No gated plays yet</h2><p>Gated plays appear after the morning model run. Only signals with a clear, machine-readable reason make the cut — that’s the discipline.</p></div>';
     else
       html+=plays.map(p=>{
         const conf=p.confidence==='strong_play'?'strong_play':'lean';
@@ -1380,8 +1601,8 @@ details.method summary{font-size:13px}
         const mt=p.market_total==null?'—':(+p.market_total).toFixed(1);
         const ln=p.line==null?'—':(+p.line).toFixed(1);
         return `<div class="gplay"><button class="mini-share" data-sharegp="${escapeHTML(p.away+'|'+p.home+'|'+(p.sport||''))}" aria-label="Share matchup card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0L7 9m5-5l5 5"/><path d="M4 15v5h16v-5"/></svg></button><div class="gp-head"><span class="gp-teams">${escapeHTML(p.away)} @ ${escapeHTML(p.home)}</span><span class="gp-conf ${conf}">${lbl}</span></div>`
-          +`<div class="gp-line">${escapeHTML(p.side||'')} ${ln} · ours ${ot} vs market ${mt} · ${escapeHTML(sportNames[p.sport]||p.sport||'')}</div>`
-          +(rs.length?`<div class="gp-reasons">${rs.map(escapeHTML).join(' · ')}</div>`:'')
+          +`<div class="gp-line">${escapeHTML(p.side||'')} ${ln} · model ${ot} vs market ${mt} · ${escapeHTML(sportNames[p.sport]||p.sport||'')}</div>`
+          +(rs.length?`<div class="gp-reasons">${rs.map(r=>escapeHTML(plainReason(r))).join(' · ')}</div>`:'')
           +'</div>';
       }).join('');
     host.innerHTML=html+'</div>';
@@ -1399,10 +1620,10 @@ function slateLegs(){
 }
 function slateHTML(legs){
   const head=`<div class="slate"><div class="subhead"><h3>Today&rsquo;s slate</h3>`
-    +`<p>Paper slate &mdash; calibration only, not betting picks</p></div>`;
+    +`<p>Practice slate &mdash; calibration only, not betting picks</p></div>`;
   if(!legs.length)
     return head+`<div class="empty"><h2>No slate today</h2>`
-      +`<p>Nothing cleared the gate. The gate is the discipline.</p></div></div>`;
+      +`<p>Nothing cleared the gate — the gate is the discipline. Loosen it tomorrow, or browse the full signal list on the Games tab.</p></div></div>`;
   const cards=legs.map((p,i)=>{
     const side=p.side==='over'?'Over':p.side==='under'?'Under':(p.side||'');
     const ln=p.line==null?'—':(+p.line).toFixed(1);
@@ -1419,10 +1640,10 @@ function slateHTML(legs){
       +`<span class="gp-conf ${conf}">${lbl}</span></div>`
       +`<div class="sl-matchup">${escapeHTML(p.away)} @ ${escapeHTML(p.home)}</div>`
       +`<div class="sl-pick">${escapeHTML(side)} ${ln}</div>`
-      +`<div class="sl-nums"><span>Ours <b>${ot}</b></span>`
+      +`<div class="sl-nums"><span>Model <b>${ot}</b></span>`
       +`<span>Market <b>${mt}</b></span><span>Gap <b>${gp}</b></span>`
       +(sp?`<span>${escapeHTML(sp)}</span>`:'')+`</div>`
-      +(rs.length?`<div class="gp-reasons">${rs.map(escapeHTML).join(' · ')}</div>`:'')
+      +(rs.length?`<div class="gp-reasons">${rs.map(r=>escapeHTML(plainReason(r))).join(' · ')}</div>`:'')
       +`</div>`;
   }).join('');
   const foot=legs.length<3
@@ -1453,7 +1674,7 @@ function renderWhatIf(){
     +`<div class="wi-rows">`
     +whatIfRow('strong play',d.strong)
     +whatIfRow('lean',d.lean)
-    +whatIfRow('paper play',d.all)
+    +whatIfRow('model play',d.all)
     +`</div><p class="note">Flat $20 stakes at &minus;110${asof}. ${escapeHTML(d.note||'')}</p></div>`;
 }
 
@@ -1493,19 +1714,19 @@ function renderWhatIf(){
       const fin=a=>a.filter(v=>v!=null).slice(-1)[0];
       const lastO=fin(ours),lastM=fin(mkt);
       return `<div class="tspark"><h4>${escapeHTML(sportNames[s]||String(s).toUpperCase())}</h4>`
-        +`<div class="tlegend"><i style="background:#5eb0ff"></i>Ours ${lastO==null?'—':(+lastO).toFixed(2)}&nbsp;&nbsp;`
+        +`<div class="tlegend"><i style="background:#5eb0ff"></iModel ${lastO==null?'—':(+lastO).toFixed(2)}&nbsp;&nbsp;`
         +`<i style="background:#9aa0a6"></i>Market ${lastM==null?'—':(+lastM).toFixed(2)}</div>`
         +`<svg viewBox="0 0 300 64" width="100%" height="64" role="img" aria-label="${escapeHTML(String(s))} MAE trend">${svg}</svg></div>`;
     }).join('');
     if(!cards)return '';
     const gen=t.generated?` · ${escapeHTML(String(t.generated))}`:'';
-    return `<div class="subhead"><h3>Accuracy trends</h3><p>totals MAE over time · ours vs market${gen}</p></div><div class="tlist">${cards}</div>`;
+    return `<div class="subhead"><h3>Accuracy trends</h3><p>average totals miss over time · model vs market${gen}</p></div><div class="tlist">${cards}</div>`;
   }
   /* Closing-line value on graded rows: our_total vs close.tp when both are
      present; the honest "pending" state otherwise. */
   function clvLine(g){
     if(g.close&&g.close.tp!=null&&g.our_total!=null)
-      return `<div class="g-clv">vs close: ours <b>${g.our_total.toFixed(1)}</b> · close <b>${g.close.tp.toFixed(1)}</b></div>`;
+      return `<div class="g-clv">vs close: model <b>${g.our_total.toFixed(1)}</b> · close <b>${g.close.tp.toFixed(1)}</b></div>`;
     return `<div class="g-clv">closing line pending</div>`;
   }
   function renderResults(){
@@ -1515,7 +1736,7 @@ function renderWhatIf(){
     statValues[1].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_spread-(g.home_score-g.away_score)),0)/graded.length).toFixed(1):'—';
     statValues[2].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_total-(g.home_score+g.away_score)),0)/graded.length).toFixed(1):'—';
     const host=document.getElementById('results');
-    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off.</p></div>';return}
+    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, the Model health tab shows how the numbers are tracking.</p></div>';return}
     host.innerHTML=renderWhatIf()+renderRecap()+'<div class="cards">'+graded.map((g,i)=>{
       const s=signal(g);
       const am=g.home_score-g.away_score,at=g.home_score+g.away_score;
@@ -1542,8 +1763,8 @@ function renderWhatIf(){
     const sb=pool.filter(g=>g.our_spread!=null&&g.market_spread!=null)
       .sort((a,b)=>Math.abs(b.our_spread-b.market_spread)-Math.abs(a.our_spread-a.market_spread));
     let h='';
-    if(tb.length)h+=`<div class="subhead"><h3>Totals board</h3><p>biggest our-total vs market gaps</p></div><div class="board-list">${tb.map((g,i)=>boardRow(g,Math.abs(g.our_total-g.market_total),`<span>Ours <b>${g.our_total.toFixed(1)}</b></span><span>Mkt <b>${g.market_total.toFixed(1)}</b></span>`,i)).join('')}</div>`;
-    if(sb.length)h+=`<div class="subhead"><h3>Spreads board</h3><p>biggest our-spread vs market gaps</p></div><div class="board-list">${sb.map((g,i)=>boardRow(g,Math.abs(g.our_spread-g.market_spread),`<span>Ours <b>${signedNum(g.our_spread)}</b></span><span>Mkt <b>${signedNum(g.market_spread)}</b></span>`,i)).join('')}</div>`;
+    if(tb.length)h+=`<div class="subhead"><h3>Totals board</h3><p>biggest model-total vs market gaps</p></div><div class="board-list">${tb.map((g,i)=>boardRow(g,Math.abs(g.our_total-g.market_total),`<span>Model <b>${g.our_total.toFixed(1)}</b></span><span>Market <b>${g.market_total.toFixed(1)}</b></span>`,i)).join('')}</div>`;
+    if(sb.length)h+=`<div class="subhead"><h3>Spreads board</h3><p>biggest model-spread vs market gaps</p></div><div class="board-list">${sb.map((g,i)=>boardRow(g,Math.abs(g.our_spread-g.market_spread),`<span>Model <b>${signedNum(g.our_spread)}</b></span><span>Market <b>${signedNum(g.market_spread)}</b></span>`,i)).join('')}</div>`;
     return h;
   }
   /* teamTotalsBias: {sport:{abbr:{n,bias}}}, bias = avg(final - our_total)
@@ -1560,7 +1781,7 @@ function renderWhatIf(){
       const rows=[...bySport[sport]].sort().map(abbr=>{
         const n=up.filter(g=>g.away_team===abbr||g.home_team===abbr).length;
         const b=teamTotalsBiasOf(sport,abbr);
-        const bias=(b&&b.n>=3)?` · our totals ${Math.abs(b.bias).toFixed(1)} ${b.bias>0?'cold':'hot'}`:'';
+        const bias=(b&&b.n>=3)?` · model&rsquo;s totals ${Math.abs(b.bias).toFixed(1)} ${b.bias>0?'cold':'hot'}`:'';
         return `<div class="team-row" data-team-sport="${escapeHTML(sport)}" data-team-abbr="${escapeHTML(abbr)}"><div>${escapeHTML(abbr)}<div class="tm-sub">${n} upcoming${bias}</div></div><span class="chev">›</span></div>`;
       }).join('');
       return `<div class="subhead"><h3>${escapeHTML(sportNames[sport]||sport)}</h3><p>${bySport[sport].size} teams</p></div><div class="team-grid">${rows}</div>`;
@@ -1575,14 +1796,14 @@ function renderWhatIf(){
     return `<button class="bbtn" data-team-back type="button">← All teams</button>`
       +`<div class="section-head" style="margin-top:14px"><h2>${escapeHTML(abbr)}</h2><p>${escapeHTML(sportNames[sport]||sport)}${up.length?` · ${up.length} upcoming`:''}</p></div>`
       +`<div class="biasline">${biasLine}</div>`
-      +(up.length?`<div class="subhead"><h3>Upcoming</h3><p>ours vs market</p></div><div class="cards">${up.map((g,i)=>gameCard(g,i)).join('')}</div>`
-        :`<div class="empty"><h2>No upcoming games</h2><p>Nothing scheduled for ${escapeHTML(abbr)} in this snapshot.</p></div>`);
+      +(up.length?`<div class="subhead"><h3>Upcoming</h3><p>model vs market</p></div><div class="cards">${up.map((g,i)=>gameCard(g,i)).join('')}</div>`
+        :`<div class="empty"><h2>No upcoming games</h2><p>Nothing scheduled for ${escapeHTML(abbr)} in this snapshot. The Games tab has the full schedule across every sport.</p></div>`);
   }
   function renderBoards(){
     const host=document.getElementById('boards');
     if(state.team){host.innerHTML=teamDetailHTML(state.team.sport,state.team.abbr);return}
-    host.innerHTML=disagreementBoards()+`<div class="subhead"><h3>Team pages</h3><p>tap a team for upcoming games + our totals bias</p></div>`+teamRows()
-      ||'<div class="empty"><h2>No boards yet</h2><p>Check back after the next data pull.</p></div>';
+    host.innerHTML=disagreementBoards()+`<div class="subhead"><h3>Team pages</h3><p>tap a team for upcoming games + the model's totals bias</p></div>`+teamRows()
+      ||'<div class="empty"><h2>No boards yet</h2><p>The biggest model-vs-market gaps will rank here after the next data pull.</p></div>';
   }
   function render(){
     document.getElementById('toolbar').style.display=state.view==='games'?'':'none';
@@ -1625,11 +1846,10 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const ourSide=(g.our_total!=null&&hasMkt)
       ?(g.our_total>g.market_total+.049?'over':(g.our_total<g.market_total-.049?'under':null)):null;
     const pubSide=sp.t_over>=50?'over':'under';
-    const vs=ourSide?` · our number says <b>${ourSide}</b>`:'';
+    const vs=ourSide?` · the model&rsquo;s number says <b>${ourSide}</b>`:'';
     const contra=!!(ourSide&&ourSide!==pubSide&&Math.abs(sp.t_over-50)>=10);
-    const asof=sp.asof?` <i>as of ${escapeHTML(String(sp.asof).slice(0,10))}</i>`:'';
-    splits=`<div class="numrow${contra?' split-contra':''}"><span>Public splits${asof}</span><b>${sp.t_over}% on the ${pubSide}</b></div>`
-      +`<div class="edge-line">${sp.t_over}% of tickets on the ${pubSide} · ${sp.h_over}% of the handle${vs}.</div>`;
+    splits=`<div class="numrow${contra?' split-contra':''}"><span>Public splits</span><b>${sp.t_over}% on the ${pubSide}</b></div>`
+      +`<div class="edge-line">${sp.asof?`As of ${escapeHTML(String(sp.asof).slice(0,10))} — `:''}${sp.t_over}% of tickets on the ${pubSide} · ${sp.h_over}% of the handle${vs}.</div>`;
   }
   return `<h4>Total</h4><div class="sheet-sec"><div class="numrows">`
     +`<div class="numrow"><span>Model</span><b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div>`
@@ -1652,8 +1872,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     return `<div class="inj-team">${escapeHTML(g[sd+'_team'])}</div><div class="numrows">`
       +arr.map(e=>{
         const p=byName[e.p];
-        const tr=p?` <i class="inj-pts ${p.pts<0?'inj-neg':'inj-pos'}">→ ${fmtPts(p.pts)} on our total</i>`:'';
-        return `<div class="numrow"><span>${escapeHTML(e.p)}${e.det?` <i>${escapeHTML(e.det)}</i>`:''}${e.d?` <i>· ${escapeHTML(e.d.slice(5))}</i>`:''}${tr}</span><b class="inj-${sev(e.s)}">${escapeHTML(e.s)}</b></div>`;
+        const tr=p?`<div class="inj-tr">→ ${fmtPts(p.pts)} on the model&rsquo;s total</div>`:'';
+        return `<div class="numrow inj-row"><div class="inj-top"><span>${escapeHTML(e.p)}${e.det?` <i>${escapeHTML(e.det)}</i>`:''}${e.d?` <i>· ${escapeHTML(e.d.slice(5))}</i>`:''}</span><b class="inj-${sev(e.s)}">${escapeHTML(e.s)}</b></div>${tr}</div>`;
       }).join('')
       +`</div>`;
   };
@@ -1665,8 +1885,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const capped=Math.abs(rawSum)>Math.abs(adj.adj)+1e-9;
     const val=`<b class="${adj.adj<0?'inj-neg':'inj-pos'}">${fmtPts(adj.adj)}</b>`;
     head=adj.applied
-      ?`<div class="inj-sum">Injuries: ${val} on our total${capped?' <span class="inj-cap">capped at ±4</span>':''}</div>`
-      :`<div class="inj-sum">Injuries would move our total ${val}${capped?' <span class="inj-cap">capped at ±4</span>':''}</div>`;
+      ?`<div class="inj-sum">Injuries: ${val} on the model&rsquo;s total${capped?' <span class="inj-cap">capped at ±4</span>':''}</div>`
+      :`<div class="inj-sum">Injuries would move the model&rsquo;s total ${val}${capped?' <span class="inj-cap">capped at ±4</span>':''}</div>`;
   }
   /* Honest empty states: CFB gets the thin-feed line even when neither team
      has flags; everything else stays hidden when there is nothing to show. */
@@ -1688,14 +1908,14 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const rows=[];
     if(g.close.sp!=null&&g.our_spread!=null){
       const d=g.our_spread-g.close.sp;
-      rows.push(`<div class="numrow"><span>Spread vs close</span><b>${signedNum(g.our_spread)} vs ${signedNum(g.close.sp)} <i>(${(d>=0?'+':'')+d.toFixed(1)})</i></b></div>`);
+      rows.push(`<div class="numrow"><span>Spread vs close</span><b>${escapeHTML(fmtLine(g,g.our_spread))} <i>vs</i> ${escapeHTML(fmtLine(g,g.close.sp))} <i>(${(d>=0?'+':'')+d.toFixed(1)})</i></b></div>`);
     }
     if(g.close.tp!=null&&g.our_total!=null){
       const d=g.our_total-g.close.tp;
       rows.push(`<div class="numrow"><span>Total vs close</span><b>${g.our_total.toFixed(1)} vs ${g.close.tp.toFixed(1)} <i>(${(d>=0?'+':'')+d.toFixed(1)})</i></b></div>`);
     }
     if(!rows.length)return '';
-    return `<h4>Closing line value</h4><div class="sheet-sec"><div class="numrows">${rows.join('')}</div><div class="edge-line">Our number against the last market snapshot. Positive means we were on the right side of the move.</div></div>`;
+    return `<h4>Closing line value</h4><div class="sheet-sec"><div class="numrows">${rows.join('')}</div><div class="edge-line">The model&rsquo;s number against the last market snapshot. Positive means the model was on the right side of the move.</div></div>`;
   }
   /* Team bias: historical model tendency for these teams (NFL/CFB only).
      + means our number has run high on that team, − means it ran low.
@@ -1712,22 +1932,23 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     };
     const body=row(g.away_team)+row(g.home_team);
     if(!body)return '';
-    return `<h4>Team bias</h4><div class="sheet-sec"><div class="numrows">${body}</div><div class="edge-line">How our model has historically missed on these teams (+ = our number ran high). Tendency, not a pick.</div></div>`;
+    return `<h4>Team bias</h4><div class="sheet-sec"><div class="numrows">${body}</div><div class="edge-line">How the model has historically missed on these teams (+ = the model&rsquo;s number ran high). Tendency, not a pick.</div></div>`;
   }
   function movementDetail(g){
     const rows=[];
-    if(g.open_spread!=null&&g.market_spread!=null)rows.push(`<div class="numrow"><span>Spread</span><b>${signedNum(g.open_spread)} → ${signedNum(g.market_spread)}</b></div>`);
+    if(g.open_spread!=null&&g.market_spread!=null)rows.push(`<div class="numrow"><span>Spread</span><b>${escapeHTML(fmtLine(g,g.open_spread))} → ${escapeHTML(fmtLine(g,g.market_spread))}</b></div>`);
     if(g.open_total!=null&&g.market_total!=null)rows.push(`<div class="numrow"><span>Total</span><b>${g.open_total.toFixed(1)} → ${g.market_total.toFixed(1)}</b></div>`);
     if(!rows.length)return '';
-    return `<h4>Line movement</h4><div class="sheet-sec">${mvChart(g.mv)}<div class="numrows">${rows.join('')}</div></div>`;
+    return `<h4>Line movement</h4><div class="sheet-sec">${mvChart(g)}<div class="numrows">${rows.join('')}</div></div>`;
   }
   /* Line-movement sparkline: spread (blue) + total (violet), each normalized
      to its own range. mv = chronological [[spread,total],...] points. */
-  function mvChart(mv){
+  function mvChart(g){
+    const mv=g.mv;
     if(!mv||mv.length<2)return '';
     const W=320,H=104,PL=6,PR=34;
     const series=[
-      {key:0,color:'var(--blue)',name:'Spread',top:6,bot:44,f:v=>signedNum(v)},
+      {key:0,color:'var(--blue)',name:'Spread',top:6,bot:44,f:v=>fmtLine(g,v)},
       {key:1,color:'var(--violet)',name:'Total',top:60,bot:98,f:v=>v.toFixed(1)}
     ];
     const drawn=[];
@@ -1754,11 +1975,14 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const w=g.why;if(!w||!w.sp||!w.tp)return '';
     const fmt=v=>`${v<0?'−':v>0?'+':''}${Math.abs(v).toFixed(1)}`;
     const cls=v=>v>0?'pos':v<0?'neg':'';
-    const row=p=>`<div class="numrow"><span>${escapeHTML(p[0])}${p[1]?` · ${escapeHTML(p[1])}`:''}</span><b class="${cls(p[2])}">${fmt(p[2])}</b></div>`;
+    /* sp rows are [label, team, pts]; tp rows are [label, pts]. */
+    const val=p=>p.length>2?p[2]:p[1];
+    const sub=p=>(p.length>2&&p[1])?p[1]:null;
+    const row=p=>`<div class="numrow"><span>${escapeHTML(p[0])}${sub(p)?` · ${escapeHTML(sub(p))}`:''}</span><b class="${cls(val(p))}">${fmt(val(p))}</b></div>`;
     return `<h4>Why this number</h4><div class="sheet-sec">`
       +`<div class="why-cap">Spread · ${escapeHTML(fmtLine(g,g.our_spread))}</div><div class="numrows">${w.sp.map(row).join('')}</div>`
       +`<div class="why-cap">Total · ${g.our_total==null?'—':g.our_total.toFixed(1)}</div><div class="numrows">${w.tp.map(row).join('')}</div>`
-      +`<div class="proj-cap">Components add up to our number.</div></div>`;
+      +`<div class="proj-cap">Components add up to the model&rsquo;s number.</div></div>`;
   }
   function sheetHTML(g){
     const s=signal(g),graded=g.home_score!=null&&g.away_score!=null;
@@ -1773,7 +1997,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     h+=`<h4>Model projection</h4><div class="sheet-sec"><div class="proj">`
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.home_team)}</span><span class="ps">${ps.home.toFixed(1)}</span></div>`
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.away_team)}</span><span class="ps">${ps.away.toFixed(1)}</span></div>`
-      +`</div><div class="proj-cap">From our spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
+      +`</div><div class="proj-cap">From the model&rsquo;s spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
     h+=spreadDetail(g)+totalDetail(g)+injuryDetail(g)+clvDetail(g)+biasDetail(g)+variantLine(g)+movementDetail(g)+paceMatchupDetail(g)+whyDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
@@ -1858,7 +2082,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     x.strokeStyle=g.home_color||'#5eb0ff';x.lineWidth=4;x.stroke();
     C(lbl,W/2,py+56,'800 40px system-ui',INK);
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1210,'500 32px system-ui',FAINT);
-    C('Paper signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
+    C('Model signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
     return cv;
   }
   async function shareCard(g){
@@ -2117,19 +2341,77 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const ballX=cx(100-fs.ytg),ltgX=cx(100-Math.max(0,fs.ytg-fs.dist));
     const pc=fs.poss==='away'?g.away_color:fs.poss==='home'?g.home_color:'#8a93a5';
     const dc=fs.poss==='away'?g.home_color:fs.poss==='home'?g.away_color:'#8a93a5';
-    let inner=`<rect x="0" y="0" width="${EZ}" height="${H}" fill="${dc}" opacity=".85"/>`
-      +`<rect x="${W-EZ}" y="0" width="${EZ}" height="${H}" fill="${pc}" opacity=".85"/>`
-      +`<rect x="${EZ}" y="0" width="${W-2*EZ}" height="${H}" fill="#1d5c34"/>`;
+    const possAbbr=fs.possAbbr||'',otherAbbr=fs.poss==='away'?g.home_team:fs.poss==='home'?g.away_team:'';
+    let inner=`<defs>`
+      +`<linearGradient id="turfG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#287c46"/><stop offset="1" stop-color="#1a5530"/></linearGradient>`
+      +`<radialGradient id="turfV" cx=".5" cy=".5" r=".78"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient>`
+      +`<radialGradient id="fbLeather" cx=".38" cy=".32" r=".95"><stop offset="0" stop-color="#b37e49"/><stop offset=".55" stop-color="#8a5a30"/><stop offset="1" stop-color="#5b3a1c"/></radialGradient>`
+      +`<radialGradient id="fbGlow"><stop id="fbGlowS" offset="0" stop-color="${pc}" stop-opacity=".6"/><stop offset="1" stop-color="${pc}" stop-opacity="0"/></radialGradient>`
+      +`<clipPath id="fbClip"><ellipse rx="2.55" ry="1.6" cx="0" cy="0"/></clipPath>`
+      +`</defs>`
+      +`<rect class="ez-l" x="0" y="0" width="${EZ}" height="${H}" fill="${dc}"/>`
+      +`<rect class="ez-r" x="${W-EZ}" y="0" width="${EZ}" height="${H}" fill="${pc}"/>`
+      +`<rect x="${EZ}" y="0" width="${W-2*EZ}" height="${H}" fill="url(#turfG)"/>`;
+    for(let yd=0;yd<100;yd+=10){
+      if((yd/10)%2===0)inner+=`<rect x="${EZ+yd}" y="0" width="10" height="${H}" fill="rgba(255,255,255,.05)"/>`;
+    }
+    inner+=`<rect x="0" y="0" width="${EZ}" height="${H}" fill="url(#turfV)"/>`
+      +`<rect x="${W-EZ}" y="0" width="${EZ}" height="${H}" fill="url(#turfV)"/>`
+      +`<text class="ez-lab-l" x="${EZ/2}" y="${H/2+1.7}" text-anchor="middle" font-size="4.4" font-weight="800" letter-spacing=".6" fill="rgba(255,255,255,.62)">${escapeHTML(otherAbbr)}</text>`
+      +`<text class="ez-lab-r" x="${W-EZ/2}" y="${H/2+1.7}" text-anchor="middle" font-size="4.4" font-weight="800" letter-spacing=".6" fill="rgba(255,255,255,.62)">${escapeHTML(possAbbr)}</text>`;
     for(let yd=10;yd<=100;yd+=10){
       const x=EZ+yd,num=yd<=50?yd:100-yd;
-      inner+=`<line x1="${x}" y1="3" x2="${x}" y2="${H-3}" stroke="rgba(255,255,255,.3)" stroke-width=".7"/>`
-        +`<text x="${x}" y="${H-7}" fill="rgba(255,255,255,.6)" font-size="4.6" text-anchor="middle" font-weight="700">${num}</text>`;
+      inner+=`<line x1="${x}" y1="3" x2="${x}" y2="${H-3}" stroke="rgba(255,255,255,.32)" stroke-width=".7"/>`
+        +`<text x="${x}" y="${H-7}" fill="rgba(255,255,255,.62)" font-size="4.6" text-anchor="middle" font-weight="700">${num}</text>`;
     }
-    inner+=`<line x1="${ltgX}" y1="1.5" x2="${ltgX}" y2="${H-1.5}" stroke="#ffd166" stroke-width="1.4"/>`;
-    inner+=`<g class="ball-g" style="transform:translate(${ballX}px,15px)"><circle r="1.7" fill="${pc}" stroke="rgba(0,0,0,.55)" stroke-width=".8"/></g>`;
-    const possTxt=fs.possAbbr?` · <span class="field-poss">${escapeHTML(fs.possAbbr)} ball</span>`:'';
+    inner+=`<rect x="${EZ}" y="0" width="${W-2*EZ}" height="${H}" fill="url(#turfV)"/>`;
+    /* line to gain — intentional broadcast marker: glow + beam + pennant */
+    inner+=`<g class="ltg-g" style="transform:translate(${ltgX}px,0)">`
+      +`<line x1="0" y1="1.5" x2="0" y2="${H-1.5}" stroke="#ffd166" stroke-width="3.4" opacity=".2"/>`
+      +`<line x1="0" y1="1.5" x2="0" y2="${H-1.5}" stroke="#ffd166" stroke-width="1.5"/>`
+      +`<path d="M-2.7,1.2 L2.7,1.2 L0,4.6 Z" fill="#ffd166"/>`
+      +`</g>`;
+    /* the football — brown leather, white stripes + laces, -18° lean, team-color halo */
+    inner+=`<g class="ball-g" style="transform:translate(${ballX}px,15px)">`
+      +`<circle class="ball-halo" r="5" fill="url(#fbGlow)"/>`
+      +`<g transform="rotate(-18)"><g clip-path="url(#fbClip)">`
+      +`<ellipse rx="2.55" ry="1.6" fill="url(#fbLeather)"/>`
+      +`<rect x="-2.55" y="-1.6" width="1" height="3.2" fill="#f7f3ea" opacity=".95"/>`
+      +`<rect x="1.55" y="-1.6" width="1" height="3.2" fill="#f7f3ea" opacity=".95"/>`
+      +`<rect x="-0.3" y="-1.15" width="0.6" height="2.3" fill="#f7f3ea"/>`
+      +`<rect x="-0.85" y="-0.72" width="1.7" height="0.34" fill="#f7f3ea"/>`
+      +`<rect x="-0.85" y="-0.17" width="1.7" height="0.34" fill="#f7f3ea"/>`
+      +`<rect x="-0.85" y="0.38" width="1.7" height="0.34" fill="#f7f3ea"/>`
+      +`</g><ellipse rx="2.55" ry="1.6" fill="none" stroke="rgba(0,0,0,.55)" stroke-width=".55"/></g>`
+      +`</g>`;
+    const possTxt=possAbbr?` · <span class="field-poss">${escapeHTML(possAbbr)} ball</span>`:'';
     return `<div class="fieldwrap"><svg class="field-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Field position">${inner}</svg>`
       +`<div class="field-ddt">${escapeHTML(fs.ddt)}${possTxt}</div></div>`;
+  }
+  /* Update the existing field SVG in place so the ball + line-to-gain glide
+     via CSS transitions instead of snapping on every live refresh. */
+  function updateFieldSVG(g,fs){
+    try{
+      const wrap=document.querySelector('#liveViz .fieldwrap');
+      const svg=wrap&&wrap.querySelector('.field-svg');
+      if(!svg||!fs)return false;
+      const W=120,EZ=10;
+      const cx=v=>Math.max(EZ,Math.min(W-EZ,EZ+v));
+      const ballX=cx(100-fs.ytg),ltgX=cx(100-Math.max(0,fs.ytg-fs.dist));
+      const pc=fs.poss==='away'?g.away_color:fs.poss==='home'?g.home_color:'#8a93a5';
+      const dc=fs.poss==='away'?g.home_color:fs.poss==='home'?g.away_color:'#8a93a5';
+      const possAbbr=fs.possAbbr||'',otherAbbr=fs.poss==='away'?g.home_team:fs.poss==='home'?g.away_team:'';
+      const ball=svg.querySelector('.ball-g');if(ball)ball.style.transform=`translate(${ballX}px,15px)`;
+      const ltg=svg.querySelector('.ltg-g');if(ltg)ltg.style.transform=`translate(${ltgX}px,0)`;
+      const ezL=svg.querySelector('.ez-l'),ezR=svg.querySelector('.ez-r');
+      if(ezL)ezL.setAttribute('fill',dc);if(ezR)ezR.setAttribute('fill',pc);
+      const labL=svg.querySelector('.ez-lab-l'),labR=svg.querySelector('.ez-lab-r');
+      if(labL)labL.textContent=otherAbbr;if(labR)labR.textContent=possAbbr;
+      const gs=svg.querySelector('#fbGlowS');if(gs){gs.setAttribute('stop-color',pc);const gs2=gs.nextElementSibling;if(gs2)gs2.setAttribute('stop-color',pc);}
+      const ddt=wrap.querySelector('.field-ddt');
+      if(ddt)ddt.innerHTML=`${escapeHTML(fs.ddt)}${possAbbr?` · <span class="field-poss">${escapeHTML(possAbbr)} ball</span>`:''}`;
+      return true;
+    }catch(e){return false}
   }
   function parseBases(s){
     const notes=(s.situationNotes||[]).map(n=>n.text||'').join(' ');
@@ -2237,18 +2519,32 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   }
   function renderViz(g,j){
     const el=document.getElementById('liveViz');if(!el)return;
-    let html='';
     try{
       if(g.sport==='nfl'||g.sport==='cfb'){
         const fs=fieldState(g,j);
+        let drives='';
+        try{drives=driveChartHTML(g,j)}catch(e){}
+        if(fs&&updateFieldSVG(g,fs)){
+          /* Field glides in place; just refresh the drive dots. */
+          const d=el.querySelector('.drives');
+          if(drives){
+            const t=document.createElement('template');t.innerHTML=drives.trim();
+            const n=t.content.firstChild;
+            if(d&&n)d.replaceWith(n);else if(n)el.appendChild(n);
+          }else if(d)d.remove();
+          return;
+        }
+        let html='';
         if(fs)html=fieldSVG(g,fs);
-        html+=driveChartHTML(g,j);
+        html+=drives;
+        el.innerHTML=html;
       }else if(g.sport==='mlb'){
-        html=mlbLiveHTML(g,j);
+        el.innerHTML=mlbLiveHTML(g,j);
+      }else{
+        el.innerHTML='';
       }
       /* NBA: ESPN's free feed has no positional data — skip viz. */
     }catch(e){}
-    el.innerHTML=html;
   }
   /* ---------- live pace meter (drawer only, live games) ----------
      Projected final = current score + our model's expectation for the game
@@ -2927,7 +3223,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const lv=parseFloat(document.getElementById('chkLine').value);
     if(!g){out.innerHTML='<p class="note">Pick a game above.</p>';return}
     const v=_checkVerdict(g,side,Number.isFinite(lv)?lv:null);
-    if(v.state==='nodata'){out.innerHTML='<p class="note">Not enough data for this game — need our total and a market line.</p>';return}
+    if(v.state==='nodata'){out.innerHTML='<p class="note">Not enough data for this game — need the model\u2019s total and a market line.</p>';return}
     const f=x=>_trimNum(x);
     const verdict=v.state==='edge'
       ?`<b style="color:var(--green)">Edge — our number supports ${side} ${f(lv)}</b>`
@@ -3196,13 +3492,13 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
     if(plays.length){
       const p=plays[0];
-      items.push({t:`<b>${escapeHTML(p.away)} @ ${escapeHTML(p.home)}</b> — ${escapeHTML(p.side||'')} ${p.line==null?'':(+p.line).toFixed(1)} is today's ${p.confidence==='strong_play'?'strong':'lean'} paper signal.`,
-        s:`Ours ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)} · calibration only, not a bet.`});
+      items.push({t:`<b>${escapeHTML(p.away)} @ ${escapeHTML(p.home)}</b> — ${escapeHTML(p.side||'')} ${p.line==null?'':(+p.line).toFixed(1)} is today's ${p.confidence==='strong_play'?'strong':'lean'} model signal.`,
+        s:`Model ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)} · calibration only, not a bet.`});
     }
     const pool=ungraded().filter(g=>g.game_date===TODAY&&g.market_total!=null&&g.our_total!=null);
     if(pool.length){
       const big=pool.map(g=>({g:g,d:Math.abs(g.our_total-g.market_total)})).sort((a,b)=>b.d-a.d)[0];
-      if(big&&big.d>=2.5)items.push({t:`Biggest disagreement: <b>${escapeHTML(big.g.away_team)} @ ${escapeHTML(big.g.home_team)}</b> — our total sits ${big.d.toFixed(1)} pts ${big.g.our_total>big.g.market_total?'over':'under'} the market.`,
+      if(big&&big.d>=2.5)items.push({t:`Biggest disagreement: <b>${escapeHTML(big.g.away_team)} @ ${escapeHTML(big.g.home_team)}</b> — the model's total sits ${big.d.toFixed(1)} pts ${big.g.our_total>big.g.market_total?'over':'under'} the market.`,
         s:'Tap the game for the full breakdown.'});
     }
     const h=(typeof healthData!=='undefined'&&healthData)||{};
@@ -3254,7 +3550,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       }
       if(dsc&&dir)out.push({id:'mv-'+g.game_id,kind:'move',gid:g.id,
         title:`Line moved ${dir} our number — ${g.away_team} @ ${g.home_team}`,
-        sub:`Market ${dsc} since open; our number is now ${dir==='toward'?'closer to':'further from'} the market. Position info only — the model is a paper signal.`,ts:Date.now()});
+        sub:`Market ${dsc} since open; the model's number is now ${dir==='toward'?'closer to':'further from'} the market. Position info only — model signals are calibration-only.`,ts:Date.now()});
     });
     return out;
   }
@@ -3265,7 +3561,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       const g=gamesData.find(x=>x.away_team===p.away&&x.home_team===p.home&&x.sport===p.sport&&x.game_date>=TODAY);
       return {id:'gp-'+p.sport+'-'+p.away+'-'+p.home+'-'+(p.line==null?'x':p.line),kind:'play',gid:g?g.id:null,
         title:`New strong play gated — ${p.away} @ ${p.home}`,
-        sub:`${p.side||''} ${p.line==null?'':(+p.line).toFixed(1)} · ours ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)}. Paper signal, calibration only.`,ts:Date.now()};
+        sub:`${p.side||''} ${p.line==null?'':(+p.line).toFixed(1)} · model ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)}. Model signal — calibration only, not a bet.`,ts:Date.now()};
     });
   }
   /* Injury flags on games carrying a paper lean or better. */
@@ -3279,7 +3575,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
         arr.filter(e=>/out|injured reserve|suspend/i.test(e.s||'')).slice(0,2).forEach(e=>{
           out.push({id:'inj-'+g.game_id+'-'+g[sd+'_team']+'-'+String(e.p).replace(/\W+/g,'').slice(0,14),kind:'injury',gid:g.id,
             title:`Injury flag on a leaned game — ${e.p} (${e.s})`,
-            sub:`${g[sd+'_team']} lists ${e.p} as ${e.s}. ${g.away_team} @ ${g.home_team} carries a ${signal(g).label.toLowerCase()} paper signal — recheck official inactives before it matters.`,ts:Date.now()});
+            sub:`${g[sd+'_team']} lists ${e.p} as ${e.s}. ${g.away_team} @ ${g.home_team} carries a ${signal(g).label.toLowerCase()} model signal — recheck official inactives before it matters.`,ts:Date.now()});
         });
       });
     });
@@ -3401,12 +3697,32 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     WORKER_URL:'https://line-lab-push.kadenclegg.workers.dev' /* set to https://line-lab-push.<account>.workers.dev after deploy */
   };
   const pushSubKey='line-lab-push-sub',pushPromptKey='line-lab-push-prompted';
+  let resyncTried=false; /* one-time backend re-register attempt per page load */
   const b64url=s=>{const p='='.repeat((4-s.length%4)%4);
     return Uint8Array.from(atob((s+p).replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))};
   function pushState(){
     if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window))return 'unsupported';
     if(Notification.permission==='denied')return 'blocked';
     return feedGet(pushSubKey,null)?'on':'off';
+  }
+  /* One-time repair for subscriptions created before the Worker URL shipped:
+     re-registers the existing PushManager subscription with the backend so
+     this device actually receives pings. Runs once per page load, only when
+     the stored record says backend:false. Never breaks Settings on failure. */
+  async function resyncPushBackend(){
+    if(resyncTried||!PUSH_CONFIG.WORKER_URL)return;
+    const rec=feedGet(pushSubKey,null);
+    if(!rec||rec.backend)return;
+    resyncTried=true;
+    try{
+      const reg=await navigator.serviceWorker.ready;
+      const sub=await reg.pushManager.getSubscription();
+      if(!sub)return;
+      const payload={subscription:sub.toJSON(),favs:[...favs],tz:'America/Denver',at:new Date().toISOString()};
+      const r=await fetch(PUSH_CONFIG.WORKER_URL.replace(/\/$/,'')+'/subscribe',
+        {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      if(r.ok)feedSet(pushSubKey,{endpoint:rec.endpoint,at:payload.at,backend:true});
+    }catch(e){/* stay on the in-app feed; Settings keeps working */}
   }
   function renderPushRow(){
     const st=pushState(),btn=document.getElementById('pushEnable'),txt=document.getElementById('pushStatus'),note=document.getElementById('pushNote');
@@ -3415,12 +3731,11 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     else if(st==='blocked'){txt.textContent='Blocked. Allow notifications in iOS Settings → Line Lab (home-screen app), or your browser\u2019s site settings, then come back.';btn.style.display='none'}
     else if(st==='on'){
       const rec=feedGet(pushSubKey,null);
-      if(rec&&rec.backend){txt.textContent='On — timely pings are enabled on this device.';btn.style.display='none'}
-      else{
-        txt.textContent='Almost connected — tap to finish linking this device to the push server.';
-        btn.style.display='';btn.textContent='Finish setup';
-        resyncPushBackend().then(ok=>{if(ok)renderPushRow()});
-      }
+      if(PUSH_CONFIG.WORKER_URL&&rec&&!rec.backend){
+        txt.textContent='Finishing setup — linking this device to the push server…';
+        btn.style.display='none';
+        resyncPushBackend().then(renderPushRow,renderPushRow);
+      }else{txt.textContent='On — timely pings are enabled on this device.';btn.style.display='none'}
     }
     else{
       txt.textContent=PUSH_CONFIG.VAPID_PUBLIC_KEY
@@ -3450,23 +3765,6 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       feedSet(pushSubKey,{endpoint:String(sub.endpoint).slice(-24),at:payload.at,backend:!!PUSH_CONFIG.WORKER_URL});
       renderPushRow();
     }catch(e){renderPushRow()}
-  }
-  /* A subscription created before the worker URL shipped never reached the backend.
-     Re-register it quietly whenever the push row renders. */
-  async function resyncPushBackend(){
-    try{
-      if(!PUSH_CONFIG.WORKER_URL||!('serviceWorker' in navigator))return false;
-      const rec=feedGet(pushSubKey,null);
-      if(!rec||rec.backend)return true;
-      const reg=await navigator.serviceWorker.ready;
-      const sub=await reg.pushManager.getSubscription();
-      if(!sub)return false;
-      await fetch(PUSH_CONFIG.WORKER_URL.replace(/\/$/,'')+'/subscribe',
-        {method:'POST',headers:{'Content-Type':'application/json'},
-         body:JSON.stringify({subscription:sub.toJSON(),favs:[...favs],tz:'America/Denver',at:new Date().toISOString(),resync:true})});
-      rec.backend=true;feedSet(pushSubKey,rec);
-      return true;
-    }catch(e){return false}
   }
   document.getElementById('pushEnable').addEventListener('click',subscribePush);
   /* One contextual prompt: offered once, right after favorite teams are picked. */
@@ -3523,7 +3821,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     C(`Model had ${fmtLine(g,g.our_spread)} · ${g.our_total==null?'—':g.our_total.toFixed(1)}`,W/2,760,'600 40px system-ui',MUT);
     C(`Spread error ${se.toFixed(1)}${te==null?'':' · Total error '+te.toFixed(1)}`,W/2,820,'600 40px system-ui',MUT);
     x.strokeStyle='rgba(255,255,255,.09)';x.lineWidth=2;x.beginPath();x.moveTo(90,900);x.lineTo(W-90,900);x.stroke();
-    C('Paper signals · calibration only — never betting picks',W/2,972,'600 34px system-ui',FAINT);
+    C('Model signals · calibration only — never betting picks',W/2,972,'600 34px system-ui',FAINT);
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1262,'500 32px system-ui',FAINT);
     return cv;
   }
@@ -3573,7 +3871,7 @@ function receiptRow(r, opts) {
   }
   return `<div class="rc-row">
     <div class="rc-top"><b>${escapeHTML(r.away)} @ ${escapeHTML(r.home)}</b><span class="rc-meta">${sport} · ${when}</span></div>
-    <div class="rc-nums">We ${r.our_total.toFixed(1)} · Mkt ${mkt} · Final ${r.final_total.toFixed(1)} <span class="rc-off">— off by ${r.our_err.toFixed(1)}</span></div>
+    <div class="rc-nums">Model ${r.our_total.toFixed(1)} · Mkt ${mkt} · Final ${r.final_total.toFixed(1)} <span class="rc-off">— off by ${r.our_err.toFixed(1)}</span></div>
     ${edge}${pick}
   </div>`;
 }
@@ -3583,11 +3881,11 @@ function renderReceipts() {
   if (!d || !d.summary) return '';
   const s = d.summary;
   const hits = d.biggest_hits || [], misses = d.biggest_misses || [], recent = d.recent || [];
-  const head = `<div class="subhead"><h3>Receipts</h3><p>we said X · market said Y · final was Z</p></div>`
+  const head = `<div class="subhead"><h3>Receipts</h3><p>the model said X · market said Y · final was Z</p></div>`
     + `<div class="rc-note">${s.n_graded} graded games${s.n_with_market ? ` · ${s.n_with_market} with a market line` : ''}. Every miss is logged — that's the point.</div>`;
   let h = head;
   if (hits.length) {
-    h += `<div class="subhead sub2"><h3>Biggest hits</h3><p>our number closest vs the market</p></div><div class="rc-list">`
+    h += `<div class="subhead sub2"><h3>Biggest hits</h3><p>the model&rsquo;s number closest vs the market</p></div><div class="rc-list">`
       + hits.map(r => receiptRow(r, { showEdge: true })).join('') + `</div>`;
   }
   if (misses.length) {
@@ -3642,6 +3940,287 @@ function renderLabNotebook() {
   maybeShowOnboarding();
   openDeepLink();
   pollLive();
+
+  /* ================= VISUAL CRAFT LAYER (presentation-only) =================
+     Decorative enhancements only: game-of-the-day hero, edge meters,
+     line-movement sparklines, live score-flow bars, chart polish, sheet
+     edge-duel, empty-state art, collapsing header. Never touches data,
+     state, handlers, or literals. Every pass is idempotent and wrapped
+     so a failure here can never break the app. */
+  (function(){
+    'use strict';
+    if(window.__llCraftV1)return;window.__llCraftV1=true;
+    const $=(s,r)=>(r||document).querySelector(s);
+    const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+    const SVGNS='http://www.w3.org/2000/svg';
+    const idx={};let idxBuilt=false;
+    function gameById(id){
+      try{
+        if(!idxBuilt){for(const g of gamesData)idx[String(g.id)]=g;idxBuilt=true}
+        return idx[String(id)]||null;
+      }catch(e){return null}
+    }
+    const graded=g=>g.home_score!=null&&g.away_score!=null;
+
+    /* ----- edge meter: our number vs market, felt not just read ----- */
+    function paintEdge(el,g){
+      try{
+        if(el.querySelector('.craft-edge')||graded(g))return;
+        const sd=(g.our_spread==null||g.market_spread==null)?null:Math.abs(g.our_spread-g.market_spread);
+        const td=(g.our_total==null||g.market_total==null)?null:Math.abs(g.our_total-g.market_total);
+        if(sd==null&&td==null)return;
+        const foot=el.querySelector('.g-foot');if(!foot)return;
+        let rank=1;try{rank=signal(g).rank||1}catch(e){}
+        const row=(lbl,v)=>v==null?''
+          :`<div class="craft-edge-row"><span>${lbl}</span><div class="craft-edge-track"><i data-w="${Math.min(100,v/8*100).toFixed(1)}"></i></div><b>${v.toFixed(1)}</b></div>`;
+        const d=document.createElement('div');
+        d.className='craft-edge rank'+Math.min(3,Math.max(1,rank));
+        d.setAttribute('role','img');
+        d.setAttribute('aria-label',`Model edge versus market: spread ${sd==null?'n/a':sd.toFixed(1)} points, total ${td==null?'n/a':td.toFixed(1)} points`);
+        d.innerHTML=row('Spread',sd)+row('Total',td);
+        foot.appendChild(d);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          $$('i',d).forEach(i=>{i.style.width=i.dataset.w+'%'});
+        }));
+      }catch(e){}
+    }
+
+    /* ----- sparkline: line travel from the mv series, glanceable ----- */
+    function paintSpark(el,g){
+      try{
+        if(el.querySelector('.craft-spark'))return;
+        const mv=g.mv;if(!mv||mv.length<2)return;
+        const vals=mv.map(p=>p[0]).filter(v=>v!=null&&isFinite(v));
+        if(vals.length<2)return;
+        const mid=el.querySelector('.g-mid .g-mkt')||el.querySelector('.g-mkt');if(!mid)return;
+        const W=74,H=22,P=3,n=vals.length;
+        const mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),rg=(mx-mn)||1;
+        const X=i=>P+i*(W-2*P)/(n-1),Y=v=>H-P-((v-mn)/rg)*(H-2*P);
+        const pts=vals.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ');
+        const lx=X(n-1).toFixed(1),ly=Y(vals[n-1]).toFixed(1);
+        const svg=document.createElementNS(SVGNS,'svg');
+        svg.setAttribute('class','craft-spark '+(vals[n-1]>=vals[0]?'up':'dn'));
+        svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+        svg.setAttribute('aria-hidden','true');
+        const pl=document.createElementNS(SVGNS,'polyline');
+        pl.setAttribute('points',pts);pl.setAttribute('fill','none');
+        pl.setAttribute('stroke','currentColor');pl.setAttribute('stroke-width','1.8');
+        pl.setAttribute('stroke-linecap','round');pl.setAttribute('stroke-linejoin','round');
+        const dot=document.createElementNS(SVGNS,'circle');
+        dot.setAttribute('cx',lx);dot.setAttribute('cy',ly);dot.setAttribute('r','2.6');
+        dot.setAttribute('fill','currentColor');
+        svg.appendChild(pl);svg.appendChild(dot);
+        mid.appendChild(svg);
+      }catch(e){}
+    }
+
+    /* ----- live score-flow bar: the game feels alive ----- */
+    function ensureFlow(el){
+      try{
+        if(!el.classList.contains('live'))return;
+        const scores=$$('.g-score',el).map(s=>parseInt(s.textContent,10)).filter(Number.isFinite);
+        if(scores.length<2)return;
+        const tot=scores[0]+scores[1];
+        const ap=tot>0?Math.max(12,Math.min(88,scores[0]/tot*100)):50;
+        let bar=el.querySelector('.craft-flow');
+        if(!bar){
+          const mid=el.querySelector('.g-mid');if(!mid)return;
+          bar=document.createElement('div');
+          bar.className='craft-flow';bar.setAttribute('aria-hidden','true');
+          bar.innerHTML='<i class="fa"></i><i class="fh"></i>';
+          mid.appendChild(bar);
+        }
+        bar.firstChild.style.width=ap.toFixed(1)+'%';
+        bar.lastChild.style.width=(100-ap).toFixed(1)+'%';
+      }catch(e){}
+    }
+
+    /* ----- hero: the top signal becomes the slate's headline act ----- */
+    let heroEl=null;
+    function clearHero(){
+      if(heroEl){
+        heroEl.classList.remove('craft-hero');
+        const e=heroEl.querySelector(':scope > .craft-eyebrow');if(e)e.remove();
+        const t=heroEl.querySelector(':scope > .craft-teach');if(t)t.remove();
+        heroEl=null;
+      }
+    }
+    function stageHero(){
+      try{
+        const list=$('#games');
+        const sr=$('#searchResults');
+        const ok=list&&state.day==='today'&&state.view==='games'&&!(sr&&sr.innerHTML.trim());
+        const cands=ok?$$('.game',list):[];
+        const pick=cands.length?(cands.find(el=>el.classList.contains('top-pick'))||cands[0]):null;
+        if(pick===heroEl)return; /* already staged — never restart the entrance */
+        clearHero();
+        if(!pick)return;
+        heroEl=pick;pick.classList.add('craft-hero');
+        const eb=document.createElement('div');
+        eb.className='craft-eyebrow';eb.innerHTML='<span>Game of the day</span>';
+        pick.insertBefore(eb,pick.firstChild);
+        const teach=document.createElement('div');
+        teach.className='craft-teach';
+        teach.textContent='Our model\u2019s number vs the sportsbook\u2019s — longer bars mean stronger disagreement. Tap any game for the full breakdown.';
+        pick.insertBefore(teach,eb.nextSibling);
+      }catch(e){}
+    }
+
+    /* ----- chart craft: gradients, draw-in, refined axes ----- */
+    function gradientDef(svg,id,color){
+      const defs=document.createElementNS(SVGNS,'defs');
+      const gr=document.createElementNS(SVGNS,'linearGradient');
+      gr.setAttribute('id',id);gr.setAttribute('x1','0');gr.setAttribute('y1','0');
+      gr.setAttribute('x2','0');gr.setAttribute('y2','1');
+      const s1=document.createElementNS(SVGNS,'stop');
+      s1.setAttribute('offset','0');s1.setAttribute('stop-color',color);s1.setAttribute('stop-opacity','.26');
+      const s2=document.createElementNS(SVGNS,'stop');
+      s2.setAttribute('offset','1');s2.setAttribute('stop-color',color);s2.setAttribute('stop-opacity','0');
+      gr.appendChild(s1);gr.appendChild(s2);defs.appendChild(gr);
+      svg.insertBefore(defs,svg.firstChild);
+      return id;
+    }
+    function polishBankroll(){
+      const brk=$('#bankrollChart svg');
+      if(!brk||brk.dataset.crafted)return;
+      try{
+        brk.dataset.crafted='1';
+        const pl=brk.querySelector('polyline');if(!pl)return;
+        const up=(pl.getAttribute('stroke')||'')==='var(--green)';
+        const col=up?'#34d399':'#fb7185';
+        const gid='craft-brk-'+Math.floor(Math.random()*1e9);
+        gradientDef(brk,gid,col);
+        const pts=pl.getAttribute('points').trim().split(/\s+/);
+        if(pts.length<2)return;
+        const zero=brk.querySelector('line');
+        const zy=zero?zero.getAttribute('y1'):'184';
+        const f=pts[0].split(','),l=pts[pts.length-1].split(',');
+        const area=document.createElementNS(SVGNS,'polygon');
+        area.setAttribute('points',pts.join(' ')+` ${l[0]},${zy} ${f[0]},${zy}`);
+        area.setAttribute('fill',`url(#${gid})`);
+        area.setAttribute('class','craft-area');
+        brk.insertBefore(area,pl);
+        pl.setAttribute('pathLength','1');
+        pl.classList.add('craft-draw');
+      }catch(e){}
+    }
+    function polishTrends(){
+      $$('.tspark svg:not([data-crafted])').forEach(svg=>{
+        try{
+          svg.dataset.crafted='1';
+          const ours=Array.from(svg.querySelectorAll('polyline'))
+            .find(p=>(p.getAttribute('stroke')||'')==='#5eb0ff');
+          if(!ours)return;
+          const pts=ours.getAttribute('points').trim().split(/\s+/);
+          if(pts.length<2)return;
+          const gid='craft-ts-'+Math.floor(Math.random()*1e9);
+          gradientDef(svg,gid,'#5eb0ff');
+          const f=pts[0].split(','),l=pts[pts.length-1].split(',');
+          const area=document.createElementNS(SVGNS,'polygon');
+          area.setAttribute('points',pts.join(' ')+` ${l[0]},54 ${f[0]},54`);
+          area.setAttribute('fill',`url(#${gid})`);
+          area.setAttribute('class','craft-area');
+          svg.insertBefore(area,ours);
+          ours.setAttribute('pathLength','1');
+          ours.classList.add('craft-draw');
+        }catch(e){}
+      });
+    }
+
+    /* ----- sheet edge duel: ours vs market on one track ----- */
+    let duelFor=null;
+    function paintDuel(){
+      try{
+        if(pbpGameId==null){duelFor=null;return}
+        if(duelFor===pbpGameId)return;
+        const g=gameById(pbpGameId);if(!g)return;
+        const body=$('#sheetBody');if(!body)return;
+        const mvWrap=body.querySelector('.mv-wrap');if(!mvWrap)return;
+        if(body.querySelector('.craft-duel')){duelFor=pbpGameId;return}
+        const rows=[];
+        const mkRow=(lbl,ours,mkt,fmt)=>{
+          if(ours==null||mkt==null||!isFinite(ours)||!isFinite(mkt))return;
+          const lo=Math.min(ours,mkt)-1.4,hi=Math.max(ours,mkt)+1.4;
+          if(hi-lo<1e-9)return;
+          const X=v=>((v-lo)/(hi-lo)*100).toFixed(1);
+          rows.push(`<div class="craft-duel-row"><span>${lbl}</span><div>`
+            +`<div class="craft-duel-track" role="img" aria-label="${lbl} — model ${fmt(ours)}, market ${fmt(mkt)}">`
+            +`<i class="mkt" style="left:${X(mkt)}%"></i><i class="ours" style="left:${X(ours)}%"></i></div>`
+            +`<div class="craft-duel-labels"><span>Market ${fmt(mkt)}</span><span>Model ${fmt(ours)}</span></div>`
+            +`</div></div>`);
+        };
+        mkRow('Spread',g.our_spread,g.market_spread,v=>fmtLine(g,v));
+        mkRow('Total',g.our_total,g.market_total,v=>v.toFixed(1));
+        if(!rows.length){duelFor=pbpGameId;return}
+        const d=document.createElement('div');
+        d.className='craft-duel';d.innerHTML=rows.join('');
+        mvWrap.parentNode.insertBefore(d,mvWrap.nextSibling);
+        duelFor=pbpGameId;
+      }catch(e){}
+    }
+
+    /* ----- empty states: art for every dead screen ----- */
+    const EMPTY_GLYPHS=[
+      [/No games here/,'◌'],[/No signals/,'✦'],[/No picks right now/,'◎'],
+      [/gated plays/i,'◷'],[/No slate/,'▤'],[/First results/,'◔'],
+      [/No upcoming/,'◌'],[/No boards/,'▦'],[/No bets tracked/,'✎'],
+      [/Inbox is clear/,'✓'],[/No open positions/,'◍'],[/No graded bets/,'◊'],
+      [/No hedge/,'◈'],[/No matches/,'⌕']
+    ];
+    function paintEmpties(){
+      $$('.empty:not([data-glyph])').forEach(el=>{
+        try{
+          const h=el.querySelector('h2');
+          const t=h?h.textContent:'';
+          const m=EMPTY_GLYPHS.find(([re])=>re.test(t));
+          el.dataset.glyph=m?m[1]:'✦';
+          el.classList.add('craft-empty');
+        }catch(e){}
+      });
+    }
+
+    /* ----- collapsing home header ----- */
+    let ticking=false;
+    function onScroll(){
+      if(ticking)return;ticking=true;
+      requestAnimationFrame(()=>{
+        ticking=false;
+        document.body.classList.toggle('is-scrolled',(window.scrollY||0)>28);
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+
+    /* ----- orchestrator: idempotent, debounced, fail-silent ----- */
+    let scheduled=false;
+    function pass(){
+      try{
+        const articles=$$('article.game[data-id]');
+        for(const el of articles){
+          const g=gameById(el.dataset.id);
+          if(!g)continue;
+          paintEdge(el,g);
+          paintSpark(el,g);
+          ensureFlow(el);
+        }
+        stageHero();
+        polishBankroll();
+        polishTrends();
+        paintDuel();
+        paintEmpties();
+      }catch(e){}
+    }
+    function schedule(){
+      if(scheduled)return;scheduled=true;
+      requestAnimationFrame(()=>{scheduled=false;pass()});
+    }
+    const mo=new MutationObserver(muts=>{
+      for(const m of muts){
+        if(m.addedNodes&&m.addedNodes.length){schedule();return}
+      }
+    });
+    mo.observe(document.body,{childList:true,subtree:true});
+    schedule();
+  })();
   </script>
 <script>
   if ("serviceWorker" in navigator) {
