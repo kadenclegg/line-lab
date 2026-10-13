@@ -22,7 +22,7 @@
     /* ================= Line Lab · Apple Sports premium reskin ================= */
     :root{
       color-scheme:dark;
-      --bg:#050914;--surface:#0b1120;--surface-2:#131b31;
+      --bg:#000000;--surface:#0b0b0d;--surface-2:#141417;
       --ink:#f5f7fb;--muted:#8e97ab;--faint:#5f687f;
       --line:rgba(255,255,255,.08);
       --blue:#5eb0ff;--blue-soft:rgba(94,176,255,.12);
@@ -195,7 +195,7 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
     /* ---------- glassy bottom tab bar ---------- */
-    .bottom-nav{position:fixed;z-index:20;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,980px);display:grid;grid-template-columns:repeat(7,1fr);
+    .bottom-nav{position:fixed;z-index:20;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,980px);display:grid;grid-template-columns:repeat(3,1fr);
       background:rgba(7,11,22,.62);border-top:.5px solid var(--line);
       padding:7px 12px calc(7px + env(safe-area-inset-bottom));
       backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px) saturate(1.8)}
@@ -204,6 +204,50 @@
     .nav-btn svg{width:22px;height:22px}
     .nav-btn[aria-selected="true"]{color:var(--blue)}
     .nav-btn:active{transform:scale(.88)}
+    /* ---------- hamburger drawer (3-tab IA) ---------- */
+    .drawer-backdrop{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+    .drawer-backdrop[hidden]{display:none}
+    .drawer{position:absolute;top:0;bottom:0;right:0;width:min(86vw,360px);background:var(--surface);border-left:1px solid var(--line);padding:calc(14px + env(safe-area-inset-top)) 14px calc(20px + env(safe-area-inset-bottom));overflow-y:auto;animation:drawerIn .3s var(--spring)}
+    @keyframes drawerIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+    .drawer-top{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 10px}
+    .drawer-top h2{margin:0;font-size:20px;letter-spacing:-.01em}
+    .drawer-top .sheet-x{position:static}
+    .drawer-sep{height:1px;background:var(--line);margin:6px 4px}
+    .drawer-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border:0;color:var(--ink);padding:11px 8px;border-radius:12px;cursor:pointer;font-family:inherit}
+    .drawer-item:active{background:var(--surface-2)}
+    .di-ic{font-size:20px;width:28px;text-align:center;flex:none}
+    .di-tx{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+    .di-tx b{font-size:15px;font-weight:700}
+    .di-tx i{font-style:normal;font-size:12px;color:var(--muted)}
+    /* ---------- explainer blocks (How it works / About) ---------- */
+    .exp{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 10px}
+    .exp h3{margin:0 0 6px;font-size:15px}
+    .exp p{margin:0;font-size:13.5px;line-height:1.55;color:var(--muted)}
+    .exp p b{color:var(--ink)}
+    /* ---------- first-run tour (4 slides) ---------- */
+    .tour-backdrop{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center}
+    .tour-backdrop[hidden]{display:none}
+    .tour-sheet{width:min(100%,560px);background:var(--surface);border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;padding:10px 22px calc(26px + env(safe-area-inset-bottom));animation:sheetUp .42s cubic-bezier(.32,.9,.35,1)}
+    .tour-slide h2{margin:6px 0 8px;font-size:22px;letter-spacing:-.01em}
+    .tour-slide p{margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
+    .tour-slide p b{color:var(--ink)}
+    .tour-dots{display:flex;gap:6px;justify-content:center;margin:18px 0 12px}
+    .tour-dots span{width:7px;height:7px;border-radius:50%;background:var(--line)}
+    .tour-dots span.on{background:var(--blue)}
+    .tour-nav{display:flex;gap:10px}
+    .tour-nav .bbtn{flex:1}
+    .tour-skip{display:block;margin:10px auto 0;background:none;border:0;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit}
+    /* ---------- tennis player cards ---------- */
+    .tennis-card .t-meta{display:flex;gap:6px;margin-bottom:10px}
+    .t-chip{font-size:11px;font-weight:700;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:3px 10px;text-transform:capitalize}
+    .t-players{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:16px}
+    .t-players b{font-weight:800;letter-spacing:-.01em}
+    .t-vs{font-size:12px;color:var(--faint);font-weight:600}
+    .t-nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .t-nums>div{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+    .t-nums span{font-size:11px;color:var(--muted);font-weight:600}
+    .t-nums b{font-size:15px;font-variant-numeric:tabular-nums}
+    .t-nums i{font-style:normal;font-size:11.5px;color:var(--faint)}
 
     /* ---------- detail sheet ---------- */
     .sheet-backdrop{position:fixed;inset:0;z-index:60;background:rgba(2,4,8,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center}
@@ -1009,24 +1053,20 @@ details.method summary{font-size:13px}
     .sheet,.feed,.ob{animation:sheetUp .55s var(--springy)}
     /* sliding spring tab indicator — pure CSS, zero JS */
     .bottom-nav{isolation:isolate}
-    .bottom-nav::before{content:"";position:absolute;top:7px;bottom:calc(7px + env(safe-area-inset-bottom));left:12px;width:calc((100% - 24px)/7);
+    .bottom-nav::before{content:"";position:absolute;top:7px;bottom:calc(7px + env(safe-area-inset-bottom));left:12px;width:calc((100% - 24px)/3);
       box-sizing:border-box;
       border-radius:15px;background:rgba(94,176,255,.13);border:1px solid rgba(94,176,255,.2);
       transition:transform .55s var(--springy);z-index:0;pointer-events:none}
     html[data-theme="light"] .bottom-nav::before{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.18)}
     /* tab-indicator geometry must match each breakpoint's nav padding */
-    @media(max-width:680px){.bottom-nav::before{left:6px;width:calc((100% - 12px)/7);top:8px;bottom:calc(8px + env(safe-area-inset-bottom))}}
+    @media(max-width:680px){.bottom-nav::before{left:6px;width:calc((100% - 12px)/3);top:8px;bottom:calc(8px + env(safe-area-inset-bottom))}}
     @media(min-width:780px){.bottom-nav::before{left:7px;width:calc((100% - 14px)/7);top:7px;bottom:7px}}
     .nav-btn{position:relative;z-index:1}
     .nav-btn[aria-selected="true"] svg{animation:tabPop .55s var(--springy)}
     @keyframes tabPop{0%{transform:scale(.55)}55%{transform:scale(1.22)}100%{transform:scale(1.1)}}
     .bottom-nav:has([data-view="games"][aria-selected="true"])::before{transform:translateX(0)}
-    .bottom-nav:has([data-view="signals"][aria-selected="true"])::before{transform:translateX(100%)}
-    .bottom-nav:has([data-view="picks"][aria-selected="true"])::before{transform:translateX(200%)}
-    .bottom-nav:has([data-view="results"][aria-selected="true"])::before{transform:translateX(300%)}
-    .bottom-nav:has([data-view="health"][aria-selected="true"])::before{transform:translateX(400%)}
-    .bottom-nav:has([data-view="bets"][aria-selected="true"])::before{transform:translateX(500%)}
-    .bottom-nav:has([data-view="boards"][aria-selected="true"])::before{transform:translateX(600%)}
+    .bottom-nav:has([data-view="results"][aria-selected="true"])::before{transform:translateX(100%)}
+    .bottom-nav:has([data-view="more"][aria-selected="true"])::before{transform:translateX(200%)}
     /* sticky section titles glide over the list */
     .group-title{margin:14px -4px 4px;padding:10px 6px;
       background:color-mix(in srgb,var(--bg) 84%,transparent);
@@ -1125,6 +1165,7 @@ details.method summary{font-size:13px}
     <header class="masthead">
       <div><p class="kicker">MODEL SNAPSHOT</p><h1>Line Lab</h1><p class="snapshot" id="snapshotLine">Built from pregame numbers</p><p class="freshline" id="freshLine"></p></div>
       <div class="mast-actions">
+        <button class="icon-btn" id="searchBtn" aria-label="Search games"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
         <button class="icon-btn" id="bellBtn" aria-label="Notification feed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bell-badge" id="bellBadge" hidden>0</span></button>
         <button class="icon-btn" id="gearBtn" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
         <button class="icon-btn" id="themeToggle" aria-label="Toggle light or dark mode">&#9789;</button>
@@ -1145,6 +1186,7 @@ details.method summary{font-size:13px}
         <button class="chip" data-sport="mlb" aria-pressed="false">MLB</button>
         <button class="chip" data-sport="nba" aria-pressed="false">NBA</button>
         <button class="chip" data-sport="tennis" aria-pressed="false">Tennis</button>
+        <button class="chip" id="sigToggle" aria-pressed="false" title="Only games where our number and the books disagree">⚡ Signals only</button>
       </div>
     </div>
 
@@ -1160,7 +1202,7 @@ details.method summary{font-size:13px}
       <div class="summary"><h2 id="gamesTitle">Today's games</h2><p id="gameCount" aria-live="polite"></p></div>
       <div id="healthStrip" aria-live="polite"></div>
       <div id="games"></div>
-      <details class="method"><summary>How signals work</summary><p><b>Strong signal</b> means the model differs from the market by at least 5 points on the spread or 4 on the total. <b>Lean</b> means at least 3 on the spread or 2.5 on the total. <b>Coin flip</b> means the numbers are close. Experimental variants are tracked separately from the main model.</p></details>
+      <details class="method"><summary>How signals work</summary><p>A <b>signal</b> means the pick gate promoted this game: the model's bias-adjusted number, pulled 30% toward the market, still disagrees with the market — and a concrete, checkable reason (like a key injury) backs it. <b>Strong signal</b> and <b>Lean</b> are rare by design. Most games get no signal at all, which is the honest answer when there's no edge; a raw gap alone never earns a badge. Experimental variants are tracked separately from the main model.</p></details>
     </section>
 
     <section id="signalsView" class="view" aria-label="Signals">
@@ -1177,17 +1219,17 @@ details.method summary{font-size:13px}
     </section>
 
     <section id="resultsView" class="view" aria-label="Results">
-      <div class="section-head"><h2>How we did</h2><p>Every finished game lands here with the model's projected margin and total beside the final score.</p></div>
-      <div class="stats"><div class="stat"><b id="gradedCount">0</b><span>Games graded</span></div><div class="stat"><b>&mdash;</b><span>Spread error</span></div><div class="stat"><b>&mdash;</b><span>Total error</span></div></div>
+      <div class="section-head"><h2>How we&rsquo;re doing</h2><p>Every finished game lands here with the model's projected margin and total beside the final score.</p><p class="note">We score ourselves after each game: &ldquo;off by 3&rdquo; means our predicted total was 3 points from the final. Lower is better.</p></div>
+      <div class="stats"><div class="stat"><b id="gradedCount">0</b><span>Games graded</span></div><div class="stat"><b>&mdash;</b><span>Avg spread miss</span></div><div class="stat"><b>&mdash;</b><span>Avg total miss</span></div></div>
       <div id="results"></div>
     </section>
 
     <section id="healthView" class="view" aria-label="Model health">
       <div class="section-head"><h2>Model health</h2></div>
       <div class="health-grid">
-        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Simple baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread bias</span><b>&asymp; 0</b></div><div class="caution">Totals re-tuned: average miss 10.57 pts vs 10.98 baseline, bias &asymp; 0.</div></article>
-        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Simple baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Totals re-tuned: average miss 12.64 pts vs 12.95 baseline, bias &asymp; 0.</div></article>
-        <article class="health"><div class="health-head"><h3>MLB</h3><span class="status tested">Backtested</span></div><div class="version">2,267 games</div><div class="metric"><span>Total bias</span><b>&asymp; 0</b></div><div class="metric"><span>Total error</span><b>3.55 runs</b></div><div class="metric"><span>Spread error</span><b>unchanged</b></div><div class="caution">Hot-total bias fixed (symmetric home-field + shrinkage). Starting pitchers still unmodeled.</div></article>
+        <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Simple baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread tendency</span><b>even</b></div><div class="caution">Totals re-tuned: average miss 10.57 pts vs 10.98 baseline, tends even.</div></article>
+        <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Simple baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Totals re-tuned: average miss 12.64 pts vs 12.95 baseline, tends even.</div></article>
+        <article class="health"><div class="health-head"><h3>MLB</h3><span class="status tested">Backtested</span></div><div class="version">2,267 games</div><div class="metric"><span>Total tendency</span><b>even</b></div><div class="metric"><span>Total error</span><b>3.55 runs</b></div><div class="metric"><span>Spread error</span><b>unchanged</b></div><div class="caution">Hot-total tendency fixed (symmetric home-field + shrinkage). Starting pitchers still unmodeled.</div></article>
         <article class="health"><div class="health-head"><h3>NBA</h3><span class="status">Learning</span></div><div class="version">unvalidated</div><div class="metric"><span>Season begins</span><b>Oct 20</b></div><div class="metric"><span>Roster changes</span><b>Not modeled</b></div></article>
       </div>
     </section>
@@ -1226,19 +1268,15 @@ details.method summary{font-size:13px}
     </section>
 
     <section id="boardsView" class="view" aria-label="Boards">
-      <div class="section-head"><h2>Boards</h2><p>Where the model&rsquo;s numbers disagree with the market the most — plus per-team pages with the model&rsquo;s recent totals bias on each team.</p></div>
+      <div class="section-head"><h2>Boards</h2><p>Where the model&rsquo;s numbers disagree with the market the most — plus per-team pages showing whether the model&rsquo;s totals tend to run high or low on each team.</p></div>
       <div id="boards"></div>
     </section>
   </main>
 
   <nav class="bottom-nav" aria-label="Main sections">
-    <button class="nav-btn" data-view="games" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M7 3v4M17 3v4M5 10h14v10H5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Games</button>
-    <button class="nav-btn" data-view="signals" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Signals</button>
-    <button class="nav-btn" data-view="picks" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.6" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>Picks</button>
-    <button class="nav-btn" data-view="results" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V9m7 10V5m7 14v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Results</button>
-    <button class="nav-btn" data-view="health" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h4l2.5-6 4 12 2.5-6H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Health</button>
-    <button class="nav-btn" data-view="bets" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5h16v2.6a2 2 0 0 0 0 4v2.4H4v-2.4a2 2 0 0 0 0-4V8.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 8.5v9" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2.4 2.2" stroke-linecap="round"/></svg>Bets</button>
-    <button class="nav-btn" data-view="boards" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h14M5 9.5h14M5 15h14M5 20.5h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Boards</button>
+    <button class="nav-btn" data-view="games" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M7 3v4M17 3v4M5 10h14v10H5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Today</button>
+    <button class="nav-btn" data-view="results" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V9M12 19V5m7 14v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Results</button>
+    <button class="nav-btn" data-view="more" aria-selected="false" aria-label="More"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>More</button>
   </nav>
 
   <div class="feed-backdrop" id="feedBackdrop" hidden>
@@ -1252,6 +1290,64 @@ details.method summary{font-size:13px}
         </div>
       </div>
       <div class="feed-list" id="feedList"></div>
+    </div>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden>
+    <div class="drawer" role="dialog" aria-modal="true" aria-label="More" tabindex="-1">
+      <div class="drawer-top"><h2>More</h2><button class="sheet-x" id="drawerClose" aria-label="Close menu">&#x2715;</button></div>
+      <div class="drawer-list" id="drawerList">
+        <button class="drawer-item" data-go="signals"><span class="di-ic">⚡</span><span class="di-tx"><b>Model signals</b><i>Gated flags only — no flag, no edge</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="picks"><span class="di-ic">🎯</span><span class="di-tx"><b>Top picks</b><i>Biggest gaps, ranked — calibration only</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="boards"><span class="di-ic">📋</span><span class="di-tx"><b>Boards</b><i>Disagreement boards + team pages</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="bets"><span class="di-ic">💰</span><span class="di-tx"><b>My bets</b><i id="drawerBetSub">Tracked positions</i></span><span class="chev">›</span></button>
+        <div class="drawer-sep"></div>
+        <button class="drawer-item" data-go="health"><span class="di-ic">🩺</span><span class="di-tx"><b>Model health</b><i>Backtests + per-sport status</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="trends"><span class="di-ic">📈</span><span class="di-tx"><b>Accuracy over time</b><i>Our avg miss vs the books'</i></span><span class="chev">›</span></button>
+        <div class="drawer-sep"></div>
+        <button class="drawer-item" data-go="how"><span class="di-ic">❓</span><span class="di-tx"><b>How it works</b><i>Signals, simply</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="about"><span class="di-ic">📖</span><span class="di-tx"><b>About Line Lab</b><i>The honest version</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="tour"><span class="di-ic">🔁</span><span class="di-tx"><b>Replay the tour</b><i>4-slide intro</i></span><span class="chev">›</span></button>
+        <div class="drawer-sep"></div>
+        <button class="drawer-item" data-go="settings"><span class="di-ic">⚙️</span><span class="di-tx"><b>Settings</b><i>Teams, notifications, theme</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="feed"><span class="di-ic">🔔</span><span class="di-tx"><b>Notifications</b><i>Alert history</i></span><span class="chev">›</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-backdrop" id="howBackdrop" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="How it works" tabindex="-1">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <button class="sheet-x" id="howClose" aria-label="Close">&#x2715;</button>
+      <div class="section-head"><h2>How it works</h2><p>Signals, simply</p></div>
+      <div class="exp"><h3>Welcome to Line Lab</h3><p>We build computer models that predict sports scores — then grade every prediction after the game to see how the models are doing.</p></div>
+      <div class="exp"><h3>Our number vs the books</h3><p>For every game we show <b>two numbers</b>: what our model predicts, and what the sportsbooks say. A big disagreement alone is <b>not</b> a signal — we only flag a game when the model's number disagrees for a concrete, checkable reason.</p></div>
+      <div class="exp"><h3>Signals, simply</h3><p>Most games get <b>no signal</b> — that means the model found no edge, and that's the honest answer. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, only when its number disagrees with the market for a concrete, checkable reason. These are experiments for tracking our models — <b>not betting advice</b>.</p></div>
+      <div class="exp"><h3>We show our work</h3><p>After every game we publish how far off we were. &ldquo;<b>Off by 3</b>&rdquo; means our predicted total was 3 points from the real final score. Lower is better — and we always show our average miss next to the market's.</p></div>
+    </div>
+  </div>
+
+  <div class="sheet-backdrop" id="aboutBackdrop" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="About Line Lab" tabindex="-1">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <button class="sheet-x" id="aboutClose" aria-label="Close">&#x2715;</button>
+      <div class="section-head"><h2>About Line Lab</h2><p>The honest version</p></div>
+      <div class="exp"><h3>What this is</h3><p>Line Lab is a model-testing lab, not a picks service. Every signal here is tracked for <b>calibration only</b> — the model has never beaten the closing line, and nothing here is betting advice.</p></div>
+      <div class="exp"><h3>How we keep ourselves honest</h3><p>We log our number for every game <b>before</b> it starts and grade it <b>after</b> the final. Wins and misses are both published on the Results tab. Model changes are written up in the lab notebook below the results.</p></div>
+      <div class="exp"><h3>Its limits</h3><p>Models don't watch the games. They miss injuries that break late, weather that moves, and matchups that numbers can't see. A signal is a starting point for your own check — matchup, injuries, pace, conditions — never the whole answer.</p></div>
+    </div>
+  </div>
+
+  <div class="tour-backdrop" id="tourBackdrop" hidden>
+    <div class="tour-sheet" role="dialog" aria-modal="true" aria-label="Welcome tour" tabindex="-1">
+      <div class="sheet-grab" aria-hidden="true"></div>
+      <div class="tour-slide" data-tour="0"><h2>Welcome to Line Lab</h2><p>We build computer models that predict sports scores — then grade every prediction after the game to see how the models are doing.</p></div>
+      <div class="tour-slide" data-tour="1" hidden><h2>Our number vs the books</h2><p>For every game we show <b>two numbers</b>: what our model predicts, and what the sportsbooks say. A big disagreement alone is <b>not</b> a signal — we only flag a game when the model's number disagrees for a concrete, checkable reason.</p></div>
+      <div class="tour-slide" data-tour="2" hidden><h2>Signals, simply</h2><p>Most games get <b>no signal</b> — that means the model found no edge, and that's the honest answer. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, only when its number disagrees with the market for a concrete, checkable reason. These are experiments for tracking our models — <b>not betting advice</b>.</p></div>
+      <div class="tour-slide" data-tour="3" hidden><h2>We show our work</h2><p>After every game we publish how far off we were. &ldquo;<b>Off by 3</b>&rdquo; means our predicted total was 3 points from the real final score. Lower is better — and we always show our average miss next to the market's.</p></div>
+      <div class="tour-dots" id="tourDots"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="tour-nav"><button class="bbtn primary" id="tourNext" type="button">Next</button></div>
+      <button class="tour-skip" id="tourSkip" type="button">Skip tour</button>
     </div>
   </div>
 
@@ -1321,7 +1417,7 @@ details.method summary{font-size:13px}
   const TODAY=_dstr(_now),YESTERDAY=_dstr(new Date(_now.getTime()-864e5));
   const _ko=g=>g.kickoff_utc||'';
   const byDay=(a,b)=>a.game_date.localeCompare(b.game_date)||_ko(a).localeCompare(_ko(b));
-  const state={sport:'all',day:'today',view:'games',team:null};
+  const state={sport:'all',day:'today',view:'games',team:null,sigOnly:false};
   /* Sliding thumb on the Apple-style segmented control: positioned by index. */
   function syncSegThumb(){const seg=document.getElementById('daySeg');if(!seg)return;const i=['yesterday','today','upcoming'].indexOf(state.day);seg.style.setProperty('--segi',Math.max(i,0));}
   const sportNames={nfl:'NFL',cfb:'College Football',mlb:'MLB',nba:'NBA',tennis:'Tennis'};
@@ -1358,12 +1454,28 @@ details.method summary{font-size:13px}
   /* ---------- helpers ---------- */
   function fmtLine(g,v){if(v==null)return '—';if(Math.abs(v)<.05)return "Pick ’em";const team=v>0?g.home_team:g.away_team;return team+' −'+Math.abs(v).toFixed(1)}
   const signedNum=v=>v==null?'—':(Math.abs(v)<.05?'PK':(v>0?'−':'+')+Math.abs(v).toFixed(1));
+  /* Gate-truth signal badges. The pick gate (sports/pick_gate.py) is the ONLY
+     thing that promotes a game to a signal: raw model-vs-market gaps are
+     anti-predictive (accuracy audit 2026-10-13), so they must never drive a
+     badge. gatePlayFor joins each game against the gate's own output
+     (gatedPlays literal, today's journal rows at lean/strong_play). A game
+     the gate didn't promote gets NO badge — the honest answer when there's
+     no edge. */
+  let _gateMap=null,_gateSrc=null;
+  function gatePlayFor(g){
+    const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
+    if(_gateSrc!==plays){
+      _gateSrc=plays;_gateMap=new Map();
+      for(const p of plays)_gateMap.set(p.sport+'|'+p.away+'|'+p.home,p);
+    }
+    return _gateMap.get(g.sport+'|'+g.away_team+'|'+g.home_team)||null;
+  }
   function signal(g){
     if(g.market_spread==null&&g.market_total==null)return {rank:0,cls:'wait',label:'Awaiting line'};
-    const sd=g.market_spread==null?0:Math.abs(g.our_spread-g.market_spread),td=g.market_total==null?0:Math.abs(g.our_total-g.market_total);
-    if(sd>=5||td>=4)return {rank:3,cls:'strong',label:'Strong signal'};
-    if(sd>=3||td>=2.5)return {rank:2,cls:'lean',label:'Lean'};
-    return {rank:1,cls:'coin',label:'Coin flip'};
+    const p=gatePlayFor(g);
+    if(p&&p.confidence==='strong_play')return {rank:3,cls:'strong',label:'Strong signal'};
+    if(p&&p.confidence==='lean')return {rank:2,cls:'lean',label:'Lean'};
+    return {rank:0,cls:'none',label:'',hide:true};
   }
   function marketLine(g){
     const bits=[];
@@ -1401,10 +1513,9 @@ details.method summary{font-size:13px}
     return g.variants.map(v=>{
       const sd=g.market_spread==null?0:Math.abs(v.our_spread-g.market_spread),
             td=g.market_total==null?0:Math.abs(v.our_total-g.market_total);
-      const lbl=(sd>=5||td>=4)?'Strong signal':(sd>=3||td>=2.5)?'Lean':'Coin flip';
       const d=Math.max(sd,td);
       const totalTxt=v.our_total==null?'—':v.our_total.toFixed(1);
-      return `<div class="test-variant">🧪 test <b>${escapeHTML(v.label)}</b>: ${escapeHTML(fmtLine(g,v.our_spread))} / ${totalTxt} · ${lbl} (Δ ${d.toFixed(1)})</div>`;
+      return `<div class="test-variant">🧪 test <b>${escapeHTML(v.label)}</b>: ${escapeHTML(fmtLine(g,v.our_spread))} / ${totalTxt} · Δ ${d.toFixed(1)}</div>`;
     }).join('');
   }
   function defaultMidHTML(g,graded){
@@ -1424,6 +1535,7 @@ details.method summary{font-size:13px}
       +`<div class="g-mkt">${escapeHTML(marketLine(g))} · Model <b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`;
   }
   function gameCard(g,i){
+    if(g.sport==='tennis')return tennisCard(g,i);
     const s=signal(g);
     const favA=favId(g.sport,g.away_team),favB=favId(g.sport,g.home_team);
     const favOn=favs.has(favA)||favs.has(favB);
@@ -1435,9 +1547,33 @@ details.method summary{font-size:13px}
     return `<article class="game tappable${live&&L.state==='in'?' live':''}" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min((i||0)*40,400)}ms">
       <button class="g-star" data-fav-a="${escapeHTML(favA)}" data-fav-b="${escapeHTML(favB)}" aria-pressed="${favOn}" aria-label="Favorite team">★</button>
       <div class="g-mid">${mid}</div>
-      <div class="g-foot"><span class="signal ${s.cls}">${s.label}</span><span class="g-ours">${ours}</span></div>
+      <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">${ours}</span></div>
       ${whyCard(g)}
       ${variantLine(g)}</article>`;
+  }
+  /* ---------- tennis player cards: player-vs-player layout, event chip parsed
+     from game_id, projected vs market total. No win probabilities or surfaces:
+     gamesData carries neither, so we don't invent them. ---------- */
+  function tennisEvent(g){
+    var m=/tennis-\d{4}-([a-z]+)-/.exec(g.game_id||'');
+    return m?(m[1].charAt(0).toUpperCase()+m[1].slice(1)):'Tennis';
+  }
+  function tennisCard(g,i){
+    var s=signal(g);
+    var tot=g.our_total,mkt=g.market_total;
+    var lean=(mkt==null||tot==null)?'Awaiting line':('Model leans '+(tot>mkt?'over ':'under ')+mkt.toFixed(1));
+    var graded=g.home_score!=null&&g.away_score!=null;
+    var scoreLine=graded?`<div class="t-final">Final: ${escapeHTML(g.away_team)} ${g.away_score} – ${g.home_score} ${escapeHTML(g.home_team)}</div>`:'';
+    return `<article class="game tappable tennis-card" data-id="${g.id}" style="animation-delay:${Math.min((i||0)*40,400)}ms">
+      <div class="t-meta"><span class="t-chip">${escapeHTML(tennisEvent(g))}</span><span class="t-chip">${escapeHTML(g.model_version||'tennis model')}</span></div>
+      <div class="t-players"><b>${escapeHTML(g.away_team)}</b><span class="t-vs">vs</span><b>${escapeHTML(g.home_team)}</b></div>
+      ${scoreLine}
+      <div class="t-nums">
+        <div><span>Our projected total</span><b>${tot==null?'—':tot.toFixed(1)}</b><i>Books: ${mkt==null?'—':mkt.toFixed(1)}</i></div>
+        <div><span>Model leans</span><b style="text-transform:capitalize">${escapeHTML(lean)}</b><i>tracked for calibration</i></div>
+      </div>
+      ${s.hide?'':`<div class="g-foot" style="margin-top:8px"><span class="signal ${s.cls}">${s.label}</span></div>`}
+    </article>`;
   }
   /* ---------- why-card: tappable "Why?" expander, 2-3 plain-English reasons
      derived from the verified `why` components refresh.py attached. The full
@@ -1480,7 +1616,7 @@ details.method summary{font-size:13px}
     if(q){renderSearch(q);return}
     document.getElementById('searchResults').innerHTML='';
     renderBriefing();
-    const pool=gamesData.filter(g=>dayOK(g)&&sportOK(g));
+    const pool=gamesData.filter(g=>dayOK(g)&&sportOK(g)&&(!state.sigOnly||signal(g).rank>=2));
     const favGames=pool.filter(isFavGame);
     const rest=pool.filter(g=>!isFavGame(g));
     const withLines=pool.filter(g=>g.market_spread!=null||g.market_total!=null).length;
@@ -1542,7 +1678,7 @@ details.method summary{font-size:13px}
         +`<p class="note mover-note">Moves refresh with each daily data pull &mdash; enable notifications in Settings for timely pings. Live-game pace notes also land in the bell feed.</p>`;
     }
     const host=document.getElementById('signals');
-    host.innerHTML=html||'<div class="empty"><h2>No signals right now</h2><p>No upcoming game disagrees with the market enough to flag. New signals land with the morning model run — meanwhile, tap any game to compare the model&rsquo;s number with the sportsbook&rsquo;s.</p></div>';
+    host.innerHTML=html||'<div class="empty"><h2>No signals right now</h2><p>Nothing cleared the pick gate. New signals land with the morning model run — meanwhile, tap any game to compare the model&rsquo;s number with the sportsbook&rsquo;s.</p></div>';
   }
   /* Picks view: Overs / Unders / Spreads ranked by model-vs-market gap.
      Calibration candidates only — labels say "model lean", never a bet. */
@@ -1567,18 +1703,19 @@ details.method summary{font-size:13px}
         const d=g.our_total-g.market_total;up=d>0;dd=(up?'+':'')+d.toFixed(1);
         mid=`<span class="pk-line">O/U ${g.market_total.toFixed(1)}</span><span class="pk-model">${g.our_total.toFixed(1)}</span>`;
       }
-      const bc=s.cls==='strong'?'pk-strong':s.cls==='lean'?'pk-lean':'pk-coin';
-      const bl=s.cls==='strong'?'Strong':s.cls==='lean'?'Lean':'Coin flip';
+      const badge=s.hide?'':(s.cls==='strong'
+        ?'<span class="pk-badge pk-strong">Strong</span>'
+        :s.cls==='lean'?'<span class="pk-badge pk-lean">Lean</span>':'');
       return `<button type="button" class="pick-row" data-id="${g.id}">`
         +`<span class="pk-teams">${escapeHTML(g.away_team)} @ ${escapeHTML(g.home_team)}</span>${mid}`
-        +`<span class="pk-delta ${up?'up':'dn'}">${dd}</span><span class="pk-badge ${bc}">${bl}</span></button>`;
+        +`<span class="pk-delta ${up?'up':'dn'}">${dd}</span>${badge}</button>`;
     };
     const sec=(title,sub,rows,kind)=>rows.length
       ?`<div class="subhead"><h3>${title}</h3><p>${sub} · tap a row for the full sheet</p></div><div class="pick-rows">${rows.map(g=>trow(g,kind)).join('')}</div>`:'';
     host.innerHTML=sec('Overs','model total ≥ 2.5 over market',over,'tot')
       +sec('Unders','model total ≥ 2.5 under market',under,'tot')
       +sec('Spreads','model spread ≥ 3 off market',spr,'spr')
-      ||'<div class="empty"><h2>No picks right now</h2><p>No upcoming game disagrees with the market enough to rank. The model re-ranks every game each morning — check back after the next data pull.</p></div>';
+      ||'<div class="empty"><h2>No picks right now</h2><p>Nothing on the board. The model re-ranks every game each morning — check back after the next data pull.</p></div>';
   }
   /* Morning-after recap: parsed by refresh.py from the latest calibration
      report into recapData. Null/absent → the lands-later note. */
@@ -1606,8 +1743,8 @@ details.method summary{font-size:13px}
         return `<div class="hchip"><b>${name}</b><span>No graded games yet</span></div>`;
       const mkt=d.market_mae==null?'—':(+d.market_mae).toFixed(2);
       const cls=(d.our_mae!=null&&d.market_mae!=null)?(d.our_mae<=d.market_mae?'ok':'bad'):'';
-      const bias=d.bias==null?'—':((+d.bias>=0?'+':'')+(+d.bias).toFixed(2));
-      return `<div class="hchip"><b>${name}</b><span class="hv">${d.graded} graded · model <b class="${cls}">${(+d.our_mae).toFixed(2)}</b> vs market ${mkt} · bias ${bias}</span></div>`;
+      const bias=d.bias==null?'':(Math.abs(+d.bias)<0.05?' · tends even':(' · tends '+((+d.bias)>0?'high':'low')+' by '+Math.abs(+d.bias).toFixed(1)));
+      return `<div class="hchip"><b>${name}</b><span class="hv">${d.graded} graded · model avg miss <b class="${cls}">${(+d.our_mae).toFixed(2)}</b> vs market ${mkt}${bias}</span></div>`;
     }).join('')+'</div>';
   }
   function gpReasons(notes){
@@ -1750,11 +1887,11 @@ function renderWhatIf(){
       return `<div class="tspark"><h4>${escapeHTML(sportNames[s]||String(s).toUpperCase())}</h4>`
         +`<div class="tlegend"><i style="background:#5eb0ff"></iModel ${lastO==null?'—':(+lastO).toFixed(2)}&nbsp;&nbsp;`
         +`<i style="background:#9aa0a6"></i>Market ${lastM==null?'—':(+lastM).toFixed(2)}</div>`
-        +`<svg viewBox="0 0 300 64" width="100%" height="64" role="img" aria-label="${escapeHTML(String(s))} MAE trend">${svg}</svg></div>`;
+        +`<svg viewBox="0 0 300 64" width="100%" height="64" role="img" aria-label="${escapeHTML(String(s))} avg miss trend">${svg}</svg></div>`;
     }).join('');
     if(!cards)return '';
     const gen=t.generated?` · ${escapeHTML(String(t.generated))}`:'';
-    return `<div class="subhead"><h3>Accuracy trends</h3><p>average totals miss over time · model vs market${gen}</p></div><div class="tlist">${cards}</div>`;
+    return `<div class="subhead" id="accuracyTrends"><h3>Accuracy trends</h3><p>average totals miss over time · model vs market${gen}</p></div><div class="tlist">${cards}</div>`;
   }
   /* Closing-line value on graded rows: our_total vs close.tp when both are
      present; the honest "pending" state otherwise. */
@@ -1770,13 +1907,13 @@ function renderWhatIf(){
     statValues[1].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_spread-(g.home_score-g.away_score)),0)/graded.length).toFixed(1):'—';
     statValues[2].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_total-(g.home_score+g.away_score)),0)/graded.length).toFixed(1):'—';
     const host=document.getElementById('results');
-    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, the Model health tab shows how the numbers are tracking.</p></div>';return}
+    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, Model health (under &#9776; below) shows how the numbers are tracking.</p></div>';return}
     host.innerHTML=renderWhatIf()+renderRecap()+'<div class="cards">'+graded.map((g,i)=>{
       const s=signal(g);
       const am=g.home_score-g.away_score,at=g.home_score+g.away_score;
       return `<article class="game tappable" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min(i*40,400)}ms">
         <div class="g-mid">${defaultMidHTML(g,true)}</div>
-        <div class="g-foot"><span class="signal ${s.cls}">${s.label}</span><span class="g-ours">Spread err <b>${Math.abs(g.our_spread-am).toFixed(1)}</b> · Total err <b>${Math.abs(g.our_total-at).toFixed(1)}</b></span></div>
+        <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">Spread off by <b>${Math.abs(g.our_spread-am).toFixed(1)}</b> · Total off by <b>${Math.abs(g.our_total-at).toFixed(1)}</b></span></div>
         ${clvLine(g)}
         ${whyCard(g)}
         <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="mini-share" data-share-result="${g.id}" aria-label="Share result card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0L7 9m5-5l5 5"/><path d="M4 15v5h16v-5"/></svg></button></div>
@@ -1787,7 +1924,7 @@ function renderWhatIf(){
     const s=signal(g);
     return `<article class="board-row tappable" data-id="${g.id}" style="animation-delay:${Math.min((i||0)*40,400)}ms">
       <div class="br-match"><b>${escapeHTML(g.away_team)}</b> @ <b>${escapeHTML(g.home_team)}</b><span class="br-sport">${escapeHTML(sportNames[g.sport]||g.sport)} · ${escapeHTML(dateLabel(g.game_date))}</span></div>
-      <div class="br-nums">${nums}<span class="br-gap">gap ${gap.toFixed(1)}</span><span class="signal ${s.cls}">${s.label}</span></div>
+      <div class="br-nums">${nums}<span class="br-gap">gap ${gap.toFixed(1)}</span>${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}</div>
     </article>`;
   }
   function disagreementBoards(){
@@ -1836,7 +1973,7 @@ function renderWhatIf(){
   function renderBoards(){
     const host=document.getElementById('boards');
     if(state.team){host.innerHTML=teamDetailHTML(state.team.sport,state.team.abbr);return}
-    host.innerHTML=disagreementBoards()+`<div class="subhead"><h3>Team pages</h3><p>tap a team for upcoming games + the model's totals bias</p></div>`+teamRows()
+    host.innerHTML=disagreementBoards()+`<div class="subhead"><h3>Team pages</h3><p>tap a team for upcoming games + whether our totals tend to run high or low on them</p></div>`+teamRows()
       ||'<div class="empty"><h2>No boards yet</h2><p>The biggest model-vs-market gaps will rank here after the next data pull.</p></div>';
   }
   function render(){
@@ -1966,7 +2103,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     };
     const body=row(g.away_team)+row(g.home_team);
     if(!body)return '';
-    return `<h4>Team bias</h4><div class="sheet-sec"><div class="numrows">${body}</div><div class="edge-line">How the model has historically missed on these teams (+ = the model&rsquo;s number ran high). Tendency, not a pick.</div></div>`;
+    return `<h4>Team tendencies</h4><div class="sheet-sec"><div class="numrows">${body}</div><div class="edge-line">How the model has historically missed on these teams (+ = the model&rsquo;s number ran high). Tendency, not a pick.</div></div>`;
   }
   function movementDetail(g){
     const rows=[];
@@ -2027,7 +2164,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       :g.kickoff_utc?`<div class="sheet-kick">${escapeHTML(kickoffWhen(g.kickoff_utc))} · <span class="countdown" data-ko="${escapeHTML(g.kickoff_utc)}">${countdownText(g.kickoff_utc)}</span></div>`:'';
     const ps=projectedScore(g);
     const venue=L&&L.venue?`<div class="sheet-venue">${escapeHTML(L.venue.name)}${L.venue.city?` · ${escapeHTML(L.venue.city)}${L.venue.state?', '+escapeHTML(L.venue.state):''}`:''}<span id="wxLine"></span></div>`:'<div class="sheet-venue"><span class="wx-note">Weather unavailable — venue not in this snapshot.</span></div>';
-    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-state">${graded?'Final':espnFinal?'Final':(g.kickoff_utc?escapeHTML(kickoffTime(g.kickoff_utc)):'TBD')}</div>${teamRowsHTML(g,graded?g.away_score:(espnFinal?L.away:null),graded?g.home_score:(espnFinal?L.home:null),false)}</div><span class="signal ${s.cls}">${s.label}</span></div>${ko}${venue}`;
+    let h=`<div class="sheet-head"><div class="sheet-teams"><div class="g-state">${graded?'Final':espnFinal?'Final':(g.kickoff_utc?escapeHTML(kickoffTime(g.kickoff_utc)):'TBD')}</div>${teamRowsHTML(g,graded?g.away_score:(espnFinal?L.away:null),graded?g.home_score:(espnFinal?L.home:null),false)}</div>${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}</div>${ko}${venue}`;
     h+=`<h4>Model projection</h4><div class="sheet-sec"><div class="proj">`
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.home_team)}</span><span class="ps">${ps.home.toFixed(1)}</span></div>`
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.away_team)}</span><span class="ps">${ps.away.toFixed(1)}</span></div>`
@@ -2107,14 +2244,17 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
         :`Edge ${td.toFixed(1)} · Leans ${td<.05?'neither':((g.our_total-g.market_total)>0?'Over':'Under')}`;
     }
     C(edge,W/2,1012,'700 44px system-ui','#5eb0ff');
-    const lbl=signal(g).label.toUpperCase();
-    x.font='800 40px system-ui';
-    const pw=x.measureText(lbl).width+100,ph=86,px=W/2-pw/2,py=1056;
-    x.beginPath();
-    if(x.roundRect)x.roundRect(px,py,pw,ph,43);else x.rect(px,py,pw,ph);
-    x.fillStyle='rgba(255,255,255,.06)';x.fill();
-    x.strokeStyle=g.home_color||'#5eb0ff';x.lineWidth=4;x.stroke();
-    C(lbl,W/2,py+56,'800 40px system-ui',INK);
+    const _sig=signal(g);
+    if(!_sig.hide){
+      const lbl=_sig.label.toUpperCase();
+      x.font='800 40px system-ui';
+      const pw=x.measureText(lbl).width+100,ph=86,px=W/2-pw/2,py=1056;
+      x.beginPath();
+      if(x.roundRect)x.roundRect(px,py,pw,ph,43);else x.rect(px,py,pw,ph);
+      x.fillStyle='rgba(255,255,255,.06)';x.fill();
+      x.strokeStyle=g.home_color||'#5eb0ff';x.lineWidth=4;x.stroke();
+      C(lbl,W/2,py+56,'800 40px system-ui',INK);
+    }
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1210,'500 32px system-ui',FAINT);
     C('Model signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
     return cv;
@@ -2186,7 +2326,16 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     document.querySelectorAll('.chip[data-sport]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
     render();
   }));
+  document.getElementById('sigToggle').addEventListener('click',function(){
+    state.sigOnly=!state.sigOnly;
+    this.setAttribute('aria-pressed',String(state.sigOnly));
+    render();
+  });
   document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+  document.getElementById('searchBtn').addEventListener('click',()=>{
+    setView('games');
+    setTimeout(()=>{const w=document.getElementById('searchWrap');if(w)w.scrollIntoView({behavior:'smooth',block:'start'});const i=document.getElementById('searchInput');if(i)i.focus({preventScroll:true});},140);
+  });
   function onCardArea(e){
     const shr=e.target.closest('[data-share-result],[data-sharegp]');
     if(shr){if(shr.dataset.shareResult)shareResultCard(+shr.dataset.shareResult);else shareGated(shr.dataset.sharegp);return}
@@ -3152,7 +3301,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const e=_edgeInfo(b);if(!e)return '';
     const txt=e.edge
       ?'Edge detected vs market — <b>~$20 standard is fine</b>'
-      :'No clear edge — <b>coin flip; consider passing or half size</b>';
+      :'No clear edge — <b>toss-up; consider passing or half size</b>';
     return `<div class="sizenote">Stake note (heuristic, not advice): ${txt}</div>`;
   }
 
@@ -3263,8 +3412,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const f=x=>_trimNum(x);
     const verdict=v.state==='edge'
       ?`<b style="color:var(--green)">Edge — our number supports ${side} ${f(lv)}</b>`
-      :`<b>No edge — coin flip</b>${v.supports?'':' (our total points the other way)'}`;
-    const nudge=v.state==='edge'?'~$20 standard is fine':'coin flip — consider passing or half size';
+      :`<b>No edge — toss-up</b>${v.supports?'':' (our total points the other way)'}`;
+    const nudge=v.state==='edge'?'~$20 standard is fine':'toss-up — consider passing or half size';
     out.innerHTML=`<div class="chkverdict ${v.state}"><div class="youvs" style="margin-top:0;border-top:0;padding-top:0">
       <div class="row"><span>Our pregame total</span><b>${f(v.ours)}</b></div>
       <div class="row"><span>Market line</span><b>${f(v.mkt)}</b></div>
@@ -3426,6 +3575,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     });
     return [...m.values()].sort((a,b)=>a.sport.localeCompare(b.sport)||a.abbr.localeCompare(b.abbr));
   }
+  function obImgErr(el){const s=document.createElement('span');s.className='sw';s.textContent=el.dataset.mono||'?';el.replaceWith(s);}
   let obChips=new Set();
   function openOnboarding(edit){
     obChips=new Set(favs);
@@ -3436,7 +3586,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       `<div class="ob-sport">${escapeHTML(sportNames[s]||s.toUpperCase())}</div><div class="ob-chips">`+
       bySport[s].map(t=>{const k=favId(t.sport,t.abbr),on=obChips.has(k);
         const face=t.logo
-          ?`<img src="${escapeHTML(t.logo)}" alt="" loading="lazy" onerror="this.remove()">`
+          ?`<img src="${escapeHTML(t.logo)}" alt="" loading="lazy" data-mono="${escapeHTML(t.abbr.slice(0,3))}" onerror="obImgErr(this)">`
           :`<span class="sw">${escapeHTML(t.abbr.slice(0,3))}</span>`;
         return `<button class="ob-chip" data-ob="${escapeHTML(k)}" aria-pressed="${on}" type="button">${face}${escapeHTML(t.abbr)}</button>`}).join('')+`</div>`).join('');
     const bd=document.getElementById('obBackdrop');bd.hidden=false;document.body.style.overflow='hidden';
@@ -3482,12 +3632,75 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   document.getElementById('setFavEdit').addEventListener('click',()=>{closeSettings();setTimeout(()=>openOnboarding(true),250)});
 
   /* ---------- view switching helper ---------- */
+  var DRAWER_VIEWS=['signals','picks','boards','bets','health'];
   function setView(v){
+    if(v==='more'){openDrawer();return}
     state.view=v;
-    document.querySelectorAll('.nav-btn').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.view===v)));
+    var navKey=DRAWER_VIEWS.indexOf(v)>=0?'more':v;
+    document.querySelectorAll('.nav-btn').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.view===navKey)));
     document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===v+'View'));
     render();window.scrollTo({top:0,behavior:'smooth'});
   }
+
+  /* ---------- hamburger drawer ---------- */
+  function openDrawer(){
+    var bd=document.getElementById('drawerBackdrop');if(!bd)return;
+    updateDrawerBetCount();bd.hidden=false;document.body.style.overflow='hidden';
+    var d=bd.querySelector('.drawer');if(d)d.focus({preventScroll:true});
+  }
+  function closeDrawer(){var bd=document.getElementById('drawerBackdrop');if(!bd)return;bd.hidden=true;document.body.style.overflow=''}
+  function updateDrawerBetCount(){
+    try{
+      var open=((typeof betsData!=='undefined'&&betsData)||[]).filter(function(b){return !b.result}).length;
+      var el=document.getElementById('drawerBetSub');
+      if(el)el.textContent=open?open+' active':'Tracked positions';
+    }catch(e){}
+  }
+  function openHow(){var bd=document.getElementById('howBackdrop');if(!bd)return;bd.hidden=false;document.body.style.overflow='hidden'}
+  function closeHow(){var bd=document.getElementById('howBackdrop');if(!bd)return;bd.hidden=true;document.body.style.overflow=''}
+  function openAbout(){var bd=document.getElementById('aboutBackdrop');if(!bd)return;bd.hidden=false;document.body.style.overflow='hidden'}
+  function closeAbout(){var bd=document.getElementById('aboutBackdrop');if(!bd)return;bd.hidden=true;document.body.style.overflow=''}
+  document.getElementById('drawerClose').addEventListener('click',closeDrawer);
+  document.getElementById('drawerBackdrop').addEventListener('click',function(e){if(e.target.id==='drawerBackdrop')closeDrawer()});
+  document.getElementById('howClose').addEventListener('click',closeHow);
+  document.getElementById('howBackdrop').addEventListener('click',function(e){if(e.target.id==='howBackdrop')closeHow()});
+  document.getElementById('aboutClose').addEventListener('click',closeAbout);
+  document.getElementById('aboutBackdrop').addEventListener('click',function(e){if(e.target.id==='aboutBackdrop')closeAbout()});
+  document.getElementById('drawerList').addEventListener('click',function(e){
+    var b=e.target.closest('[data-go]');if(!b)return;
+    var go=b.dataset.go;closeDrawer();
+    if(go==='trends'){setView('results');setTimeout(function(){var t=document.getElementById('accuracyTrends');if(t)t.scrollIntoView({behavior:'smooth',block:'start'})},120);return}
+    if(go==='how'){openHow();return}
+    if(go==='about'){openAbout();return}
+    if(go==='tour'){openTour(true);return}
+    if(go==='settings'){openSettings();return}
+    if(go==='feed'){openFeed();return}
+    setView(go);
+  });
+
+  /* ---------- first-run tour (4 slides, once via localStorage) ---------- */
+  var tourSeenKey='ll_tour_seen_v1',tourIdx=0;
+  function openTour(force){
+    var seen=null;try{seen=localStorage.getItem(tourSeenKey)}catch(e){}
+    if(seen&&!force)return false;
+    tourIdx=0;tourShow(0);
+    var bd=document.getElementById('tourBackdrop');bd.hidden=false;document.body.style.overflow='hidden';
+    var sh=bd.querySelector('.tour-sheet');if(sh)sh.focus({preventScroll:true});
+    return true;
+  }
+  function tourShow(i){
+    tourIdx=Math.max(0,Math.min(3,i));
+    document.querySelectorAll('.tour-slide').forEach(function(s){s.hidden=s.dataset.tour!=String(tourIdx)});
+    document.querySelectorAll('#tourDots span').forEach(function(d,k){d.classList.toggle('on',k===tourIdx)});
+    document.getElementById('tourNext').textContent=tourIdx===3?'Get started':'Next';
+  }
+  function closeTour(){
+    try{localStorage.setItem(tourSeenKey,'1')}catch(e){}
+    document.getElementById('tourBackdrop').hidden=true;document.body.style.overflow='';
+    maybeShowOnboarding();
+  }
+  document.getElementById('tourNext').addEventListener('click',function(){if(tourIdx>=3)closeTour();else tourShow(tourIdx+1)});
+  document.getElementById('tourSkip').addEventListener('click',closeTour);
 
   /* ---------- search: teams + games ---------- */
   const searchQuery=()=>{const el=document.getElementById('searchInput');return el?el.value.trim().toLowerCase():''};
@@ -3986,7 +4199,7 @@ function renderLabNotebook() {
   buildFeed(true);
   refreshFreshness();
   render();
-  maybeShowOnboarding();
+  if(!openTour(false))maybeShowOnboarding();
   openDeepLink();
   pollLive();
 
