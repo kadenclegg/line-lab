@@ -3997,7 +3997,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
         txt.textContent='Finishing setup — linking this device to the push server…';
         btn.style.display='none';
         resyncPushBackend().then(renderPushRow,renderPushRow);
-      }else{txt.textContent='On — timely pings are enabled on this device.';btn.style.display='none'}
+      }else{txt.textContent='On — timely pings are enabled on this device.';btn.style.display='';btn.textContent='Re-link device'}
     }
     else{
       txt.textContent=PUSH_CONFIG.VAPID_PUBLIC_KEY
@@ -4028,7 +4028,18 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       renderPushRow();
     }catch(e){renderPushRow()}
   }
-  document.getElementById('pushEnable').addEventListener('click',subscribePush);
+  document.getElementById('pushEnable').addEventListener('click',()=>{pushState()==='on'?relinkPush():subscribePush();});
+  async function relinkPush(){
+    const txt=document.getElementById('pushStatus');
+    if(txt)txt.textContent='Re-linking this device…';
+    try{
+      const reg=await navigator.serviceWorker.ready;
+      const sub=await reg.pushManager.getSubscription();
+      if(sub)await sub.unsubscribe();
+    }catch(e){}
+    try{localStorage.removeItem(pushSubKey)}catch(e){}
+    subscribePush();
+  }
   /* One contextual prompt: offered once, right after favorite teams are picked. */
   function maybePushPrompt(){
     let done=null;try{done=localStorage.getItem(pushPromptKey)}catch(e){}
