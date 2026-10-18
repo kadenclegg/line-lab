@@ -280,14 +280,22 @@
     .ff-team{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:19px}
     .ff-team img{width:32px;height:32px;object-fit:contain}
     .ff-team span{font-size:10.5px;font-weight:800;color:var(--ink);letter-spacing:.05em}
+    .ff-rec{font-size:10px;font-weight:800;color:#8e97ab;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+    .ff-rec.pos{color:#a3e635}
+    .ff-rec.neg{color:#f43f5e}
     .ff-chart{flex:1;min-width:0}
     .ff-vals,.ff-opps{display:flex;gap:6px}
     .ff-vals{margin-bottom:3px}
-    .ff-opps{margin-top:4px}
-    .ff-val{flex:1;min-width:0;text-align:center;font-size:11px;font-weight:800;color:#fff;height:15px;line-height:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .ff-opp{flex:1;min-width:0;text-align:center;font-size:9px;color:#8e97ab;font-weight:700;height:12px;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ff-opps{margin-top:5px}
+    .ff-ocol{flex:1;min-width:0;text-align:center}
+    .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ff-sc{font-size:10px;color:#d7dce6;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .ff-val{flex:1;min-width:0;text-align:center;font-size:12px;font-weight:800;color:#fff;height:16px;line-height:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ff-sc{font-size:10px;color:#d7dce6;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .ff-plot{position:relative;height:104px}
     .ff-zero{position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(255,255,255,.25);pointer-events:none}
+    .ff-zero>span{position:absolute;left:2px;top:-14px;font-size:9px;font-weight:800;color:#8e97ab}
     .ff-swrap{flex:1;min-width:0;position:relative;height:100%}
     .ff-srow{position:absolute;inset:0;display:flex}
     .ff-bar{position:absolute;left:50%;transform:translateX(-50%);width:min(30px,70%);border-radius:99px;max-height:50%}
@@ -2197,13 +2205,18 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const arr=FD[g.sport+':'+(side==='away'?g.away_team:g.home_team)]||[];
     const r=arr.slice(0,5);while(r.length<5)r.push(null);return r;
   }
-  function formRowHead(g,side){
+  function formRowHead(g,side,rec){
     const abbr=side==='away'?g.away_team:g.home_team;
     const logo=side==='away'?g.away_logo:g.home_logo;
-    return `<div class="ff-team">${logo?`<img src="${escapeHTML(logo)}" alt="" loading="lazy" onerror="this.remove()">`:''}<span>${escapeHTML(abbr)}</span></div>`;
+    const recHtml=rec?`<span class="ff-rec${rec.cls?' '+rec.cls:''}">${escapeHTML(rec.txt)}</span>`:'';
+    return `<div class="ff-team">${logo?`<img src="${escapeHTML(logo)}" alt="" loading="lazy" onerror="this.remove()">`:''}<span>${escapeHTML(abbr)}</span>${recHtml}</div>`;
+  }
+  function formRec(w,l,suffix){
+    if(!w&&!l)return null;
+    return {txt:`${w}-${l}${suffix||''}`,cls:w>l?'pos':l>w?'neg':''};
   }
   function formOpps(entries){
-    return entries.map(e=>`<div class="ff-opp">${e?escapeHTML((e.ha==='H'?'vs ':'at ')+e.opp):'—'}</div>`).join('');
+    return entries.map(e=>`<div class="ff-ocol"><div class="ff-opp">${e?escapeHTML((e.ha==='H'?'vs ':'at ')+e.opp):'—'}</div><div class="ff-sc">${e?escapeHTML(e.ts+'-'+e.os):''}</div></div>`).join('');
   }
   function formSpreadRow(g,side,entries,maxA){
     const vals=entries.map(e=>`<div class="ff-val">${e&&e.ats!=null?fmtATS(e.ats):'—'}</div>`).join('');
@@ -2212,7 +2225,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       const h=Math.max(5,Math.abs(e.ats)/maxA*50);
       return `<div class="ff-swrap"><div class="ff-bar ${e.ats>0?'up':'dn'} ${e.cover==='W'?'ff-w':'ff-l'}" style="height:${h.toFixed(1)}%"></div></div>`;
     }).join('');
-    return `<div class="ff-row">${formRowHead(g,side)}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    let w=0,l=0;entries.forEach(e=>{if(e&&e.cover==='W')w++;else if(e&&e.cover==='L')l++});
+    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,' ATS'))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"><span>0</span></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
   }
   function formWinsRow(g,side,entries,maxM){
     const vals=entries.map(e=>`<div class="ff-val">${e?fmtATS(e.ts-e.os):'—'}</div>`).join('');
@@ -2224,19 +2238,25 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       const cls=m>0?'ff-w':m<0?'ff-l':'ff-p';
       return `<div class="ff-swrap"><div class="ff-bar ${dir} ${cls}" style="height:${h.toFixed(1)}%"></div></div>`;
     }).join('');
-    return `<div class="ff-row">${formRowHead(g,side)}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    let w=0,l=0;entries.forEach(e=>{if(e){const m=e.ts-e.os;if(m>0)w++;else if(m<0)l++}});
+    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,''))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"><span>0</span></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
   }
-  function formTotalRow(g,side,entries,maxT,line){   const vals=entries.map(e=>`<div class="ff-val">${e&&e.pts!=null?e.pts:'—'}</div>`).join('');
-    const bars=entries.map(e=>{
-      if(!e||e.pts==null)return '<div class="ff-twrap"><div class="ff-tbar ff-p" style="height:6px"></div></div>';
-      let cls='ff-p';
-      if(line!=null){const d=e.pts-line;cls=d>0.05?'ff-w':d<-0.05?'ff-l':'ff-p'}
-      else cls=e.over==='O'?'ff-w':e.over==='U'?'ff-l':'ff-p';
+  function formTotalRow(g,side,entries,maxT,line){
+    const outs=entries.map(e=>{
+      if(!e||e.pts==null)return 'p';
+      if(line!=null){const d=e.pts-line;return d>0.05?'w':d<-0.05?'l':'p'}
+      return e.over==='O'?'w':e.over==='U'?'l':'p';
+    });
+    const vals=entries.map(e=>`<div class="ff-val">${e&&e.pts!=null?e.pts:'—'}</div>`).join('');
+    const bars=entries.map((e,i)=>{
+      if(outs[i]==='p')return '<div class="ff-twrap"><div class="ff-tbar ff-p" style="height:6px"></div></div>';
+      const cls=outs[i]==='w'?'ff-w':'ff-l';
       const h=Math.max(2.5,e.pts/maxT*100);
       return `<div class="ff-twrap"><div class="ff-tbar ${cls}" style="height:${h.toFixed(1)}%"></div></div>`;
     }).join('');
     const tline=line!=null?`<div class="ff-tline" style="bottom:${Math.min(97,line/maxT*100).toFixed(1)}%"><span>${line.toFixed(1)}</span></div>`:'';
-    return `<div class="ff-row">${formRowHead(g,side)}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div>${tline}</div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    let o=0,u=0;outs.forEach(x=>{if(x==='w')o++;else if(x==='l')u++});
+    return `<div class="ff-row">${formRowHead(g,side,formRec(o,u,' O/U'))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div>${tline}</div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
   }
   function formHTML(g){
     if(g.sport==='tennis')return '';
