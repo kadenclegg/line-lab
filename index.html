@@ -276,6 +276,9 @@
     .ff-cap{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:2px}
     .ff-cap b{color:var(--ink);font-variant-numeric:tabular-nums}
     .ff-sec-t{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:16px 0 2px}
+    .ff-card{background:var(--surface-2);border-radius:14px;padding:12px 14px 16px;margin-top:10px}
+    .ff-card>.ff-sec-t:first-child{margin-top:0}
+    .ff-exp{font-size:11px;color:#8e97ab;font-weight:600;margin:3px 0 6px}
     .ff-row{display:flex;gap:10px;align-items:stretch;margin-top:8px}
     .ff-team{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:19px}
     .ff-team img{width:32px;height:32px;object-fit:contain}
@@ -289,7 +292,7 @@
     .ff-opps{margin-top:5px}
     .ff-ocol{flex:1;min-width:0;text-align:center}
     .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .ff-sc{font-size:10px;color:#d7dce6;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .ff-sc{font-size:10px;color:#e3e7f0;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .ff-val{flex:1;min-width:0;text-align:center;font-size:12px;font-weight:800;color:#fff;height:16px;line-height:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ff-sc{font-size:10px;color:#d7dce6;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -2267,15 +2270,20 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     let maxM=1;[...A,...H].forEach(e=>{if(e)maxM=Math.max(maxM,Math.abs(e.ts-e.os))});
     const line=g.market_total;
     const ko=g.kickoff_utc?escapeHTML(kickoffTime(g.kickoff_utc)):'TBD';
-    return `<h4>Recent form</h4><div class="sheet-sec">`
+    return `<h4>Recent form</h4>`
+      +`<div class="ff-card">`
       +`<div class="ff-sub">${escapeHTML(g.away_team)} @ ${escapeHTML(g.home_team)} · ${escapeHTML(dateLabel(g.game_date))} · ${ko}</div>`
       +`<div class="ff-cap">Our spread <b>${escapeHTML(fmtLine(g,g.our_spread))}</b> · Market <b>${escapeHTML(fmtLine(g,g.market_spread))}</b></div>`
       +`<div class="ff-cap">Our total <b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b> · Market <b>${line==null?'—':line.toFixed(1)}</b></div>`
-      +`<div class="ff-sec-t">Wins · last 5</div>`
+      +`<div class="ff-sec-t">Wins · last 5</div><div class="ff-exp">Green = won · number = point margin</div>`
       +formWinsRow(g,'away',A,maxM)+formWinsRow(g,'home',H,maxM)
-      +`<div class="ff-sec-t">Spread · last 5</div>`
+      +`</div>`
+      +`<div class="ff-card">`
+      +`<div class="ff-sec-t">Spread · last 5</div><div class="ff-exp">Green = covered the spread · number = margin vs the spread</div>`
       +formSpreadRow(g,'away',A,maxA)+formSpreadRow(g,'home',H,maxA)
-      +`<div class="ff-sec-t">Total · last 5</div>`
+      +`</div>`
+      +`<div class="ff-card">`
+      +`<div class="ff-sec-t">Total · last 5</div><div class="ff-exp">Green = went over · number = total points scored</div>`
       +formTotalRow(g,'away',A,maxT,line)+formTotalRow(g,'home',H,maxT,line)
       +`</div>`;
   }
