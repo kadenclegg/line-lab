@@ -1448,5 +1448,1455 @@
       "logo": "https://a.espncdn.com/i/teamlogos/nhl/500/wpg.png",
       "color": "#002d62"
     }
+  },
+  "cbb": {
+    "ACU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2000.png",
+      "color": "#592d82"
+    },
+    "AF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2005.png",
+      "color": "#003594"
+    },
+    "AKR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2006.png",
+      "color": "#041e42"
+    },
+    "AAMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2010.png",
+      "color": "#790000"
+    },
+    "ALA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png",
+      "color": "#9e1b32"
+    },
+    "ALST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2011.png",
+      "color": "#e9a900"
+    },
+    "ALCN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2016.png",
+      "color": "#4b0058"
+    },
+    "AMER": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/44.png",
+      "color": "#c41130"
+    },
+    "APP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2026.png",
+      "color": "#000000"
+    },
+    "ASU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/9.png",
+      "color": "#ffc627"
+    },
+    "ARIZ": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/12.png",
+      "color": "#cc0033"
+    },
+    "ARK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/8.png",
+      "color": "#a32136"
+    },
+    "ARST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2032.png",
+      "color": "#cc092f"
+    },
+    "UAPB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2029.png",
+      "color": "#e0aa0f"
+    },
+    "ARMY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/349.png",
+      "color": "#000000"
+    },
+    "AUB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2.png",
+      "color": "#002b5c"
+    },
+    "APSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2046.png",
+      "color": "#8e0b0b"
+    },
+    "BYU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/252.png",
+      "color": "#0047ba"
+    },
+    "BALL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2050.png",
+      "color": "#ba0c2f"
+    },
+    "BAY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/239.png",
+      "color": "#154734"
+    },
+    "BELL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/91.png",
+      "color": "#000000"
+    },
+    "BEL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2057.png",
+      "color": "#182142"
+    },
+    "BCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2065.png",
+      "color": "#7b1831"
+    },
+    "BING": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2066.png",
+      "color": "#00614A"
+    },
+    "BOIS": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/68.png",
+      "color": "#0033a0"
+    },
+    "BC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/103.png",
+      "color": "#8c2232"
+    },
+    "BU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/104.png",
+      "color": "#cc0000"
+    },
+    "BGSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/189.png",
+      "color": "#fd5000"
+    },
+    "BRAD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/71.png",
+      "color": "#b70002"
+    },
+    "BRWN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/225.png",
+      "color": "#411e09"
+    },
+    "BRY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2803.png",
+      "color": "#000000"
+    },
+    "BUCK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2083.png",
+      "color": "#000060"
+    },
+    "BUF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2084.png",
+      "color": "#005bbb"
+    },
+    "BTLR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2086.png",
+      "color": "#0d1361"
+    },
+    "CP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/13.png",
+      "color": "#1E4D2B"
+    },
+    "CSUB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2934.png",
+      "color": "#003BAB"
+    },
+    "CSUF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2239.png",
+      "color": "#003767"
+    },
+    "CSUN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2463.png",
+      "color": "#b50000"
+    },
+    "CBU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2856.png",
+      "color": "#000080"
+    },
+    "CAL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/25.png",
+      "color": "#041e42"
+    },
+    "CAM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2097.png",
+      "color": "#000000"
+    },
+    "CAN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2099.png",
+      "color": "#004a81"
+    },
+    "CARK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2110.png",
+      "color": "#a7a9ac"
+    },
+    "CCSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2115.png",
+      "color": "#1B49A2"
+    },
+    "CMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2117.png",
+      "color": "#4c0027"
+    },
+    "COFC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/232.png",
+      "color": "#7a2531"
+    },
+    "CHSO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2127.png",
+      "color": "#2e3192"
+    },
+    "CLT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2429.png",
+      "color": "#005035"
+    },
+    "UTC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/236.png",
+      "color": "#00386b"
+    },
+    "CHST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2130.png",
+      "color": "#006700"
+    },
+    "CIN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2132.png",
+      "color": "#000000"
+    },
+    "CLEM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/228.png",
+      "color": "#f56600"
+    },
+    "CLE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/325.png",
+      "color": "#006633"
+    },
+    "CCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/324.png",
+      "color": "#006f71"
+    },
+    "COLG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2142.png",
+      "color": "#821019"
+    },
+    "COLO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/38.png",
+      "color": "#cfb87c"
+    },
+    "CSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/36.png",
+      "color": "#004c23"
+    },
+    "COLU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/171.png",
+      "color": "#7ba4db"
+    },
+    "COPP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2154.png",
+      "color": "#2e3192"
+    },
+    "COR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/172.png",
+      "color": "#b31b1b"
+    },
+    "CREI": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/156.png",
+      "color": "#005ca9"
+    },
+    "DART": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/159.png",
+      "color": "#005730"
+    },
+    "DAV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2166.png",
+      "color": "#000000"
+    },
+    "DAY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2168.png",
+      "color": "#004B8D"
+    },
+    "DEP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/305.png",
+      "color": "#2d649c"
+    },
+    "DEL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/48.png",
+      "color": "#00539f"
+    },
+    "DSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2169.png",
+      "color": "#009cdb"
+    },
+    "DEN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2172.png",
+      "color": "#98002e"
+    },
+    "DETM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2174.png",
+      "color": "#165b9e"
+    },
+    "DRKE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2181.png",
+      "color": "#005596"
+    },
+    "DREX": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2182.png",
+      "color": "#020260"
+    },
+    "DUKE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png",
+      "color": "#00539b"
+    },
+    "DUQ": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2184.png",
+      "color": "#002D62"
+    },
+    "ECU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/151.png",
+      "color": "#582c83"
+    },
+    "ETSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2193.png",
+      "color": "#002d61"
+    },
+    "ETAM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2837.png",
+      "color": "#000000"
+    },
+    "EIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2197.png",
+      "color": "#000000"
+    },
+    "EKU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2198.png",
+      "color": "#660819"
+    },
+    "EMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2199.png",
+      "color": "#006938"
+    },
+    "EWU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/331.png",
+      "color": "#a10022"
+    },
+    "ELON": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2210.png",
+      "color": "#020303"
+    },
+    "EVAN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/339.png",
+      "color": "#663399"
+    },
+    "FAIR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2217.png",
+      "color": "#000000"
+    },
+    "FDU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/161.png",
+      "color": "#72293c"
+    },
+    "FAMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/50.png",
+      "color": "#F89728"
+    },
+    "FAU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2226.png",
+      "color": "#003366"
+    },
+    "FLA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/57.png",
+      "color": "#0021a5"
+    },
+    "FGCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/526.png",
+      "color": "#00885a"
+    },
+    "FIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2229.png",
+      "color": "#091f3f"
+    },
+    "FSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/52.png",
+      "color": "#782f40"
+    },
+    "FOR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2230.png",
+      "color": "#830032"
+    },
+    "FRES": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/278.png",
+      "color": "#b1102b"
+    },
+    "FUR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/231.png",
+      "color": "#582c83"
+    },
+    "GWEB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2241.png",
+      "color": "#c12535"
+    },
+    "GMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2244.png",
+      "color": "#016600"
+    },
+    "GW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/45.png",
+      "color": "#002843"
+    },
+    "GTWN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/46.png",
+      "color": "#110E42"
+    },
+    "UGA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/61.png",
+      "color": "#ba0c2f"
+    },
+    "GASO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/290.png",
+      "color": "#041e42"
+    },
+    "GAST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2247.png",
+      "color": "#0039a6"
+    },
+    "GT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/59.png",
+      "color": "#b3a369"
+    },
+    "GONZ": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2250.png",
+      "color": "#041e42"
+    },
+    "GRAM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2755.png",
+      "color": "#ee8601"
+    },
+    "GCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2253.png",
+      "color": "#522398"
+    },
+    "GB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2739.png",
+      "color": "#006633"
+    },
+    "HAMP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2261.png",
+      "color": "#0067AC"
+    },
+    "HARV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/108.png",
+      "color": "#990000"
+    },
+    "HAW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/62.png",
+      "color": "#005737"
+    },
+    "HPU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2272.png",
+      "color": "#330072"
+    },
+    "HOF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2275.png",
+      "color": "#003594"
+    },
+    "HC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/107.png",
+      "color": "#582c83"
+    },
+    "HCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2277.png",
+      "color": "#00539c"
+    },
+    "HOU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png",
+      "color": "#c8102e"
+    },
+    "HOW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/47.png",
+      "color": "#003a63"
+    },
+    "IUIN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/85.png",
+      "color": "#A81F30"
+    },
+    "IDST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/304.png",
+      "color": "#ef8c00"
+    },
+    "IDHO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/70.png",
+      "color": "#000000"
+    },
+    "ILL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/356.png",
+      "color": "#ff5f05"
+    },
+    "ILST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2287.png",
+      "color": "#CE1126"
+    },
+    "UIW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2916.png",
+      "color": "#000000"
+    },
+    "IU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/84.png",
+      "color": "#970310"
+    },
+    "INST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/282.png",
+      "color": "#00669a"
+    },
+    "IONA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/314.png",
+      "color": "#6f2c3e"
+    },
+    "IOWA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png",
+      "color": "#231f20"
+    },
+    "ISU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/66.png",
+      "color": "#ae192d"
+    },
+    "JKST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2296.png",
+      "color": "#123297"
+    },
+    "JAX": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/294.png",
+      "color": "#00523e"
+    },
+    "JXST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/55.png",
+      "color": "#cc0000"
+    },
+    "JMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/256.png",
+      "color": "#450084"
+    },
+    "KC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/140.png",
+      "color": "#004b87"
+    },
+    "KU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png",
+      "color": "#0051ba"
+    },
+    "KSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2306.png",
+      "color": "#330a57"
+    },
+    "KENN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/338.png",
+      "color": "#fdbb30"
+    },
+    "KENT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2309.png",
+      "color": "#002664"
+    },
+    "UK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/96.png",
+      "color": "#0033a0"
+    },
+    "NOLA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2443.png",
+      "color": "#461d7c"
+    },
+    "LSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/99.png",
+      "color": "#461d76"
+    },
+    "LAS": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2325.png",
+      "color": "#003356"
+    },
+    "LAF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/322.png",
+      "color": "#790000"
+    },
+    "LAM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2320.png",
+      "color": "#000000"
+    },
+    "LEM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2330.png",
+      "color": ""
+    },
+    "LEH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2329.png",
+      "color": "#6c2b2a"
+    },
+    "LIB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2335.png",
+      "color": "#0a254e"
+    },
+    "LIP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/288.png",
+      "color": "#20366C"
+    },
+    "LR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2031.png",
+      "color": "#AD0000"
+    },
+    "LBSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/299.png",
+      "color": "#000000"
+    },
+    "LIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/112358.png",
+      "color": "#50c9f7"
+    },
+    "LONG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2344.png",
+      "color": "#003273"
+    },
+    "UL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/309.png",
+      "color": "#ce181e"
+    },
+    "LT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2348.png",
+      "color": "#003087"
+    },
+    "LOU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/97.png",
+      "color": "#c9001f"
+    },
+    "LUC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2350.png",
+      "color": "#9d1244"
+    },
+    "L-MD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2352.png",
+      "color": "#76a7a0"
+    },
+    "LMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2351.png",
+      "color": "#880029"
+    },
+    "ME": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/311.png",
+      "color": "#127dbe"
+    },
+    "MAN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2363.png",
+      "color": "#4f8537"
+    },
+    "MRST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2368.png",
+      "color": "#e53730"
+    },
+    "MARQ": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/269.png",
+      "color": "#003366"
+    },
+    "MRSH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/276.png",
+      "color": "#00b140"
+    },
+    "UMES": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2379.png",
+      "color": "#5c2301"
+    },
+    "MD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/120.png",
+      "color": "#ce1126"
+    },
+    "MASS": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/113.png",
+      "color": "#881c1c"
+    },
+    "MCN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2377.png",
+      "color": "#00529C"
+    },
+    "MEM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/235.png",
+      "color": "#004991"
+    },
+    "MER": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2382.png",
+      "color": "#ff7f29"
+    },
+    "MERC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2385.png",
+      "color": "#000000"
+    },
+    "MRMK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2771.png",
+      "color": "#2f4f93"
+    },
+    "M-OH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/193.png",
+      "color": "#c41230"
+    },
+    "MIA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2390.png",
+      "color": "#f47423"
+    },
+    "MSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/127.png",
+      "color": "#173f35"
+    },
+    "MICH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/130.png",
+      "color": "#00274c"
+    },
+    "MTSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2393.png",
+      "color": "#036eb7"
+    },
+    "MILW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/270.png",
+      "color": "#000000"
+    },
+    "MINN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/135.png",
+      "color": "#5e0a2f"
+    },
+    "MSST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/344.png",
+      "color": "#5d1725"
+    },
+    "MVSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2400.png",
+      "color": "#005328"
+    },
+    "MOST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2623.png",
+      "color": "#5e0009"
+    },
+    "MIZ": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/142.png",
+      "color": "#f1b82d"
+    },
+    "MONM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2405.png",
+      "color": "#051844"
+    },
+    "MONT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/149.png",
+      "color": "#751D4A"
+    },
+    "MTST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/147.png",
+      "color": "#00205c"
+    },
+    "MORE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2413.png",
+      "color": "#094FA3"
+    },
+    "MORG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2415.png",
+      "color": "#014786"
+    },
+    "MSM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/116.png",
+      "color": "#005596"
+    },
+    "MUR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/93.png",
+      "color": "#002148"
+    },
+    "NCSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/152.png",
+      "color": "#cc0000"
+    },
+    "NJIT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2885.png",
+      "color": "#EE3024"
+    },
+    "NAVY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2426.png",
+      "color": "#00225b"
+    },
+    "NEB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/158.png",
+      "color": "#e31937"
+    },
+    "NEV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2440.png",
+      "color": "#041e42"
+    },
+    "UNH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/160.png",
+      "color": "#004990"
+    },
+    "NHVN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2441.png",
+      "color": "#041e42"
+    },
+    "UNM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/167.png",
+      "color": "#ba0c2f"
+    },
+    "NMSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/166.png",
+      "color": "#7e141b"
+    },
+    "NIA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/315.png",
+      "color": "#69207E"
+    },
+    "NICH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2447.png",
+      "color": "#C41230"
+    },
+    "NORF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2450.png",
+      "color": "#0c8968"
+    },
+    "UNA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2453.png",
+      "color": "#663399"
+    },
+    "NCAT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2448.png",
+      "color": "#0505aa"
+    },
+    "NCCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2428.png",
+      "color": "#880023"
+    },
+    "UNC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/153.png",
+      "color": "#7bafd4"
+    },
+    "UND": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/155.png",
+      "color": "#00A26B"
+    },
+    "NDSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2449.png",
+      "color": "#01402A"
+    },
+    "UNF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2454.png",
+      "color": "#004B8D"
+    },
+    "UNT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/249.png",
+      "color": "#068f33"
+    },
+    "NE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/111.png",
+      "color": "#CC0001"
+    },
+    "NAU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2464.png",
+      "color": "#003976"
+    },
+    "UNCO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2458.png",
+      "color": "#13558D"
+    },
+    "NIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2459.png",
+      "color": "#c8102e"
+    },
+    "UNI": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2460.png",
+      "color": "#473282"
+    },
+    "NKU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/94.png",
+      "color": "#ffc82e"
+    },
+    "NWST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2466.png",
+      "color": "#492F91"
+    },
+    "NU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/77.png",
+      "color": "#492f92"
+    },
+    "ND": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/87.png",
+      "color": "#062340"
+    },
+    "OAK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2473.png",
+      "color": "#04091c"
+    },
+    "OHIO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/195.png",
+      "color": "#154734"
+    },
+    "OSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/194.png",
+      "color": "#ba0c2f"
+    },
+    "OU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/201.png",
+      "color": "#990000"
+    },
+    "OKST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/197.png",
+      "color": "#fe5c00"
+    },
+    "ODU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/295.png",
+      "color": "#003768"
+    },
+    "MISS": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/145.png",
+      "color": "#13294b"
+    },
+    "OMA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2437.png",
+      "color": "#e3193e"
+    },
+    "ORU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/198.png",
+      "color": "#002462"
+    },
+    "ORE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2483.png",
+      "color": "#00934b"
+    },
+    "ORST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/204.png",
+      "color": "#dc4405"
+    },
+    "PAC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/279.png",
+      "color": "#F47820"
+    },
+    "PSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/213.png",
+      "color": "#061440"
+    },
+    "PENN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/219.png",
+      "color": "#082A74"
+    },
+    "PEPP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2492.png",
+      "color": "#003A72"
+    },
+    "PITT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/221.png",
+      "color": "#003594"
+    },
+    "PORT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2501.png",
+      "color": "#330072"
+    },
+    "PRST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2502.png",
+      "color": "#00311e"
+    },
+    "PV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2504.png",
+      "color": "#582c83"
+    },
+    "PRES": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2506.png",
+      "color": "#194896"
+    },
+    "PRIN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/163.png",
+      "color": "#000000"
+    },
+    "PROV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2507.png",
+      "color": "#000000"
+    },
+    "PUR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2509.png",
+      "color": "#ceb888"
+    },
+    "PFW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2870.png",
+      "color": "#cfb991"
+    },
+    "QUIN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2514.png",
+      "color": "#041B43"
+    },
+    "RAD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2515.png",
+      "color": "#BC1515"
+    },
+    "URI": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/227.png",
+      "color": "#091f3f"
+    },
+    "RICE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/242.png",
+      "color": "#00205b"
+    },
+    "RICH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/257.png",
+      "color": "#9e0712"
+    },
+    "RID": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2520.png",
+      "color": "#a80532"
+    },
+    "RMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2523.png",
+      "color": "#00214D"
+    },
+    "RUTG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/164.png",
+      "color": "#ce0e2d"
+    },
+    "SELA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2545.png",
+      "color": "#215732"
+    },
+    "SIUE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2565.png",
+      "color": "#eb1c23"
+    },
+    "SMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2567.png",
+      "color": "#a80000"
+    },
+    "SAC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/16.png",
+      "color": "#00573C"
+    },
+    "SHU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2529.png",
+      "color": "#a40012"
+    },
+    "JOES": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2603.png",
+      "color": "#9e1b32"
+    },
+    "SLU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/139.png",
+      "color": "#00539C"
+    },
+    "SMC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2608.png",
+      "color": "#d80024"
+    },
+    "SPU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2612.png",
+      "color": "#004CC2"
+    },
+    "SHSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2534.png",
+      "color": "#f56423"
+    },
+    "SAM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2535.png",
+      "color": "#005485"
+    },
+    "SDSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/21.png",
+      "color": "#a6192e"
+    },
+    "USD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/301.png",
+      "color": "#2f99d4"
+    },
+    "SF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2539.png",
+      "color": "#005a36"
+    },
+    "SJSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/23.png",
+      "color": "#0038a8"
+    },
+    "SCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2541.png",
+      "color": "#690b0b"
+    },
+    "SEA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2547.png",
+      "color": "#BF2E1A"
+    },
+    "HALL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2550.png",
+      "color": "#0857B1"
+    },
+    "SIE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2561.png",
+      "color": "#037961"
+    },
+    "USA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/6.png",
+      "color": "#00205b"
+    },
+    "SC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2579.png",
+      "color": "#73000a"
+    },
+    "SCST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2569.png",
+      "color": "#7d1315"
+    },
+    "UPST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2908.png",
+      "color": "#008545"
+    },
+    "SDAK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/233.png",
+      "color": "#CD1241"
+    },
+    "SDST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2571.png",
+      "color": "#0033a0"
+    },
+    "USF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/58.png",
+      "color": "#006747"
+    },
+    "SEMO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2546.png",
+      "color": "#c8102e"
+    },
+    "SIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/79.png",
+      "color": "#85283D"
+    },
+    "SOU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2582.png",
+      "color": "#004B97"
+    },
+    "USM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2572.png",
+      "color": "#ffc72c"
+    },
+    "SUU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/253.png",
+      "color": "#c72026"
+    },
+    "SBU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/179.png",
+      "color": "#70261D"
+    },
+    "SJU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2599.png",
+      "color": "#d10000"
+    },
+    "STMN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2900.png",
+      "color": "#000000"
+    },
+    "STAN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/24.png",
+      "color": "#8c1515"
+    },
+    "SFA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2617.png",
+      "color": "#393996"
+    },
+    "STET": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/56.png",
+      "color": "#0a5640"
+    },
+    "STO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/284.png",
+      "color": "#000000"
+    },
+    "STBK": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2619.png",
+      "color": "#990000"
+    },
+    "SYR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/183.png",
+      "color": "#000e54"
+    },
+    "TCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2628.png",
+      "color": "#4d1979"
+    },
+    "TAR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2627.png",
+      "color": "#000000"
+    },
+    "TEM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/218.png",
+      "color": "#a41e35"
+    },
+    "TNST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2634.png",
+      "color": "#171796"
+    },
+    "TNTC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2635.png",
+      "color": "#5A4099"
+    },
+    "TENN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png",
+      "color": "#ff8200"
+    },
+    "TA&M": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/245.png",
+      "color": "#500000"
+    },
+    "AMCC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/357.png",
+      "color": "#0067c5"
+    },
+    "TEX": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/251.png",
+      "color": "#af5c37"
+    },
+    "TXSO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2640.png",
+      "color": "#860038"
+    },
+    "TXST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/326.png",
+      "color": "#501214"
+    },
+    "TTU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2641.png",
+      "color": "#da291c"
+    },
+    "CIT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2643.png",
+      "color": "#7badd3"
+    },
+    "TOL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2649.png",
+      "color": "#0b2240"
+    },
+    "TOW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/119.png",
+      "color": "#FFC229"
+    },
+    "TROY": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2653.png",
+      "color": "#862633"
+    },
+    "TULN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2655.png",
+      "color": "#006747"
+    },
+    "TLSA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/202.png",
+      "color": "#003595"
+    },
+    "UAB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/5.png",
+      "color": "#1a5632"
+    },
+    "UALB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/399.png",
+      "color": "#3D2777"
+    },
+    "UCD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/302.png",
+      "color": "#002855"
+    },
+    "UCI": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/300.png",
+      "color": "#002B5C"
+    },
+    "UCR": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/27.png",
+      "color": "#14234F"
+    },
+    "UCSD": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/28.png",
+      "color": "#000000"
+    },
+    "UCSB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2540.png",
+      "color": "#1e1840"
+    },
+    "UCF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2116.png",
+      "color": "#000000"
+    },
+    "UCLA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/26.png",
+      "color": "#2774ae"
+    },
+    "CONN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png",
+      "color": "#0c2340"
+    },
+    "UIC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/82.png",
+      "color": "#001e62"
+    },
+    "ULM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2433.png",
+      "color": "#840029"
+    },
+    "UMBC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2378.png",
+      "color": "#000000"
+    },
+    "UML": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2349.png",
+      "color": "#00529C"
+    },
+    "UNCA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2427.png",
+      "color": "#003da5"
+    },
+    "UNCG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2430.png",
+      "color": "#003559"
+    },
+    "UNCW": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/350.png",
+      "color": "#00665e"
+    },
+    "UNLV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2439.png",
+      "color": "#cf0a2c"
+    },
+    "USC": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/30.png",
+      "color": "#9d2235"
+    },
+    "UTA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/250.png",
+      "color": "#004b7c"
+    },
+    "UTM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2630.png",
+      "color": "#FF6700"
+    },
+    "RGV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/292.png",
+      "color": "#dc6000"
+    },
+    "UTEP": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2638.png",
+      "color": "#ff8200"
+    },
+    "UTSA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2636.png",
+      "color": "#0c2340"
+    },
+    "USU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/328.png",
+      "color": "#0f2439"
+    },
+    "UTU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/3101.png",
+      "color": "#000000"
+    },
+    "UTAH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/254.png",
+      "color": "#be0000"
+    },
+    "UVU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/3084.png",
+      "color": "#004812"
+    },
+    "VCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2670.png",
+      "color": "#ffaf00"
+    },
+    "VMI": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2678.png",
+      "color": "#ae122a"
+    },
+    "VAL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2674.png",
+      "color": "#794500"
+    },
+    "VAN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/238.png",
+      "color": "#000000"
+    },
+    "UVM": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/261.png",
+      "color": "#154734"
+    },
+    "VILL": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/222.png",
+      "color": "#00205b"
+    },
+    "UVA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/258.png",
+      "color": "#232d4b"
+    },
+    "VT": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/259.png",
+      "color": "#6a2c3e"
+    },
+    "WAG": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2681.png",
+      "color": "#00483A"
+    },
+    "WAKE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/154.png",
+      "color": "#ceb888"
+    },
+    "WASH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/264.png",
+      "color": "#33006f"
+    },
+    "WSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/265.png",
+      "color": "#a60f2d"
+    },
+    "WEB": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2692.png",
+      "color": "#18005a"
+    },
+    "UWF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2697.png",
+      "color": "#087dc2"
+    },
+    "WGA": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2698.png",
+      "color": "#0033a1"
+    },
+    "WVU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/277.png",
+      "color": "#eaaa00"
+    },
+    "WCU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2717.png",
+      "color": "#492F91"
+    },
+    "WIU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2710.png",
+      "color": "#4e1e8a"
+    },
+    "WKU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/98.png",
+      "color": "#e13a3e"
+    },
+    "WMU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2711.png",
+      "color": "#532e1f"
+    },
+    "WICH": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2724.png",
+      "color": "#ffcd00"
+    },
+    "W&M": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2729.png",
+      "color": "#115740"
+    },
+    "WIN": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2737.png",
+      "color": "#9e0b0e"
+    },
+    "WIS": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/275.png",
+      "color": "#a00000"
+    },
+    "WOF": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2747.png",
+      "color": "#533B22"
+    },
+    "WRST": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2750.png",
+      "color": "#cba052"
+    },
+    "WYO": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2751.png",
+      "color": "#492f24"
+    },
+    "XAV": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2752.png",
+      "color": "#21304e"
+    },
+    "YALE": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/43.png",
+      "color": "#004a81"
+    },
+    "YSU": {
+      "logo": "https://a.espncdn.com/i/teamlogos/ncaa/500/2754.png",
+      "color": "#E51935"
+    }
   }
 }
