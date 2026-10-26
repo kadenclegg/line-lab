@@ -1241,9 +1241,8 @@ details.method summary{font-size:13px}
       <div id="searchResults"></div>
       <div id="favSection"></div>
       <div class="summary"><h2 id="gamesTitle">Today's games</h2><p id="gameCount" aria-live="polite"></p></div>
-      <div id="healthStrip" aria-live="polite"></div>
-      <div id="livePrices"></div>
       <div id="games"></div>
+      <details class="method"><summary>Live prices — totals</summary><div id="livePrices"></div></details>
       <details class="method"><summary>How signals work</summary><p>A <b>signal</b> means the pick gate promoted this game: the model's bias-adjusted number, pulled 30% toward the market, still disagrees with the market — and a concrete, checkable reason (like a key injury) backs it. <b>Strong signal</b> and <b>Lean</b> are rare by design. Most games get no signal at all, which is the honest answer when there's no edge; a raw gap alone never earns a badge. Experimental variants are tracked separately from the main model.</p></details>
     </section>
 
@@ -1561,6 +1560,11 @@ details.method summary{font-size:13px}
       return `<div class="test-variant">🧪 test <b>${escapeHTML(v.label)}</b>: ${escapeHTML(fmtLine(g,v.our_spread))} / ${totalTxt} · Δ ${d.toFixed(1)}</div>`;
     }).join('');
   }
+  /* Test variants stay one tap away instead of extra lines on every card. */
+  function variantDetails(g){
+    const v=variantLine(g);if(!v)return '';
+    return `<details class="why-card"><summary>Test variants</summary>${v}</details>`;
+  }
   function defaultMidHTML(g,graded){
     const state=graded?`<div class="g-state">Final · ${escapeHTML(dateLabel(g.game_date))}</div>`
       :g.kickoff_utc?`<div class="g-state">${escapeHTML(kickoffTime(g.kickoff_utc))}${g.game_date!==TODAY?` · ${escapeHTML(dateLabel(g.game_date))}`:''}</div>`
@@ -1592,7 +1596,7 @@ details.method summary{font-size:13px}
       <div class="g-mid">${mid}</div>
       <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">${ours}</span></div>
       ${whyCard(g)}
-      ${variantLine(g)}</article>`;
+      ${variantDetails(g)}</article>`;
   }
   /* ---------- tennis player cards: player-vs-player layout, event chip parsed
      from game_id, projected vs market total. No win probabilities or surfaces:
