@@ -1221,6 +1221,7 @@ details.method summary{font-size:13px}
         <button data-day="upcoming" role="tab" aria-selected="false">Upcoming</button>
       </div>
       <div class="sports" aria-label="Filter by sport">
+        <button class="chip" data-sport="favs" aria-pressed="false">My Teams</button>
         <button class="chip" data-sport="all" aria-pressed="true">All</button>
         <button class="chip" data-sport="nfl" aria-pressed="false">NFL</button>
         <button class="chip" data-sport="cfb" aria-pressed="false">College</button>
@@ -1656,7 +1657,7 @@ details.method summary{font-size:13px}
   /* ---------- filtering ---------- */
   const ungraded=()=>gamesData.filter(g=>g.home_score==null&&g.away_score==null);
   const dayOK=g=>state.day==='yesterday'?g.game_date===YESTERDAY:state.day==='today'?g.game_date===TODAY:g.game_date>TODAY;
-  const sportOK=g=>state.sport==='all'||g.sport===state.sport;
+  const sportOK=g=>state.sport==='all'||(state.sport==='favs'&&isFavGame(g))||g.sport===state.sport;
 
   function renderGames(){
     const q=searchQuery();
@@ -1684,7 +1685,10 @@ details.method summary{font-size:13px}
     const groups={};others.forEach(g=>(groups[g.sport]=groups[g.sport]||[]).push(g));
     html+=Object.entries(groups).map(([sport,rows])=>groupSection(sportNames[sport]||sport,rows.length+' game'+(rows.length===1?'':'s'),rows,false)).join('');
     const host=document.getElementById('games');
-    host.innerHTML=html||'<div class="empty"><h2>No games here</h2><p>Try another day or sport — or search a team above to jump straight to its games.</p></div>';
+    const emptyHtml=state.sport==='favs'
+      ?'<div class="empty"><h2>No favorite teams yet</h2><p>Tap the star on any team’s card and its games will live on this screen.</p></div>'
+      :'<div class="empty"><h2>No games here</h2><p>Try another day or sport — or search a team above to jump straight to its games.</p></div>';
+    host.innerHTML=html||emptyHtml;
     const fs=document.getElementById('favSection');if(fs)fs.innerHTML='';
     renderHealthStrip();
     renderLivePrices();
@@ -2523,6 +2527,25 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     document.querySelectorAll('.chip[data-sport]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
     render();
   }));
+  /* Swipe between sport screens, Apple Sports-style: My Teams, All, then
+     each sport in chip order. Reuses the chip handler so chips, filter, and
+     render all stay in sync. Horizontal swipes only — vertical scrolling,
+     pull-to-refresh, and card taps are untouched. */
+  (function(){
+    const order=['favs','all','nfl','cfb','mlb','nba','tennis'];
+    const gv=document.getElementById('gamesView');if(!gv)return;
+    let x0=null,y0=null;
+    gv.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+    gv.addEventListener('touchend',e=>{
+      if(x0==null)return;
+      const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=y0=null;
+      if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
+      if(searchQuery())return;
+      const cur=order.indexOf(state.sport);if(cur<0)return;
+      const next=order[(cur+(dx<0?1:-1)+order.length)%order.length];
+      const chip=document.querySelector('.chip[data-sport="'+next+'"]');if(chip)chip.click();
+    },{passive:true});
+  })();
   document.getElementById('sigToggle').addEventListener('click',function(){
     state.sigOnly=!state.sigOnly;
     this.setAttribute('aria-pressed',String(state.sigOnly));
