@@ -1214,13 +1214,44 @@ details.method summary{font-size:13px}
        the most visible ones get ink-alpha equivalents. */
     html[data-theme="light"] .chip{background:rgba(16,24,40,.05)}
     html[data-theme="light"] .rank-pill{background:rgba(16,24,40,.06)}
+    /* ---- sport accents + colorful surfaces (2026-10-26) ---- */
+    :root{--sp-nfl:#5eb0ff;--sp-cfb:#ff8a5c;--sp-cbb:#ffbe5c;--sp-mlb:#ff6b74;--sp-nba:#a78bfa;--sp-tennis:#3fd598;--sp-nhl:#7dd3fc}
+    html[data-theme="light"]{--sp-nfl:#0f6fd0;--sp-cfb:#d95d1e;--sp-cbb:#9a5b00;--sp-mlb:#c03a44;--sp-nba:#7c3aed;--sp-tennis:#0a7a55;--sp-nhl:#0284c7}
+    .sport-mark.nfl{background:var(--sp-nfl)}.sport-mark.cfb{background:var(--sp-cfb)}.sport-mark.cbb{background:var(--sp-cbb)}.sport-mark.mlb{background:var(--sp-mlb)}.sport-mark.nba{background:var(--sp-nba)}.sport-mark.tennis{background:var(--sp-tennis)}.sport-mark.nhl{background:var(--sp-nhl)}
+    .group-title.sp-nfl h3{color:var(--sp-nfl)}.group-title.sp-cfb h3{color:var(--sp-cfb)}.group-title.sp-cbb h3{color:var(--sp-cbb)}.group-title.sp-mlb h3{color:var(--sp-mlb)}.group-title.sp-nba h3{color:var(--sp-nba)}.group-title.sp-tennis h3{color:var(--sp-tennis)}.group-title.sp-nhl h3{color:var(--sp-nhl)}
+    .chip[data-sport="nfl"][aria-pressed="true"]{background:var(--sp-nfl);border-color:var(--sp-nfl);color:#0a0a0f}
+    .chip[data-sport="cfb"][aria-pressed="true"]{background:var(--sp-cfb);border-color:var(--sp-cfb);color:#0a0a0f}
+    .chip[data-sport="cbb"][aria-pressed="true"]{background:var(--sp-cbb);border-color:var(--sp-cbb);color:#0a0a0f}
+    .chip[data-sport="mlb"][aria-pressed="true"]{background:var(--sp-mlb);border-color:var(--sp-mlb);color:#0a0a0f}
+    .chip[data-sport="nba"][aria-pressed="true"]{background:var(--sp-nba);border-color:var(--sp-nba);color:#0a0a0f}
+    .chip[data-sport="tennis"][aria-pressed="true"]{background:var(--sp-tennis);border-color:var(--sp-tennis);color:#0a0a0f}
+    .chip[data-sport="nhl"][aria-pressed="true"]{background:var(--sp-nhl);border-color:var(--sp-nhl);color:#0a0a0f}
+    html:not([data-theme="light"]) .masthead h1{background:linear-gradient(100deg,#7dd3fc 0%,#5eb0ff 45%,#a78bfa 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+    /* ---- daily slate cards: visual, not paragraphs ---- */
+    .brief li{display:block}
+    .brief-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:11px 13px;cursor:pointer}
+    .brief-item:active{transform:scale(.98)}
+    div.brief-item{cursor:default}
+    .bi-total{background:rgba(94,176,255,.10)}.bi-spread{background:rgba(167,139,250,.10)}.bi-play{background:rgba(63,213,152,.10)}.bi-trend{background:rgba(255,190,92,.10)}
+    .bi-total .bi-label,.bi-total .bi-delta{color:var(--sp-nfl)}
+    .bi-spread .bi-label,.bi-spread .bi-delta{color:var(--sp-nba)}
+    .bi-play .bi-label,.bi-play .bi-delta{color:var(--sp-tennis)}
+    .bi-trend .bi-label,.bi-trend .bi-delta{color:var(--sp-cbb)}
+    .bi-logos{display:flex;flex:0 0 auto}
+    .bi-logos img{width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--surface-2)}
+    .bi-logos img+img{margin-left:-8px}
+    .bi-main{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1 1 auto}
+    .bi-label{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .bi-match{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .bi-lines{font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+    .bi-delta{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;flex:0 0 auto}
 </style>
 </head>
 <body>
   <main class="app">
     <div class="ptr" id="ptr" aria-hidden="true"><div class="ptr-spin"></div></div>
     <header class="masthead">
-      <div><p class="kicker">MODEL SNAPSHOT</p><h1>Line Lab</h1><p class="snapshot" id="snapshotLine">Built from pregame numbers</p><p class="freshline" id="freshLine"></p></div>
+      <div><h1>Line Lab</h1><p class="snapshot" id="snapshotLine"></p><p class="freshline" id="freshLine"></p></div>
       <div class="mast-actions">
         <button class="icon-btn" id="searchBtn" aria-label="Search games"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
         <button class="icon-btn" id="bellBtn" aria-label="Notification feed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bell-badge" id="bellBadge" hidden>0</span></button>
@@ -1258,14 +1289,14 @@ details.method summary{font-size:13px}
     </section>
 
     <section id="signalsView" class="view" aria-label="Signals">
-      <div class="section-head"><h2>Model signals</h2><p>Every game where the model meaningfully disagrees with the market — the watchlist we're grading over time.</p></div>
+      <div class="section-head"><h2>Signals</h2><p>Every game where our number meaningfully disagrees with the books — the watchlist we're grading over time.</p></div>
       <div id="gated"></div>
       <div id="slate"></div>
       <div id="signals"></div>
     </section>
 
     <section id="picksView" class="view" aria-label="Picks">
-      <div class="section-head"><h2>Model picks</h2><p>Biggest model-vs-market disagreements, ranked as calibration candidates. These are model leans, not betting picks — the model has never beaten the closing line.</p></div>
+      <div class="section-head"><h2>Picks</h2><p>Biggest gaps between our number and the books, ranked as calibration candidates. These are leans, not betting picks — our number has never beaten the closing line.</p></div>
       <div id="picks"></div>
       <details class="method"><summary>How picks are ranked</summary><p><b>Overs</b> and <b>Unders</b> rank games where the model&rsquo;s total differs from the market by at least 2.5 points. <b>Spreads</b> rank games where the model&rsquo;s spread differs by at least 3 points. Same thresholds as the Lean signal.</p></details>
     </section>
@@ -1276,8 +1307,8 @@ details.method summary{font-size:13px}
       <div id="results"></div>
     </section>
 
-    <section id="healthView" class="view" aria-label="Model health">
-      <div class="section-head"><h2>Model health</h2></div>
+    <section id="healthView" class="view" aria-label="Health">
+      <div class="section-head"><h2>Health</h2></div>
       <div class="health-grid">
         <article class="health"><div class="health-head"><h3>NFL</h3><span class="status tested">Backtested</span></div><div class="version">272 games</div><div class="metric"><span>Spread error</span><b>10.42 pts</b></div><div class="metric"><span>Simple baseline</span><b>11.06 pts</b></div><div class="metric"><span>Spread tendency</span><b>even</b></div><div class="caution">Totals re-tuned: average miss 10.57 pts vs 10.98 baseline, tends even.</div></article>
         <article class="health"><div class="health-head"><h3>College Football</h3><span class="status tested">Backtested</span></div><div class="version">906 games</div><div class="metric"><span>Spread error</span><b>13.37 pts</b></div><div class="metric"><span>Simple baseline</span><b>18.12 pts</b></div><div class="metric"><span>Winner accuracy</span><b>75.8%</b></div><div class="caution">Totals re-tuned: average miss 12.64 pts vs 12.95 baseline, tends even.</div></article>
@@ -1349,12 +1380,12 @@ details.method summary{font-size:13px}
     <div class="drawer" role="dialog" aria-modal="true" aria-label="More" tabindex="-1">
       <div class="drawer-top"><h2>More</h2><button class="sheet-x" id="drawerClose" aria-label="Close menu">&#x2715;</button></div>
       <div class="drawer-list" id="drawerList">
-        <button class="drawer-item" data-go="signals"><span class="di-ic">⚡</span><span class="di-tx"><b>Model signals</b><i>Gated flags only — no flag, no edge</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="signals"><span class="di-ic">⚡</span><span class="di-tx"><b>Signals</b><i>Gated flags only — no flag, no edge</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="picks"><span class="di-ic">🎯</span><span class="di-tx"><b>Top picks</b><i>Biggest gaps, ranked — calibration only</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="boards"><span class="di-ic">📋</span><span class="di-tx"><b>Boards</b><i>Disagreement boards + team pages</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="bets"><span class="di-ic">💰</span><span class="di-tx"><b>My bets</b><i id="drawerBetSub">Tracked positions</i></span><span class="chev">›</span></button>
         <div class="drawer-sep"></div>
-        <button class="drawer-item" data-go="health"><span class="di-ic">🩺</span><span class="di-tx"><b>Model health</b><i>Backtests + per-sport status</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="health"><span class="di-ic">🩺</span><span class="di-tx"><b>Health</b><i>Backtests + per-sport status</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="trends"><span class="di-ic">📈</span><span class="di-tx"><b>Accuracy over time</b><i>Our avg miss vs the books'</i></span><span class="chev">›</span></button>
         <div class="drawer-sep"></div>
         <button class="drawer-item" data-go="how"><span class="di-ic">❓</span><span class="di-tx"><b>How it works</b><i>Signals, simply</i></span><span class="chev">›</span></button>
@@ -1691,7 +1722,7 @@ details.method summary{font-size:13px}
   }
   function groupSection(title,sub,rows,top){
     const cls=top?'game top-pick':'game';
-    return `<section class="sport-group"><div class="group-title"><span class="sport-mark"></span><h3>${escapeHTML(title)}</h3><span>${escapeHTML(sub)}</span></div><div class="cards">${rows.map((g,i)=>gameCard(g,i).replace('class="game tappable"','class="'+cls+' tappable"')).join('')}</div></section>`;
+    const sp=rows&&rows.length?rows[0].sport:'';return `<section class="sport-group"><div class="group-title${sp?` sp-${sp}`:''}"><span class="sport-mark${sp?` ${sp}`:''}"></span><h3>${escapeHTML(title)}</h3><span>${escapeHTML(sub)}</span></div><div class="cards">${rows.map((g,i)=>gameCard(g,i).replace('class="game tappable"','class="'+cls+' tappable"')).join('')}</div></section>`;
   }
 
   /* ---------- filtering ---------- */
@@ -1912,7 +1943,7 @@ details.method summary{font-size:13px}
   function renderGatedPlays(){
     const host=document.getElementById('gated');if(!host)return;
     const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
-    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Model signals &mdash; tracked for calibration, not proven bets</p></div>`;
+    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Signals &mdash; tracked for calibration, not proven bets</p></div>`;
     if(!plays.length)
       html+='<div class="empty"><h2>No gated plays yet</h2><p>Gated plays appear after the morning model run. Only signals with a clear, machine-readable reason make the cut — that’s the discipline.</p></div>';
     else
@@ -2059,7 +2090,7 @@ function renderWhatIf(){
     statValues[1].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_spread-(g.home_score-g.away_score)),0)/graded.length).toFixed(1):'—';
     statValues[2].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_total-(g.home_score+g.away_score)),0)/graded.length).toFixed(1):'—';
     const host=document.getElementById('results');
-    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, Model health (under &#9776; below) shows how the numbers are tracking.</p></div>';return}
+    if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, Health (under &#9776; below) shows how the numbers are tracking.</p></div>';return}
     host.innerHTML=renderWhatIf()+renderRecap()+'<div class="cards">'+graded.map((g,i)=>{
       const s=signal(g);
       const am=g.home_score-g.away_score,at=g.home_score+g.away_score;
@@ -2500,7 +2531,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       C(lbl,W/2,py+56,'800 40px system-ui',INK);
     }
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1210,'500 32px system-ui',FAINT);
-    C('Model signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
+    C('Signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
     return cv;
   }
   async function shareCard(g){
@@ -4016,33 +4047,53 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   function renderBriefing(){
     const host=document.getElementById('briefSection');if(!host)return;
     if(state.day!=='today'){host.innerHTML='';return}
+    const sg=v=>(v>0?'+':'')+v.toFixed(1);
+    const findGame=p=>gamesData.find(g=>g.game_date===TODAY&&g.away_team===p.away&&g.home_team===p.home&&(!p.sport||g.sport===p.sport));
+    const logos=g=>(g&&g.away_logo&&g.home_logo)
+      ?`<span class="bi-logos"><img src="${escapeHTML(g.away_logo)}" alt=""><img src="${escapeHTML(g.home_logo)}" alt=""></span>`:'';
     const items=[];
     const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
     if(plays.length){
-      const p=plays[0];
-      items.push({t:`<b>${escapeHTML(p.away)} @ ${escapeHTML(p.home)}</b> — ${escapeHTML(p.side||'')} ${p.line==null?'':(+p.line).toFixed(1)} is today's ${p.confidence==='strong_play'?'strong':'lean'} model signal.`,
-        s:`Model ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)} · calibration only, not a bet.`});
+      const p=plays[0],gm=findGame(p);
+      items.push({kind:'play',id:gm?gm.id:null,label:'Signal',
+        match:`${escapeHTML(p.away)} @ ${escapeHTML(p.home)}`,
+        lines:`${escapeHTML(p.side||'')} ${p.line==null?'':(+p.line).toFixed(1)} · ${p.confidence==='strong_play'?'Strong lean':'Lean'}`,
+        delta:(p.our_total!=null&&p.market_total!=null)?sg(p.our_total-p.market_total):'',
+        logos:gm?logos(gm):''});
     }
     const pool=ungraded().filter(g=>g.game_date===TODAY&&g.market_total!=null&&g.our_total!=null);
     if(pool.length){
       const big=pool.map(g=>({g:g,d:Math.abs(g.our_total-g.market_total)})).sort((a,b)=>b.d-a.d)[0];
-      if(big&&big.d>=2.5)items.push({t:`Biggest disagreement: <b>${escapeHTML(big.g.away_team)} @ ${escapeHTML(big.g.home_team)}</b> — the model's total sits ${big.d.toFixed(1)} pts ${big.g.our_total>big.g.market_total?'over':'under'} the market.`,
-        s:'Tap the game for the full breakdown.'});
-    }
-    const h=(typeof healthData!=='undefined'&&healthData)||{};
-    const bn=Object.keys(h).filter(s=>h[s]&&h[s].bias!=null&&Math.abs(+h[s].bias)>=2).sort((a,b)=>Math.abs(+h[b].bias)-Math.abs(+h[a].bias))[0];
-    if(bn){const b=+h[bn].bias;
-      items.push({t:`${escapeHTML(sportNames[bn]||bn)} totals have run <b>${Math.abs(b).toFixed(1)} pts ${b>0?'cold':'hot'}</b> lately.`,
-        s:'Descriptive calibration context — not an edge.'});
+      if(big&&big.d>=2.5)items.push({kind:'total',id:big.g.id,label:'Biggest total gap',
+        match:`${escapeHTML(big.g.away_team)} @ ${escapeHTML(big.g.home_team)}`,
+        lines:`Us ${big.g.our_total.toFixed(1)} · Books ${big.g.market_total.toFixed(1)}`,
+        delta:sg(big.g.our_total-big.g.market_total),logos:logos(big.g)});
     }
     const spool=ungraded().filter(g=>g.game_date===TODAY&&g.market_spread!=null&&g.our_spread!=null);
     if(spool.length){
       const bigs=spool.map(g=>({g:g,d:Math.abs(g.our_spread-g.market_spread)})).sort((a,b)=>b.d-a.d)[0];
-      if(bigs&&bigs.d>=2.5)items.push({t:`Biggest spread gap: <b>${escapeHTML(bigs.g.away_team)} @ ${escapeHTML(bigs.g.home_team)}</b> — model ${escapeHTML(fmtLine(bigs.g,bigs.g.our_spread))} vs market ${escapeHTML(fmtLine(bigs.g,bigs.g.market_spread))}.`,s:'Tap the game for the full breakdown.'});
+      if(bigs&&bigs.d>=2.5)items.push({kind:'spread',id:bigs.g.id,label:'Biggest spread gap',
+        match:`${escapeHTML(bigs.g.away_team)} @ ${escapeHTML(bigs.g.home_team)}`,
+        lines:`Us ${escapeHTML(fmtLine(bigs.g,bigs.g.our_spread))} · Books ${escapeHTML(fmtLine(bigs.g,bigs.g.market_spread))}`,
+        delta:bigs.d.toFixed(1),logos:logos(bigs.g)});
+    }
+    const h=(typeof healthData!=='undefined'&&healthData)||{};
+    const bn=Object.keys(h).filter(s=>h[s]&&h[s].bias!=null&&Math.abs(+h[s].bias)>=2).sort((a,b)=>Math.abs(+h[b].bias)-Math.abs(+h[a].bias))[0];
+    if(bn){const b=+h[bn].bias;
+      items.push({kind:'trend',id:null,label:'Trend',
+        match:escapeHTML(sportNames[bn]||bn),
+        lines:`Totals running ${Math.abs(b).toFixed(1)} pts ${b>0?'cold':'hot'} lately`,
+        delta:Math.abs(b).toFixed(1),logos:''});
     }
     const list=items.slice(0,3);
-    host.innerHTML=list.length?`<div class="brief"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>${list.length===3?'Three things on today\'s slate':'On today\'s slate'}</h3><button class="bbtn" id="shareSlateBtn" type="button">Share</button></div><ul>${list.map((x,i)=>
-      `<li><span class="bnum">${i+1}</span><span>${x.t}<span class="bsub">${x.s}</span></span></li>`).join('')}</ul></div>`:''; 
+    const itemHTML=x=>{
+      const inner=`${x.logos}<span class="bi-main"><span class="bi-label">${x.label}</span> <span class="bi-match">${x.match}</span> <span class="bi-lines">${x.lines}</span></span> ${x.delta!==''?`<span class="bi-delta">${x.delta}</span>`:''}`;
+      return x.id
+        ?`<li><button class="brief-item bi-${x.kind}" data-id="${x.id}" type="button">${inner}</button></li>`
+        :`<li><div class="brief-item bi-${x.kind}">${inner}</div></li>`;
+    };
+    host.innerHTML=list.length?`<div class="brief"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>Today's slate</h3><button class="bbtn" id="shareSlateBtn" type="button">Share</button></div><ul>${list.map(itemHTML).join('')}</ul></div>`:'';
+    host.querySelectorAll('.brief-item[data-id]').forEach(b=>b.addEventListener('click',()=>openSheet(+b.dataset.id)));
     const sb=document.getElementById('shareSlateBtn');
     if(sb)sb.addEventListener('click',shareSlate);
   }
@@ -4070,10 +4121,9 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const r=(typeof recapData!=='undefined'&&recapData)||{},t=(typeof trendData!=='undefined'&&trendData)||{};
     const d=r.date||t.generated||null;
     const el=document.getElementById('snapshotLine');
-    if(el&&d)el.textContent='Built from pregame numbers · '+dateLabel(d);
+    if(el&&d)el.textContent=dateLabel(d);
     const fl=document.getElementById('freshLine');
-    if(fl)fl.innerHTML=d?`Data as of <b>${escapeHTML(dateLabel(d))}</b> · live scores refresh while open`
-      :'Data freshness unknown — live scores refresh while open';
+    if(fl)fl.textContent='Scores update live';
   }
 
   /* ---------- in-app notification feed (bell) ---------- */
@@ -4385,7 +4435,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     C(`Model had ${fmtLine(g,g.our_spread)} · ${g.our_total==null?'—':g.our_total.toFixed(1)}`,W/2,760,'600 40px system-ui',MUT);
     C(`Spread error ${se.toFixed(1)}${te==null?'':' · Total error '+te.toFixed(1)}`,W/2,820,'600 40px system-ui',MUT);
     x.strokeStyle='rgba(255,255,255,.09)';x.lineWidth=2;x.beginPath();x.moveTo(90,900);x.lineTo(W-90,900);x.stroke();
-    C('Model signals · calibration only — never betting picks',W/2,972,'600 34px system-ui',FAINT);
+    C('Signals · calibration only — never betting picks',W/2,972,'600 34px system-ui',FAINT);
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1262,'500 32px system-ui',FAINT);
     return cv;
   }
