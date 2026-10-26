@@ -1221,13 +1221,7 @@ details.method summary{font-size:13px}
         <button data-day="upcoming" role="tab" aria-selected="false">Upcoming</button>
       </div>
       <div class="sports" aria-label="Filter by sport">
-        <button class="chip" data-sport="favs" aria-pressed="false">My Teams</button>
-        <button class="chip" data-sport="all" aria-pressed="true">All</button>
-        <button class="chip" data-sport="nfl" aria-pressed="false">NFL</button>
-        <button class="chip" data-sport="cfb" aria-pressed="false">College</button>
-        <button class="chip" data-sport="mlb" aria-pressed="false">MLB</button>
-        <button class="chip" data-sport="nba" aria-pressed="false">NBA</button>
-        <button class="chip" data-sport="tennis" aria-pressed="false">Tennis</button>
+        <span id="sportChips"></span>
         <button class="chip" id="sigToggle" aria-pressed="false" title="Only games where our number and the books disagree">⚡ Signals only</button>
       </div>
     </div>
@@ -1416,6 +1410,10 @@ details.method summary{font-size:13px}
         <button class="bbtn" id="setFavEdit" type="button">Edit</button>
       </div>
       <div class="set-row">
+        <div><div class="sl">Sports shown</div><div class="ss" id="setSportSub"></div></div>
+      </div>
+      <div id="setSportToggles" style="display:flex;flex-wrap:wrap;gap:8px;padding:0 0 12px"></div>
+      <div class="set-row">
         <div><div class="sl">Notifications</div><div class="ss" id="pushStatus">Check status…</div></div>
         <button class="bbtn primary" id="pushEnable" type="button">Enable</button>
       </div>
@@ -1493,6 +1491,32 @@ details.method summary{font-size:13px}
     render();
   }
   const isFavGame=g=>favs.has(favId(g.sport,g.away_team))||favs.has(favId(g.sport,g.home_team));
+
+  /* Followed sports: only the hidden set is stored, so every sport shows
+     by default and new sports appear automatically until the user removes
+     them. Main page = all followed sports; one page per followed sport. */
+  const hiddenKey='line-lab-hidden-sports';
+  let hiddenSports=new Set();
+  try{hiddenSports=new Set(JSON.parse(localStorage.getItem(hiddenKey)||'[]'))}catch(e){}
+  const ALL_SPORTS=['nfl','cfb','mlb','nba','tennis'];
+  const followedSports=()=>ALL_SPORTS.filter(s=>!hiddenSports.has(s));
+  const sportLabel=s=>s==='favs'?'My Teams':s==='all'?'Following':(sportNames[s]||s);
+  function toggleSport(s){
+    if(hiddenSports.has(s))hiddenSports.delete(s);else hiddenSports.add(s);
+    try{localStorage.setItem(hiddenKey,JSON.stringify([...hiddenSports]))}catch(e){}
+    if(hiddenSports.has(state.sport))state.sport='all';
+    renderSportChips();renderSettings();render();
+  }
+  function renderSportChips(){
+    const host=document.getElementById('sportChips');if(!host)return;
+    const screens=['favs','all',...followedSports()];
+    host.innerHTML=screens.map(s=>`<button class="chip" data-sport="${s}" aria-pressed="${s===state.sport}">${escapeHTML(sportLabel(s))}</button>`).join('');
+    host.querySelectorAll('.chip[data-sport]').forEach(b=>b.addEventListener('click',()=>{
+      state.sport=b.dataset.sport;
+      host.querySelectorAll('.chip[data-sport]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+      render();
+    }));
+  }
 
   /* ---------- helpers ---------- */
   function fmtLine(g,v){if(v==null)return '—';if(Math.abs(v)<.05)return "Pick ’em";const team=v>0?g.home_team:g.away_team;return team+' −'+Math.abs(v).toFixed(1)}
@@ -1657,7 +1681,7 @@ details.method summary{font-size:13px}
   /* ---------- filtering ---------- */
   const ungraded=()=>gamesData.filter(g=>g.home_score==null&&g.away_score==null);
   const dayOK=g=>state.day==='yesterday'?g.game_date===YESTERDAY:state.day==='today'?g.game_date===TODAY:g.game_date>TODAY;
-  const sportOK=g=>state.sport==='all'||(state.sport==='favs'&&isFavGame(g))||g.sport===state.sport;
+  const sportOK=g=>(state.sport==='all'&&!hiddenSports.has(g.sport))||(state.sport==='favs'&&isFavGame(g))||g.sport===state.sport;
 
   function renderGames(){
     const q=searchQuery();
@@ -2087,6 +2111,7 @@ function renderWhatIf(){
       ||'<div class="empty"><h2>No boards yet</h2><p>The biggest model-vs-market gaps will rank here after the next data pull.</p></div>';
   }
   function render(){
+    renderSportChips();
     document.getElementById('toolbar').style.display=state.view==='games'?'':'none';
     if(state.view==='games')renderGames();
     else if(state.view==='signals')renderSignals();
@@ -2522,17 +2547,13 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     syncSegThumb();
     render();
   });
-  document.querySelectorAll('.chip[data-sport]').forEach(b=>b.addEventListener('click',()=>{
-    state.sport=b.dataset.sport;
-    document.querySelectorAll('.chip[data-sport]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
-    render();
-  }));
+  /* Sport chips are built by renderSportChips(); taps attach there. */
   /* Swipe between sport screens, Apple Sports-style: My Teams, All, then
      each sport in chip order. Reuses the chip handler so chips, filter, and
      render all stay in sync. Horizontal swipes only — vertical scrolling,
      pull-to-refresh, and card taps are untouched. */
   (function(){
-    const order=['favs','all','nfl','cfb','mlb','nba','tennis'];
+    const order=()=>['favs','all',...followedSports()];
     const gv=document.getElementById('gamesView');if(!gv)return;
     let x0=null,y0=null;
     gv.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
@@ -2541,8 +2562,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=y0=null;
       if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
       if(searchQuery())return;
-      const cur=order.indexOf(state.sport);if(cur<0)return;
-      const next=order[(cur+(dx<0?1:-1)+order.length)%order.length];
+      const screens=order();const cur=screens.indexOf(state.sport);if(cur<0)return;
+      const next=screens[(cur+(dx<0?1:-1)+screens.length)%screens.length];
       const chip=document.querySelector('.chip[data-sport="'+next+'"]');if(chip)chip.click();
     },{passive:true});
   })();
@@ -3845,6 +3866,13 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       ?n+' picked — '+[...favs].slice(0,6).map(k=>k.split(':')[1]).join(', ')+(n>6?'…':'')
       :'None picked yet — your teams pin to the top of the Games tab.';
     renderPushRow();
+    const followed=followedSports();
+    document.getElementById('setSportSub').textContent=followed.length?followed.map(s=>sportNames[s]||s).join(', '):'None shown — add one back below.';
+    const tg=document.getElementById('setSportToggles');
+    if(tg){
+      tg.innerHTML=ALL_SPORTS.map(s=>`<button class="chip" aria-pressed="${!hiddenSports.has(s)}" data-tsport="${s}">${escapeHTML(sportNames[s]||s)}</button>`).join('');
+      tg.querySelectorAll('[data-tsport]').forEach(b=>b.addEventListener('click',()=>toggleSport(b.dataset.tsport)));
+    }
   }
   document.getElementById('gearBtn').addEventListener('click',openSettings);
   document.getElementById('setClose').addEventListener('click',closeSettings);
