@@ -286,40 +286,31 @@
     .ff-sec-t{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:16px 0 2px}
     .ff-card{background:var(--surface-2);border-radius:14px;padding:12px 14px 16px;margin-top:10px}
     .ff-card>.ff-sec-t:first-child{margin-top:0}
-    .ff-exp{font-size:11px;color:#8e97ab;font-weight:600;margin:3px 0 6px}
     .ff-row{display:flex;gap:10px;align-items:stretch;margin-top:8px}
-    .ff-team{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:19px}
+    .ff-team{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
     .ff-team img{width:32px;height:32px;object-fit:contain}
     .ff-team span{font-size:10.5px;font-weight:800;color:var(--ink);letter-spacing:.05em}
     .ff-rec{font-size:10px;font-weight:800;color:#8e97ab;letter-spacing:.03em;font-variant-numeric:tabular-nums}
     .ff-rec.pos{color:#a3e635}
     .ff-rec.neg{color:#f43f5e}
-    .ff-chart{flex:1;min-width:0}
-    .ff-vals,.ff-opps{display:flex;gap:6px}
-    .ff-vals{margin-bottom:3px}
-    .ff-opps{margin-top:5px}
-    .ff-ocol{flex:1;min-width:0;text-align:center}
+    .ff-tiles{flex:1;min-width:0;display:flex;gap:6px}
+    .ff-tile{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;border-radius:12px;padding:8px 2px 7px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .ff-t-w{background:rgba(163,230,53,.10);border-color:rgba(163,230,53,.25)}
+    .ff-t-l{background:rgba(244,63,94,.10);border-color:rgba(244,63,94,.25)}
+    .ff-t-p{background:rgba(255,255,255,.03)}
+    .ff-miss{opacity:.45}
+    .ff-badge{font-size:10px;font-weight:800;letter-spacing:.03em;padding:2px 7px;border-radius:99px;line-height:1.3}
+    .ff-t-w .ff-badge{background:#a3e635;color:#0a0a0f}
+    .ff-t-l .ff-badge{background:#f43f5e;color:#fff}
+    .ff-t-p .ff-badge,.ff-miss .ff-badge{background:#3a3a4a;color:#8e97ab}
+    .ff-num{font-size:15px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
+    .ff-tile .ff-opp{max-width:100%}
+    .ff-tile .ff-sc{color:var(--ink)}
     .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ff-sc{font-size:10px;color:#e3e7f0;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .ff-val{flex:1;min-width:0;text-align:center;font-size:12px;font-weight:800;color:#fff;height:16px;line-height:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
     .ff-opp{font-size:10px;color:#8e97ab;font-weight:700;height:13px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ff-sc{font-size:10px;color:#d7dce6;font-weight:800;height:13px;line-height:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .ff-plot{position:relative;height:104px}
-    .ff-zero{position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(255,255,255,.25);pointer-events:none}
-    .ff-zero>span{position:absolute;left:2px;top:-14px;font-size:9px;font-weight:800;color:#8e97ab}
-    .ff-swrap{flex:1;min-width:0;position:relative;height:100%}
-    .ff-srow{position:absolute;inset:0;display:flex}
-    .ff-bar{position:absolute;left:50%;transform:translateX(-50%);width:min(30px,70%);border-radius:99px;max-height:50%}
-    .ff-bar.up{bottom:50%}
-    .ff-bar.dn{top:50%}
-    .ff-bar.midb{top:50%;transform:translate(-50%,-50%);height:6px!important}
-    .ff-twrap{flex:1;min-width:0;display:flex;justify-content:center;align-items:flex-end;height:100%}
-    .ff-tbar{width:min(30px,70%);border-radius:99px;min-height:4px}
-    .ff-w{background:#a3e635;box-shadow:0 0 12px rgba(163,230,53,.35)}
-    .ff-l{background:#f43f5e;box-shadow:0 0 12px rgba(244,63,94,.30)}
-    .ff-p{background:#3a3a4a}
-    .ff-tline{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.4);pointer-events:none}
-    .ff-tline span{position:absolute;right:2px;top:-10px;font-size:10px;font-weight:800;color:#fff;background:#23232e;border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:1px 8px;font-variant-numeric:tabular-nums}
     .sheet-sec .edge-line b{color:var(--ink)}
     .numrow i{color:var(--muted);font-style:normal;font-size:12px}
     .inj-team{font-weight:800;font-size:13px;margin:8px 0 2px;color:var(--ink)}
@@ -2345,6 +2336,15 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
      bars around a dashed zero line. 3) TOTAL: game-total bars vs the
      upcoming market total dashed line. Colors: neon green = win/cover/over,
      red = loss/no-cover/under, gray = push or no data yet. */
+    /* ---------- Recent form: three sections, fed by the formData literal
+     refresh.py builds from graded journal games. Keys are "sport:TEAM".
+     Each team gets one row of five contained tiles (most recent first) --
+     no floating bars or detached numbers: badge + number + opponent +
+     score all live inside one tile. 1) WINS: W/L + point margin.
+     2) SPREAD: covered (check) / missed (x) + margin vs the spread.
+     3) TOTAL: over/under + total points. Gray = push or no data yet.
+     Tile rows are our own layout, inspired by clean card rows -- not a
+     copy of any other app's cards. */
   const fmtATS=v=>(v>0?'+':'')+(v%1===0?String(v):v.toFixed(1));
   function formEntries(g,side){
     const FD=(typeof formData!=='undefined'&&formData)?formData:{};
@@ -2361,56 +2361,55 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     if(!w&&!l)return null;
     return {txt:`${w}-${l}${suffix||''}`,cls:w>l?'pos':l>w?'neg':''};
   }
-  function formOpps(entries){
-    return entries.map(e=>`<div class="ff-ocol"><div class="ff-opp">${e?escapeHTML((e.ha==='H'?'vs ':'at ')+e.opp):'—'}</div><div class="ff-sc">${e?escapeHTML(e.ts+'-'+e.os):''}</div></div>`).join('');
+  function formTile(badge,cls,num,opp,sc){
+    return `<div class="ff-tile ${cls}"><span class="ff-badge">${badge}</span><span class="ff-num">${num}</span><span class="ff-opp">${opp}</span><span class="ff-sc">${sc}</span></div>`;
   }
-  function formSpreadRow(g,side,entries,maxA){
-    const vals=entries.map(e=>`<div class="ff-val">${e&&e.ats!=null?fmtATS(e.ats):'—'}</div>`).join('');
-    const bars=entries.map(e=>{
-      if(!e||e.ats==null||e.cover==='P')return '<div class="ff-swrap"><div class="ff-bar midb ff-p"></div></div>';
-      const h=Math.max(5,Math.abs(e.ats)/maxA*50);
-      return `<div class="ff-swrap"><div class="ff-bar ${e.ats>0?'up':'dn'} ${e.cover==='W'?'ff-w':'ff-l'}" style="height:${h.toFixed(1)}%"></div></div>`;
+  function formMissTile(){
+    return `<div class="ff-tile ff-miss"><span class="ff-badge">–</span><span class="ff-num">—</span><span class="ff-opp">—</span><span class="ff-sc"></span></div>`;
+  }
+  function formOpp(e){return escapeHTML((e.ha==='H'?'vs ':'at ')+e.opp)}
+  function formSc(e){return escapeHTML(e.ts+'-'+e.os)}
+  function formTotalOut(e,line){
+    if(!e||e.pts==null)return null;
+    if(line!=null){const d=e.pts-line;return d>0.05?'w':d<-0.05?'l':'p'}
+    return e.over==='O'?'w':e.over==='U'?'l':'p';
+  }
+  function formSpreadRow(g,side,entries){
+    const tiles=entries.map(e=>{
+      if(!e||e.ats==null)return formMissTile();
+      if(e.cover==='P')return formTile('–','ff-t-p',fmtATS(e.ats),formOpp(e),formSc(e));
+      const cls=e.cover==='W'?'ff-t-w':'ff-t-l';
+      return formTile(e.cover==='W'?'✓':'✗',cls,fmtATS(e.ats),formOpp(e),formSc(e));
     }).join('');
     let w=0,l=0;entries.forEach(e=>{if(e&&e.cover==='W')w++;else if(e&&e.cover==='L')l++});
-    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,' ATS'))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"><span>0</span></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,' ATS'))}<div class="ff-tiles">${tiles}</div></div>`;
   }
-  function formWinsRow(g,side,entries,maxM){
-    const vals=entries.map(e=>`<div class="ff-val">${e?fmtATS(e.ts-e.os):'—'}</div>`).join('');
-    const bars=entries.map(e=>{
-      if(!e)return '<div class="ff-swrap"><div class="ff-bar midb ff-p"></div></div>';
+  function formWinsRow(g,side,entries){
+    const tiles=entries.map(e=>{
+      if(!e)return formMissTile();
       const m=e.ts-e.os;
-      const h=Math.max(5,Math.abs(m)/maxM*50);
-      const dir=m>0?'up':m<0?'dn':'midb';
-      const cls=m>0?'ff-w':m<0?'ff-l':'ff-p';
-      return `<div class="ff-swrap"><div class="ff-bar ${dir} ${cls}" style="height:${h.toFixed(1)}%"></div></div>`;
+      if(m===0)return formTile('–','ff-t-p','0',formOpp(e),formSc(e));
+      const cls=m>0?'ff-t-w':'ff-t-l';
+      return formTile(m>0?'W':'L',cls,fmtATS(m),formOpp(e),formSc(e));
     }).join('');
     let w=0,l=0;entries.forEach(e=>{if(e){const m=e.ts-e.os;if(m>0)w++;else if(m<0)l++}});
-    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,''))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div><div class="ff-zero"><span>0</span></div></div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    return `<div class="ff-row">${formRowHead(g,side,formRec(w,l,''))}<div class="ff-tiles">${tiles}</div></div>`;
   }
-  function formTotalRow(g,side,entries,maxT,line){
-    const outs=entries.map(e=>{
-      if(!e||e.pts==null)return 'p';
-      if(line!=null){const d=e.pts-line;return d>0.05?'w':d<-0.05?'l':'p'}
-      return e.over==='O'?'w':e.over==='U'?'l':'p';
-    });
-    const vals=entries.map(e=>`<div class="ff-val">${e&&e.pts!=null?e.pts:'—'}</div>`).join('');
-    const bars=entries.map((e,i)=>{
-      if(outs[i]==='p')return '<div class="ff-twrap"><div class="ff-tbar ff-p" style="height:6px"></div></div>';
-      const cls=outs[i]==='w'?'ff-w':'ff-l';
-      const h=Math.max(2.5,e.pts/maxT*100);
-      return `<div class="ff-twrap"><div class="ff-tbar ${cls}" style="height:${h.toFixed(1)}%"></div></div>`;
+  function formTotalRow(g,side,entries,line){
+    const tiles=entries.map(e=>{
+      const out=formTotalOut(e,line);
+      if(out==null)return formMissTile();
+      const cls=out==='w'?'ff-t-w':out==='l'?'ff-t-l':'ff-t-p';
+      const badge=out==='w'?'O':out==='l'?'U':'–';
+      return formTile(badge,cls,e.pts,formOpp(e),formSc(e));
     }).join('');
-    const tline=line!=null?`<div class="ff-tline" style="bottom:${Math.min(97,line/maxT*100).toFixed(1)}%"><span>${line.toFixed(1)}</span></div>`:'';
-    let o=0,u=0;outs.forEach(x=>{if(x==='w')o++;else if(x==='l')u++});
-    return `<div class="ff-row">${formRowHead(g,side,formRec(o,u,' O/U'))}<div class="ff-chart"><div class="ff-vals">${vals}</div><div class="ff-plot"><div class="ff-srow">${bars}</div>${tline}</div><div class="ff-opps">${formOpps(entries)}</div></div></div>`;
+    let o=0,u=0;entries.forEach(e=>{const out=formTotalOut(e,line);if(out==='w')o++;else if(out==='l')u++});
+    return `<div class="ff-row">${formRowHead(g,side,formRec(o,u,' O/U'))}<div class="ff-tiles">${tiles}</div></div>`;
   }
   function formHTML(g){
     if(g.sport==='tennis')return '';
     const A=formEntries(g,'away'),H=formEntries(g,'home');
     if(!A.some(Boolean)&&!H.some(Boolean))return '';
-    let maxA=0.5;[...A,...H].forEach(e=>{if(e&&e.ats!=null)maxA=Math.max(maxA,Math.abs(e.ats))});
-    let maxT=1;[...A,...H].forEach(e=>{if(e&&e.pts!=null)maxT=Math.max(maxT,e.pts)});
-    let maxM=1;[...A,...H].forEach(e=>{if(e)maxM=Math.max(maxM,Math.abs(e.ts-e.os))});
     const line=g.market_total;
     const ko=g.kickoff_utc?escapeHTML(kickoffTime(g.kickoff_utc)):'TBD';
     return `<h4>Recent form</h4>`
@@ -2418,16 +2417,16 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       +`<div class="ff-sub">${escapeHTML(g.away_team)} @ ${escapeHTML(g.home_team)} · ${escapeHTML(dateLabel(g.game_date))} · ${ko}</div>`
       +`<div class="ff-cap">Our spread <b>${escapeHTML(fmtLine(g,g.our_spread))}</b> · Market <b>${escapeHTML(fmtLine(g,g.market_spread))}</b></div>`
       +`<div class="ff-cap">Our total <b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b> · Market <b>${line==null?'—':line.toFixed(1)}</b></div>`
-      +`<div class="ff-sec-t">Wins · last 5</div><div class="ff-exp">Green = won · number = point margin</div>`
-      +formWinsRow(g,'away',A,maxM)+formWinsRow(g,'home',H,maxM)
+      +`<div class="ff-sec-t">Wins · last 5</div>`
+      +formWinsRow(g,'away',A)+formWinsRow(g,'home',H)
       +`</div>`
       +`<div class="ff-card">`
-      +`<div class="ff-sec-t">Spread · last 5</div><div class="ff-exp">Green = covered the spread · number = margin vs the spread</div>`
-      +formSpreadRow(g,'away',A,maxA)+formSpreadRow(g,'home',H,maxA)
+      +`<div class="ff-sec-t">Spread · last 5</div>`
+      +formSpreadRow(g,'away',A)+formSpreadRow(g,'home',H)
       +`</div>`
       +`<div class="ff-card">`
-      +`<div class="ff-sec-t">Total · last 5</div><div class="ff-exp">Green = went over · number = total points scored</div>`
-      +formTotalRow(g,'away',A,maxT,line)+formTotalRow(g,'home',H,maxT,line)
+      +`<div class="ff-sec-t">Total · last 5</div>`
+      +formTotalRow(g,'away',A,line)+formTotalRow(g,'home',H,line)
       +`</div>`;
   }
   function sheetHTML(g){
