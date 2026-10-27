@@ -2074,6 +2074,24 @@ function renderWhatIf(){
       return `<div class="g-clv">vs close: model <b>${g.our_total.toFixed(1)}</b> · close <b>${g.close.tp.toFixed(1)}</b></div>`;
     return `<div class="g-clv">closing line pending</div>`;
   }
+  /* Results renders newest-first in batches: rendering all 550+ graded
+     cards at once crashed Mobile Safari's web process ("A problem
+     repeatedly occurred") -- 550 animated, image-heavy cards in one shot
+     is too much for iOS. 60 at a time keeps the first paint cheap and
+     every game still reachable via Show more. */
+  const RESULTS_PAGE=60;
+  let resultsShown=RESULTS_PAGE;
+  function resultCard(g,i){
+    const s=signal(g);
+    const am=g.home_score-g.away_score,at=g.home_score+g.away_score;
+    return `<article class="game tappable" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min(i*40,400)}ms">
+      <div class="g-mid">${defaultMidHTML(g,true)}</div>
+      <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">Spread off by <b>${Math.abs(g.our_spread-am).toFixed(1)}</b> · Total off by <b>${Math.abs(g.our_total-at).toFixed(1)}</b></span></div>
+      ${clvLine(g)}
+      ${whyCard(g)}
+      <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="mini-share" data-share-result="${g.id}" aria-label="Share result card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0L7 9m5-5l5 5"/><path d="M4 15v5h16v-5"/></svg></button></div>
+    </article>`;
+  }
   function renderResults(){
     const graded=gamesData.filter(g=>g.home_score!=null&&g.away_score!=null).sort((a,b)=>b.game_date.localeCompare(a.game_date)||_ko(b).localeCompare(_ko(a)));
     document.getElementById('gradedCount').textContent=graded.length;
@@ -2082,16 +2100,20 @@ function renderWhatIf(){
     statValues[2].textContent=graded.length?(graded.reduce((n,g)=>n+Math.abs(g.our_total-(g.home_score+g.away_score)),0)/graded.length).toFixed(1):'—';
     const host=document.getElementById('results');
     if(!graded.length){host.innerHTML=renderWhatIf()+renderRecap()+renderTrends()+renderReceipts()+renderLabNotebook()+'<div class="empty"><h2>First results are on the way</h2><p>No games have been graded in this snapshot yet. Once finals are logged, this view will show exactly how far the model was off. Meanwhile, Health (under &#9776; below) shows how the numbers are tracking.</p></div>';return}
-    host.innerHTML=renderWhatIf()+renderRecap()+'<div class="cards">'+graded.map((g,i)=>{
-      const s=signal(g);
-      const am=g.home_score-g.away_score,at=g.home_score+g.away_score;
-      return `<article class="game tappable" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min(i*40,400)}ms">
-        <div class="g-mid">${defaultMidHTML(g,true)}</div>
-        <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">Spread off by <b>${Math.abs(g.our_spread-am).toFixed(1)}</b> · Total off by <b>${Math.abs(g.our_total-at).toFixed(1)}</b></span></div>
-        ${clvLine(g)}
-        ${whyCard(g)}
-        <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="mini-share" data-share-result="${g.id}" aria-label="Share result card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4m0 0L7 9m5-5l5 5"/><path d="M4 15v5h16v-5"/></svg></button></div>
-      </article>`}).join('')+'</div>'+renderTrends()+renderReceipts()+renderLabNotebook();
+    resultsShown=RESULTS_PAGE;
+    const page=graded.slice(0,resultsShown).map((g,i)=>resultCard(g,i)).join('');
+    const more=graded.length>resultsShown
+      ?`<button class="bbtn" id="resultsMore" type="button" style="width:100%;margin:14px 0 4px;padding:13px">Show more · ${graded.length-resultsShown} remaining</button>`:'';
+    host.innerHTML=renderWhatIf()+renderRecap()+'<div class="cards" id="resultsCards">'+page+'</div>'+more+renderTrends()+renderReceipts()+renderLabNotebook();
+    const mb=document.getElementById('resultsMore');
+    if(mb)mb.addEventListener('click',()=>{
+      const cards=document.getElementById('resultsCards');
+      const next=graded.slice(resultsShown,resultsShown+RESULTS_PAGE).map((g,i)=>resultCard(g,resultsShown+i)).join('');
+      if(cards)cards.insertAdjacentHTML('beforeend',next);
+      resultsShown+=RESULTS_PAGE;
+      if(resultsShown>=graded.length)mb.remove();
+      else mb.textContent=`Show more · ${graded.length-resultsShown} remaining`;
+    });
   }
   /* ---------- Boards view: disagreement boards + team pages ---------- */
   function boardRow(g,gap,nums,i){
