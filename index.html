@@ -149,6 +149,31 @@
     html[data-theme="light"] .signal.coin,html[data-theme="light"] .signal.wait{background:rgba(16,24,40,.06)}
     .g-ours{font-size:12px;color:var(--faint);font-weight:500;font-variant-numeric:tabular-nums;text-align:right}
     .g-ours b{color:var(--muted);font-weight:700}
+  /* Three-line table on game cards: Spread | Total | Moneyline. */
+  .lt{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;font-variant-numeric:tabular-nums}
+  .lt-row{display:grid;grid-template-columns:46px 1fr 1fr 1fr;gap:6px;align-items:baseline;padding:2px 0;font-size:12.5px;min-width:0}
+  .lt-row>span{min-width:0;overflow-wrap:anywhere}
+  .lt-head span{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+  .lt-team{font-weight:800}
+  .lt-model{border-top:1px solid var(--line);margin-top:4px;padding-top:6px}
+  .lt-model span{font-weight:700}
+  .lt-row i{font-style:normal;color:var(--muted);font-weight:600;font-size:11px}
+  /* Masthead tagline: the one-line product + honesty statement. */
+  .tagline{font-size:12.5px;color:var(--muted);font-weight:600;margin:6px 0 0}
+  /* Active Bets cards must fit phone width: flex/grid children shrink and
+     wrap instead of pushing badges and values off the right edge. */
+  .bet-top>div{min-width:0}
+  #openList>*{min-width:0}
+  .bet{min-width:0}
+  .numrow>*{min-width:0}
+  .numrow b{overflow-wrap:anywhere;text-align:right}
+  .bet-top .res{flex-shrink:0}
+  .bet-title,.bet-sub{overflow-wrap:anywhere}
+  .kv>div{min-width:0}
+  .kv .v{overflow-wrap:anywhere}
+  .youvs .row>*,.cashout .row>*{min-width:0}
+  .youvs .row b,.cashout .row b{overflow-wrap:anywhere;text-align:right}
+
     .test-variant{margin:0;padding:10px 2px 0;font-size:11.5px;color:var(--faint);line-height:1.5;font-variant-numeric:tabular-nums}
     .test-variant b{color:var(--muted)}
     .empty{background:rgba(255,255,255,.03);border:1px dashed var(--line);border-radius:var(--radius);padding:36px 22px;text-align:center;color:var(--muted)}
@@ -1204,6 +1229,10 @@ details.method summary{font-size:13px}
     /* Light theme: white-alpha fills are invisible on light surfaces, so
        the most visible ones get ink-alpha equivalents. */
     html[data-theme="light"] .chip{background:rgba(16,24,40,.05)}
+  html[data-theme="light"] #setSportToggles .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+  html[data-theme="light"] #setSportToggles .chip[aria-pressed="false"]{color:var(--ink)}
+  #setSportToggles .chip[aria-pressed="false"]{color:var(--ink)}
+
     html[data-theme="light"] .rank-pill{background:rgba(16,24,40,.06)}
     /* ---- sport accents + colorful surfaces (2026-10-26) ---- */
     :root{--sp-nfl:#5eb0ff;--sp-cfb:#ff8a5c;--sp-cbb:#ffbe5c;--sp-mlb:#ff6b74;--sp-nba:#a78bfa;--sp-tennis:#3fd598;--sp-nhl:#7dd3fc}
@@ -1242,7 +1271,7 @@ details.method summary{font-size:13px}
   <main class="app">
     <div class="ptr" id="ptr" aria-hidden="true"><div class="ptr-spin"></div></div>
     <header class="masthead">
-      <div><h1>Line Lab</h1><p class="snapshot" id="snapshotLine"></p><p class="freshline" id="freshLine"></p></div>
+      <div><h1>Line Lab</h1><p class="snapshot" id="snapshotLine"></p><p class="freshline" id="freshLine"></p><p class="tagline">Every line, every game — projections, not promises. You make the call.</p></div>
       <div class="mast-actions">
         <button class="icon-btn" id="searchBtn" aria-label="Search games"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
         <button class="icon-btn" id="bellBtn" aria-label="Notification feed"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bell-badge" id="bellBadge" hidden>0</span></button>
@@ -1276,7 +1305,7 @@ details.method summary{font-size:13px}
       <div class="summary"><h2 id="gamesTitle">Today's games</h2><p id="gameCount" aria-live="polite"></p></div>
       <div id="games"></div>
       <details class="method"><summary>Live prices — totals</summary><div id="livePrices"></div></details>
-      <details class="method"><summary>How signals work</summary><p>A <b>signal</b> means the pick gate promoted this game: the model's bias-adjusted number, pulled 30% toward the market, still disagrees with the market — and a concrete, checkable reason (like a key injury) backs it. <b>Strong signal</b> and <b>Lean</b> are rare by design. Most games get no signal at all, which is the honest answer when there's no edge; a raw gap alone never earns a badge. Experimental variants are tracked separately from the main model.</p></details>
+      <details class="method"><summary>How signals work</summary><p>A <b>signal</b> means the pick gate promoted this game: the model's bias-adjusted number, pulled 30% toward the market, still disagrees with the market — and a concrete, checkable reason (like a key injury) backs it. <b>Strong signal</b> and <b>Lean</b> are rare by design. Most games get no signal at all, which is the honest answer when there's no edge; a raw gap alone never earns a badge. New model variants are tracked separately from the main model.</p></details>
     </section>
 
     <section id="signalsView" class="view" aria-label="Signals">
@@ -1287,7 +1316,7 @@ details.method summary{font-size:13px}
     </section>
 
     <section id="picksView" class="view" aria-label="Picks">
-      <div class="section-head"><h2>Picks</h2><p>Biggest gaps between our number and the books, ranked as calibration candidates. These are leans, not betting picks — our number has never beaten the closing line.</p></div>
+      <div class="section-head"><h2>Picks</h2><p>Biggest gaps between our number and the books, ranked. Each row is the model's read — you decide what to do with it.</p></div>
       <div id="picks"></div>
       <details class="method"><summary>How picks are ranked</summary><p><b>Overs</b> and <b>Unders</b> rank games where the model&rsquo;s total differs from the market by at least 2.5 points. <b>Spreads</b> rank games where the model&rsquo;s spread differs by at least 3 points. Same thresholds as the Lean signal.</p></details>
     </section>
@@ -1338,7 +1367,7 @@ details.method summary{font-size:13px}
       <div class="chart-wrap"><div id="bankrollChart"></div></div>
       <div id="bankrollTables"></div>
       <div class="btnrow"><button class="bbtn primary" id="csvBtn">Download CSV</button></div>
-      <details class="method"><summary>About this tab</summary><p>Bet data is embedded by the daily refresh from your tracked bets file. "You vs model" compares your line to our pregame total and the market total when that data is present — a "—" means it wasn't logged for that bet. Projections reuse the same pace math as the Games tab. Cash-out numbers are position-management info only, not betting advice.</p></details>
+      <details class="method"><summary>About this tab</summary><p>Bet data is embedded by the daily refresh from your tracked bets file. "You vs model" compares your line to our pregame total and the market total when that data is present — a "—" means it wasn't logged for that bet. Projections reuse the same pace math as the Games tab. Cash-out numbers are position-management info only.</p></details>
     </section>
 
     <section id="boardsView" class="view" aria-label="Boards">
@@ -1371,8 +1400,8 @@ details.method summary{font-size:13px}
     <div class="drawer" role="dialog" aria-modal="true" aria-label="More" tabindex="-1">
       <div class="drawer-top"><h2>More</h2><button class="sheet-x" id="drawerClose" aria-label="Close menu">&#x2715;</button></div>
       <div class="drawer-list" id="drawerList">
-        <button class="drawer-item" data-go="signals"><span class="di-ic">⚡</span><span class="di-tx"><b>Signals</b><i>Gated flags only — no flag, no edge</i></span><span class="chev">›</span></button>
-        <button class="drawer-item" data-go="picks"><span class="di-ic">🎯</span><span class="di-tx"><b>Top picks</b><i>Biggest gaps, ranked — calibration only</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="signals"><span class="di-ic">⚡</span><span class="di-tx"><b>Signals</b><i>Flagged games, ranked by disagreement</i></span><span class="chev">›</span></button>
+        <button class="drawer-item" data-go="picks"><span class="di-ic">🎯</span><span class="di-tx"><b>Top picks</b><i>Biggest gaps, ranked</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="boards"><span class="di-ic">📋</span><span class="di-tx"><b>Boards</b><i>Disagreement boards + team pages</i></span><span class="chev">›</span></button>
         <button class="drawer-item" data-go="bets"><span class="di-ic">💰</span><span class="di-tx"><b>My bets</b><i id="drawerBetSub">Tracked positions</i></span><span class="chev">›</span></button>
         <div class="drawer-sep"></div>
@@ -1396,7 +1425,7 @@ details.method summary{font-size:13px}
       <div class="section-head"><h2>How it works</h2><p>Signals, simply</p></div>
       <div class="exp"><h3>Welcome to Line Lab</h3><p>We build computer models that predict sports scores — then grade every prediction after the game to see how the models are doing.</p></div>
       <div class="exp"><h3>Our number vs the books</h3><p>For every game we show <b>two numbers</b>: what our model predicts, and what the sportsbooks say. A big disagreement alone is <b>not</b> a signal — we only flag a game when the model's number disagrees for a concrete, checkable reason.</p></div>
-      <div class="exp"><h3>Signals, simply</h3><p>Most games get <b>no signal</b> — that means the model found no edge, and that's the honest answer. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, only when its number disagrees with the market for a concrete, checkable reason. These are experiments for tracking our models — <b>not betting advice</b>.</p></div>
+      <div class="exp"><h3>Signals, simply</h3><p>Most games get <b>no signal</b> — no edge stood out. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, when its number disagrees with the market for a concrete, checkable reason. Every flag is the model's read — you decide.</p></div>
       <div class="exp"><h3>We show our work</h3><p>After every game we publish how far off we were. &ldquo;<b>Off by 3</b>&rdquo; means our predicted total was 3 points from the real final score. Lower is better — and we always show our average miss next to the market's.</p></div>
     </div>
   </div>
@@ -1406,7 +1435,7 @@ details.method summary{font-size:13px}
       <div class="sheet-grab" aria-hidden="true"></div>
       <button class="sheet-x" id="aboutClose" aria-label="Close">&#x2715;</button>
       <div class="section-head"><h2>About Line Lab</h2><p>The honest version</p></div>
-      <div class="exp"><h3>What this is</h3><p>Line Lab is a model-testing lab, not a picks service. Every signal here is tracked for <b>calibration only</b> — the model has never beaten the closing line, and nothing here is betting advice.</p></div>
+      <div class="exp"><h3>What this is</h3><p>Line Lab is every line, every game, with the numbers behind the call. Every signal is the model's read on that game — you decide what it means.</p></div>
       <div class="exp"><h3>How we keep ourselves honest</h3><p>We log our number for every game <b>before</b> it starts and grade it <b>after</b> the final. Wins and misses are both published on the Results tab. Model changes are written up in the lab notebook below the results.</p></div>
       <div class="exp"><h3>Its limits</h3><p>Models don't watch the games. They miss injuries that break late, weather that moves, and matchups that numbers can't see. A signal is a starting point for your own check — matchup, injuries, pace, conditions — never the whole answer.</p></div>
     </div>
@@ -1417,7 +1446,7 @@ details.method summary{font-size:13px}
       <div class="sheet-grab" aria-hidden="true"></div>
       <div class="tour-slide" data-tour="0"><h2>Welcome to Line Lab</h2><p>We build computer models that predict sports scores — then grade every prediction after the game to see how the models are doing.</p></div>
       <div class="tour-slide" data-tour="1" hidden><h2>Our number vs the books</h2><p>For every game we show <b>two numbers</b>: what our model predicts, and what the sportsbooks say. A big disagreement alone is <b>not</b> a signal — we only flag a game when the model's number disagrees for a concrete, checkable reason.</p></div>
-      <div class="tour-slide" data-tour="2" hidden><h2>Signals, simply</h2><p>Most games get <b>no signal</b> — that means the model found no edge, and that's the honest answer. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, only when its number disagrees with the market for a concrete, checkable reason. These are experiments for tracking our models — <b>not betting advice</b>.</p></div>
+      <div class="tour-slide" data-tour="2" hidden><h2>Signals, simply</h2><p>Most games get <b>no signal</b> — no edge stood out. On rare games the model flags a <b>Strong signal</b> or a <b>Lean</b>, when its number disagrees with the market for a concrete, checkable reason. Every flag is the model's read — you decide.</p></div>
       <div class="tour-slide" data-tour="3" hidden><h2>We show our work</h2><p>After every game we publish how far off we were. &ldquo;<b>Off by 3</b>&rdquo; means our predicted total was 3 points from the real final score. Lower is better — and we always show our average miss next to the market's.</p></div>
       <div class="tour-dots" id="tourDots"><span class="on"></span><span></span><span></span><span></span></div>
       <div class="tour-nav"><button class="bbtn primary" id="tourNext" type="button">Next</button></div>
@@ -1489,7 +1518,7 @@ details.method summary{font-size:13px}
   const healthData={"cfb":{"graded":306,"our_mae":13.41,"market_mae":12.46,"bias":-0.92},"mlb":{"graded":109,"our_mae":2.96,"market_mae":2.18,"bias":-0.96},"nba":{"graded":73,"our_mae":14.75,"market_mae":14.32,"bias":0.35},"nfl":{"graded":73,"our_mae":11.08,"market_mae":10.35,"bias":0.22},"nhl":{"graded":2,"our_mae":0.96,"market_mae":0.5,"bias":0.96}};
   const gatedPlays=[];
   const trendData={"generated":"2026-10-27","sports":{"nfl":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28","Sep 29","Sep 30","Oct 1","Oct 2","Oct 3","Oct 4","Oct 5","Oct 6","Oct 7","Oct 8","Oct 9","Oct 10","Oct 11","Oct 12","Oct 13","Oct 14","Oct 15","Oct 16","Oct 17","Oct 18","Oct 19","Oct 20","Oct 21","Oct 22","Oct 23","Oct 24","Oct 25","Oct 26","Oct 27"],"our_mae":[null,13.7,13.7,13.7,8.35,8.35,8.35,11.41,11.29,11.29,11.29,11.15,11.15,11.15,10.93,11.51,11.51,11.51,11.45,11.45,11.45,11.08,11.3,11.3,11.3,11.35,11.35,11.35,11.28,11.28,11.28,11.28,11.2,11.2,11.2,11.02,11.04],"market_mae":[null,null,null,null,null,null,null,10.53,10.34,10.34,10.34,10.47,10.47,10.47,9.88,10.24,10.24,10.24,10.17,10.17,10.17,10.11,10.26,10.26,10.26,10.24,10.24,10.24,10.32,10.32,10.32,10.32,10.21,10.21,10.21,10.25,10.32],"bias":[null,null,null,null,null,null,null,-0.01,-0.61,-0.61,-0.61,-0.05,-0.05,-0.05,0.12,1.05,1.05,1.05,0.71,0.71,0.71,0.89,1.33,1.33,1.33,1.01,1.01,1.01,0.42,0.42,0.42,0.42,0.52,0.52,0.52,-0.14,0.03],"n":[null,1,1,1,2,2,2,15,16,16,16,17,17,17,30,31,31,31,32,32,32,44,45,45,45,46,46,46,58,58,58,58,59,59,59,71,72]},"cfb":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28","Sep 29","Sep 30","Oct 1","Oct 2","Oct 3","Oct 4","Oct 5","Oct 6","Oct 7","Oct 8","Oct 9","Oct 10","Oct 11","Oct 12","Oct 13","Oct 14","Oct 15","Oct 16","Oct 17","Oct 18","Oct 19","Oct 20","Oct 21","Oct 22","Oct 23","Oct 24","Oct 25","Oct 26","Oct 27"],"our_mae":[null,null,null,null,2.9,6.08,11.75,11.6,11.6,11.6,11.6,11.79,11.67,12.65,12.71,12.71,12.89,12.9,13.05,13.16,12.9,12.91,12.91,12.83,12.91,12.96,12.89,12.95,12.93,12.93,13.06,13.03,13.03,13.01,13.38,13.41,13.41],"market_mae":[null,null,null,null,null,null,null,10.64,10.64,10.64,10.64,10.92,10.76,11.44,11.53,11.53,11.76,11.77,11.96,12.0,11.71,11.74,11.74,11.74,11.83,11.82,11.84,12.01,11.98,11.98,12.17,12.15,12.17,12.13,12.46,12.46,12.46],"bias":[null,null,null,null,null,null,null,-2.49,-2.49,-2.49,-2.49,-2.15,-2.02,-1.26,-1.26,-1.26,-0.98,-1.16,-0.93,-1.11,-1.59,-1.54,-1.54,-1.48,-1.68,-1.58,-1.44,-1.45,-1.62,-1.62,-1.54,-1.52,-1.41,-1.41,-0.85,-0.92,-0.92],"n":[null,null,null,null,1,5,68,71,71,71,71,73,76,126,130,130,131,133,137,142,186,188,188,190,192,195,198,246,250,250,253,254,257,261,305,306,306]},"mlb":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28","Sep 29","Sep 30","Oct 1","Oct 2","Oct 3","Oct 4","Oct 5","Oct 6","Oct 7","Oct 8","Oct 9","Oct 10","Oct 11","Oct 12","Oct 13","Oct 14","Oct 15","Oct 16","Oct 17","Oct 18","Oct 19","Oct 20","Oct 21","Oct 22","Oct 23","Oct 24","Oct 25","Oct 26","Oct 27"],"our_mae":[null,2.03,2.86,2.93,3.17,3.54,3.49,3.2,3.2,3.11,3.1,3.07,3.07,3.08,3.06,3.03,3.02,3.02,3.02,3.02,3.02,3.04,3.03,3.04,3.01,3.0,3.0,2.99,3.0,2.98,2.98,2.98,2.98,2.98,2.96,2.96,2.96],"market_mae":[null,null,null,null,null,null,null,null,null,1.67,2.0,1.79,1.79,2.1,1.92,1.81,1.73,1.78,1.78,1.78,1.78,1.84,2.02,2.07,2.0,2.0,2.0,2.06,2.07,2.13,2.13,2.13,2.13,2.1,2.12,2.12,2.18],"bias":[null,null,null,null,null,null,null,-0.89,-0.89,-0.84,-0.83,-0.82,-0.82,-0.91,-0.94,-0.94,-0.97,-1.04,-1.04,-1.04,-1.04,-1.07,-1.0,-1.03,-1.02,-1.02,-1.02,-0.99,-1.02,-1.0,-1.0,-1.0,-1.0,-1.01,-0.99,-0.99,-0.96],"n":[null,3,16,30,40,55,66,78,78,81,84,85,85,88,90,91,93,96,96,96,96,97,99,100,101,103,103,104,105,106,106,106,106,107,108,108,109]},"nba":{"labels":["Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28","Sep 29","Sep 30","Oct 1","Oct 2","Oct 3","Oct 4","Oct 5","Oct 6","Oct 7","Oct 8","Oct 9","Oct 10","Oct 11","Oct 12","Oct 13","Oct 14","Oct 15","Oct 16","Oct 17","Oct 18","Oct 19","Oct 20","Oct 21","Oct 22","Oct 23","Oct 24","Oct 25","Oct 26","Oct 27"],"our_mae":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,14.99,15.73,15.49,15.49,15.49,15.49,15.27,13.87,14.8,14.39,14.59,14.77,14.75],"market_mae":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,17.0,11.62,14.8,14.19,14.04,14.19,14.32],"bias":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,-0.7,-0.69,3.72,3.72,3.72,3.72,2.57,1.83,0.05,-0.57,1.33,0.67,0.35],"n":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,7,9,21,21,21,21,24,35,37,49,57,64,73]}}};
-  const whatIfData={"asof":"2026-10-27","strong":{"n":6,"w":3,"l":3,"push":0,"net_units":-5.46},"lean":{"n":9,"w":3,"l":6,"push":0,"net_units":-65.46},"all":{"n":15,"w":6,"l":9,"push":0,"net_units":-70.92},"note":"Historical paper results at flat $20 stakes, -110 pricing. Not a promise, not advice."};
+  const whatIfData={"asof":"2026-10-27","strong":{"n":6,"w":3,"l":3,"push":0,"net_units":-5.46},"lean":{"n":9,"w":3,"l":6,"push":0,"net_units":-65.46},"all":{"n":15,"w":6,"l":9,"push":0,"net_units":-70.92},"note":"Historical results at flat $20 stakes, -110 pricing."};
   const injuryAdjData={"cfb-401856734":{"adj":-1.5,"applied":false,"parts":[{"p":"Kahleil Jackson","t":"FLA","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]},"nfl-2026-08-PHI-WAS":{"adj":-4.0,"applied":false,"parts":[{"p":"Dontayvion Wicks","t":"PHI","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"DeVonta Smith","t":"PHI","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Britain Covey","t":"PHI","s":"questionable","pts":-0.75,"code":"INJ_WR1_D"},{"p":"Lane Johnson","t":"PHI","s":"out","pts":-1.0,"code":"INJ_LT_OUT"},{"p":"Terry McLaurin","t":"WAS","s":"out","pts":-1.5,"code":"INJ_WR1_OUT"}]}};
   const splitsData={"nfl-2026-08-CAR-GB":{"t_over":47,"h_over":45,"t_home":68,"h_home":65,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-BAL-BUF":{"t_over":27,"h_over":67,"t_home":61,"h_home":47,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-TEN-CIN":{"t_over":29,"h_over":21,"t_home":57,"h_home":75,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-ARI-DAL":{"t_over":17,"h_over":14,"t_home":43,"h_home":48,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-MIN-DET":{"t_over":27,"h_over":22,"t_home":39,"h_home":53,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-IND-JAX":{"t_over":26,"h_over":24,"t_home":51,"h_home":39,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-LV-NYJ":{"t_over":65,"h_over":68,"t_home":26,"h_home":28,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-CLE-PIT":{"t_over":74,"h_over":72,"t_home":39,"h_home":31,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-ATL-TB":{"t_over":65,"h_over":74,"t_home":31,"h_home":17,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-LAC-LAR":{"t_over":63,"h_over":66,"t_home":64,"h_home":53,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-KC-DEN":{"t_over":77,"h_over":79,"t_home":41,"h_home":42,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-NE-MIA":{"t_over":70,"h_over":75,"t_home":29,"h_home":42,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-PHI-WAS":{"t_over":80,"h_over":90,"t_home":54,"h_home":71,"asof":"2026-10-27T15:52:33Z"},"nfl-2026-08-CHI-SEA":{"t_over":68,"h_over":76,"t_home":39,"h_home":28,"asof":"2026-10-27T15:52:33Z"},"cfb-401862812":{"t_over":48,"h_over":47,"t_home":16,"h_home":9,"asof":"2026-10-27T15:52:35Z"},"cfb-401869963":{"t_over":59,"h_over":65,"t_home":33,"h_home":39,"asof":"2026-10-27T15:52:35Z"},"cfb-401856844":{"t_over":80,"h_over":83,"t_home":52,"h_home":37,"asof":"2026-10-27T15:52:35Z"},"cfb-401866451":{"t_over":69,"h_over":77,"t_home":84,"h_home":90,"asof":"2026-10-27T15:52:35Z"},"cfb-401856733":{"t_over":41,"h_over":44,"t_home":51,"h_home":76,"asof":"2026-10-27T15:52:35Z"},"cfb-401856735":{"t_over":40,"h_over":61,"t_home":33,"h_home":30,"asof":"2026-10-27T15:52:35Z"},"cfb-401856736":{"t_over":80,"h_over":85,"t_home":29,"h_home":55,"asof":"2026-10-27T15:52:35Z"},"cfb-401856737":{"t_over":39,"h_over":44,"t_home":14,"h_home":5,"asof":"2026-10-27T15:52:35Z"},"cfb-401856843":{"t_over":64,"h_over":76,"t_home":35,"h_home":49,"asof":"2026-10-27T15:52:35Z"},"cfb-401856845":{"t_over":76,"h_over":72,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401856846":{"t_over":74,"h_over":73,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401856847":{"t_over":30,"h_over":34,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401856848":{"t_over":46,"h_over":38,"t_home":48,"h_home":66,"asof":"2026-10-27T15:52:35Z"},"cfb-401858278":{"t_over":35,"h_over":39,"t_home":36,"h_home":32,"asof":"2026-10-27T15:52:35Z"},"cfb-401858279":{"t_over":66,"h_over":70,"t_home":15,"h_home":10,"asof":"2026-10-27T15:52:35Z"},"cfb-401858280":{"t_over":36,"h_over":39,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401858281":{"t_over":48,"h_over":46,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401858282":{"t_over":62,"h_over":66,"t_home":54,"h_home":89,"asof":"2026-10-27T15:52:35Z"},"cfb-401858283":{"t_over":52,"h_over":51,"t_home":12,"h_home":4,"asof":"2026-10-27T15:52:35Z"},"cfb-401858501":{"t_over":90,"h_over":83,"t_home":15,"h_home":14,"asof":"2026-10-27T15:52:35Z"},"cfb-401858502":{"t_over":81,"h_over":71,"t_home":41,"h_home":38,"asof":"2026-10-27T15:52:35Z"},"cfb-401858504":{"t_over":65,"h_over":72,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401858505":{"t_over":74,"h_over":48,"t_home":29,"h_home":47,"asof":"2026-10-27T15:52:35Z"},"cfb-401858506":{"t_over":33,"h_over":39,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401858508":{"t_over":85,"h_over":87,"t_home":41,"h_home":39,"asof":"2026-10-27T15:52:35Z"},"cfb-401858509":{"t_over":35,"h_over":42,"t_home":34,"h_home":59,"asof":"2026-10-27T15:52:35Z"},"cfb-401860924":{"t_over":42,"h_over":58,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401862814":{"t_over":30,"h_over":37,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401862815":{"t_over":74,"h_over":78,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401862816":{"t_over":86,"h_over":85,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401864529":{"t_over":91,"h_over":95,"t_home":81,"h_home":80,"asof":"2026-10-27T15:52:35Z"},"cfb-401869846":{"t_over":30,"h_over":48,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401871095":{"t_over":33,"h_over":44,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401871096":{"t_over":77,"h_over":83,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401871097":{"t_over":37,"h_over":42,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401856734":{"t_over":34,"h_over":29,"t_home":39,"h_home":32,"asof":"2026-10-27T15:52:35Z"},"cfb-401859185":{"t_over":66,"h_over":80,"t_home":62,"h_home":41,"asof":"2026-10-27T15:52:35Z"},"cfb-401860909":{"t_over":68,"h_over":81,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401860910":{"t_over":20,"h_over":14,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401864530":{"t_over":49,"h_over":56,"t_home":null,"h_home":null,"asof":"2026-10-27T15:52:35Z"},"cfb-401864531":{"t_over":87,"h_over":87,"t_home":16,"h_home":11,"asof":"2026-10-27T15:52:35Z"},"cfb-401866452":{"t_over":83,"h_over":84,"t_home":7,"h_home":5,"asof":"2026-10-27T15:52:35Z"},"cfb-401871059":{"t_over":79,"h_over":81,"t_home":13,"h_home":7,"asof":"2026-10-27T15:52:35Z"}};
   const labNotebookData=[{"version":"spread-gate-shadow","date":"2026-09-28","title":"Spread gating: rejected on evidence \u2014 shadow logger goes observation-only","what_changed":"Hypothetical spread picks at |gap|>=T showed the market beating our spread by ~1.9-3.2 pts at every threshold -- large gaps mark our worst games, not market mistakes. No spread picks ship; a shadow logger records the hypotheticals (reasons captured at gate time) for re-evaluation at n>=200.","evidence":{"metric":"spread MAE, ours vs market (n=70 graded NFL+CFB games)","before":"13.50 (ours)","after":"11.61 (market)","source":"reports/finish-up-2026-09-28.md \u00a75"},"status":"observation"},{"version":"pick-gating-v1","date":"2026-09-27","title":"Pick gating: reason-gated paper totals go live","what_changed":"Totals within |gap| of the market now need a machine-readable reason code (injury tags live; weather/pace deferred) to earn lean (>=3.0 pts NFL/CFB, >=2.0 MLB) or strong (>=5.0 / >=3.5) -- reasonless picks cap at coin_flip. Paper only; nothing is wagered. Live run: 17 rows -> 12 pass / 4 lean / 1 strong_play.","evidence":null,"status":"shipped"},{"version":"mlb-srs-v2+pitcher1","date":"2026-09-27","title":"MLB: probable-pitcher adjustment goes live (postseason capped at lean)","what_changed":"Total adjusts by 0.4x sum(ERA_blend - lgERA) per probable starter (+/-2 run band); unannounced probables fall back to 0.0 with a PITCH_UNKNOWN tag. Postseason paper picks capped at lean -- small samples, aces on short rest.","evidence":null,"status":"shipped"},{"version":"nfl-srs-v2+inj1","date":"2026-09-27","title":"NFL: automated injury adjustments","what_changed":"Free ESPN injury feed drives point adjustments: QB out -2.5, WR1 out -1.5, starting OT out -1.0, CB1/edge out +1.0; questionable = half; combined cap +/-4.0/game. Dry run: Daniels caught (-2.5), Collins correctly ignored.","evidence":null,"status":"shipped"},{"version":"cfb-srs-v2+inj1","date":"2026-09-27","title":"CFB: automated injury adjustments (feed currently dead)","what_changed":"Same injury-adjustment path as NFL (QB out -2.5, WR1 -1.5, OT -1.0, CB1/edge +1.0; cap +/-4.0/game). Caveat: ESPN's CFB injury feed is effectively dead, so the CFB path no-ops until it recovers.","evidence":null,"status":"shipped"},{"version":"cfb-rolling-bias-cal","date":"2026-09-27","title":"REJECTED: CFB rolling totals-bias calibration","what_changed":"Trailing-28-day (final - our_total) correction, min 20 prior graded games. Chronological walk-forward on 68 games: MAE 11.75 -> 11.75 -- the 20-game minimum never triggered, so the layer never activated out of sample. Not wired; guarded module stays ready for re-evaluation.","evidence":{"metric":"CFB totals MAE, chronological walk-forward (68 games)","before":"11.75","after":"11.75","source":"reports/impl-2026-09-27.md Item 1"},"status":"rejected"},{"version":"mlb-srs-v2","date":"2026-09-22","title":"MLB engine v2: bias-tamed totals","what_changed":"Totals retuned against the same hot-totals pattern v2 fixed in NFL/CFB. Spread edge over naive also grew (3.522 -> 3.495).","evidence":{"metric":"MLB totals MAE, walk-forward (2,338 games)","before":"3.622","after":"3.588","source":"reports/mlb-validation-2026-09-21.md \u00a73"},"status":"shipped"},{"version":"nfl-srs-v2 \u00b7 cfb-srs-v2","date":"2026-09-21","title":"Totals v2: symmetric HFA + pace + shrinkage","what_changed":"v1 inflated every total by stuffing all home-field edge into the home score. v2 splits HFA symmetrically (spread-neutral), adds pace modeling, shrinks toward the league-mean total, and calibrates residual bias -- killing the hot-totals bias (+1.74 NFL, +1.86 CFB) with no spread regression.","evidence":{"metric":"totals MAE, split-half walk-forward (272 NFL / 906 CFB games)","before":"11.17 / 13.51","after":"10.57 / 12.64","source":"reports/totals_v2_promotion.md"},"status":"shipped"}];
@@ -1559,6 +1588,48 @@ details.method summary{font-size:13px}
 
   /* ---------- helpers ---------- */
   function fmtLine(g,v){if(v==null)return '—';if(Math.abs(v)<.05)return "Pick ’em";const team=v>0?g.home_team:g.away_team;return team+' −'+Math.abs(v).toFixed(1)}
+  /* ---------- three-line table: Spread | Total | Moneyline, sportsbook
+     style. Market rows show both teams (favorite −X, underdog +X); the
+     Model row shows our spread (favorite line), our total, and our
+     predicted winner + win chance. Market moneyline odds and juice render
+     when the pipeline captures them (market_*_price_* fields); until then
+     those cells show —. Display only — no calls, no badges. ---------- */
+  const spreadTeams=(g,v)=>{
+    if(v==null)return null;
+    if(Math.abs(v)<.05)return {away:'PK',home:'PK'};
+    return v>0
+      ?{away:'+'+Math.abs(v).toFixed(1),home:'−'+Math.abs(v).toFixed(1)}
+      :{away:'−'+Math.abs(v).toFixed(1),home:'+'+Math.abs(v).toFixed(1)};
+  };
+  const fmtOdds=o=>o==null?null:(o>0?'+':'−')+Math.abs(o);
+  const priceTxt=(num,price)=>{
+    if(num==null)return '—';
+    return price!=null?`${num} <i>${fmtOdds(price)}</i>`:num;
+  };
+  const modelPick=g=>{
+    const hp=g.our_home_prob;
+    if(hp==null)return '—';
+    const team=hp>=0.5?g.home_team:g.away_team;
+    return `${team} ${Math.round((hp>=0.5?hp:1-hp)*100)}%`;
+  };
+  function linesTable(g){
+    const spLabel=g.sport==='mlb'?'Run line':g.sport==='nhl'?'Puck line':'Spread';
+    const mkt=spreadTeams(g,g.market_spread);
+    const tot=g.market_total;
+    const aS=mkt?priceTxt(mkt.away,g.market_spread_price_away):'—';
+    const hS=mkt?priceTxt(mkt.home,g.market_spread_price_home):'—';
+    const aT=tot==null?'—':priceTxt('O '+tot.toFixed(1),g.market_total_price_over);
+    const hT=tot==null?'—':priceTxt('U '+tot.toFixed(1),g.market_total_price_under);
+    const aM=fmtOdds(g.market_ml_price_away)||'—';
+    const hM=fmtOdds(g.market_ml_price_home)||'—';
+    const mS=g.our_spread==null?'—':escapeHTML(fmtLine(g,g.our_spread));
+    const mT=g.our_total==null?'—':g.our_total.toFixed(1);
+    return `<div class="lt"><div class="lt-row lt-head"><span></span><span>${spLabel}</span><span>Total</span><span>Moneyline</span></div>`
+      +`<div class="lt-row"><span class="lt-team">${escapeHTML(g.away_team)}</span><span>${aS}</span><span>${aT}</span><span>${aM}</span></div>`
+      +`<div class="lt-row"><span class="lt-team">${escapeHTML(g.home_team)}</span><span>${hS}</span><span>${hT}</span><span>${hM}</span></div>`
+      +`<div class="lt-row lt-model"><span class="lt-team">Model</span><span>${mS}</span><span>${mT}</span><span>${escapeHTML(modelPick(g))}</span></div></div>`;
+  }
+
   const signedNum=v=>v==null?'—':(Math.abs(v)<.05?'PK':(v>0?'−':'+')+Math.abs(v).toFixed(1));
   /* Gate-truth signal badges. The pick gate (sports/pick_gate.py) is the ONLY
      thing that promotes a game to a signal: raw model-vs-market gaps are
@@ -1582,12 +1653,6 @@ details.method summary{font-size:13px}
     if(p&&p.confidence==='strong_play')return {rank:3,cls:'strong',label:'Strong signal'};
     if(p&&p.confidence==='lean')return {rank:2,cls:'lean',label:'Lean'};
     return {rank:0,cls:'none',label:'',hide:true};
-  }
-  function marketLine(g){
-    const bits=[];
-    if(g.market_spread!=null){const v=g.market_spread;bits.push(Math.abs(v)<.05?'PK':(v>0?g.home_team:g.away_team)+' −'+Math.abs(v).toFixed(1))}
-    if(g.market_total!=null)bits.push('O/U '+g.market_total.toFixed(1));
-    return bits.length?bits.join(' · '):'Line TBD';
   }
   function kickoffWhen(utc){return new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date(utc))}
   function kickoffTime(utc){return new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit'}).format(new Date(utc))}
@@ -1634,15 +1699,15 @@ details.method summary{font-size:13px}
       :g.kickoff_utc?`<div class="g-state">${escapeHTML(kickoffTime(g.kickoff_utc))}${g.game_date!==TODAY?` · ${escapeHTML(dateLabel(g.game_date))}`:''} · <span class="countdown" data-ko="${escapeHTML(g.kickoff_utc)}">${countdownText(g.kickoff_utc)}</span></div>`
       :`<div class="g-state">TBD</div>`;
     const rows=teamRowsHTML(g,graded?g.away_score:null,graded?g.home_score:null,false);
-    return `${state}${rows}<div class="g-mkt">${escapeHTML(marketLine(g))}</div>`;
+    return `${state}${rows}<div class="g-mkt">${linesTable(g)}</div>`;
   }
   /* Live score overlay (ESPN, display only — never touches model/market data). */
   function liveMidHTML(g,L){
     if(L.state==='post')
-      return `<div class="g-state">Final</div>`+teamRowsHTML(g,L.away,L.home,false)+`<div class="g-mkt">${escapeHTML(marketLine(g))}</div>`;
+      return `<div class="g-state">Final</div>`+teamRowsHTML(g,L.away,L.home,false)+`<div class="g-mkt">${linesTable(g)}</div>`;
     return `<div class="g-state live-state"><span class="live-badge"><span class="live-dot"></span>Live</span><span class="g-clockline">${escapeHTML(L.detail)}</span></div>`
       +teamRowsHTML(g,L.away,L.home,true)
-      +`<div class="g-mkt">${escapeHTML(marketLine(g))} · Model <b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`;
+      +`<div class="g-mkt">${linesTable(g)}</div>`;
   }
   function gameCard(g,i){
     if(g.sport==='tennis')return tennisCard(g,i);
@@ -1653,11 +1718,10 @@ details.method summary{font-size:13px}
     const L=liveById.get(g.id);
     const live=L&&(L.state==='in'||L.state==='post')&&!graded;
     const mid=live?liveMidHTML(g,L):defaultMidHTML(g,graded);
-    const ours=`Model <b>${fmtLine(g,g.our_spread)}</b> · O/U <b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b>`;
     return `<article class="game tappable${live&&L.state==='in'?' live':''}" data-id="${g.id}" style="${accent(g)}animation-delay:${Math.min((i||0)*40,400)}ms">
       <button class="g-star" data-fav-a="${escapeHTML(favA)}" data-fav-b="${escapeHTML(favB)}" aria-pressed="${favOn}" aria-label="Favorite team">★</button>
       <div class="g-mid">${mid}</div>
-      <div class="g-foot">${s.hide?'':`<span class="signal ${s.cls}">${s.label}</span>`}<span class="g-ours">${ours}</span></div>
+      ${s.hide?'':`<div class="g-foot"><span class="signal ${s.cls}">${s.label}</span></div>`}
       ${whyCard(g)}
       ${variantDetails(g)}</article>`;
   }
@@ -1680,7 +1744,7 @@ details.method summary{font-size:13px}
       ${scoreLine}
       <div class="t-nums">
         <div><span>Our projected total</span><b>${tot==null?'—':tot.toFixed(1)}</b><i>Books: ${mkt==null?'—':mkt.toFixed(1)}</i></div>
-        <div><span>Model leans</span><b style="text-transform:capitalize">${escapeHTML(lean)}</b><i>tracked for calibration</i></div>
+        <div><span>Model leans</span><b style="text-transform:capitalize">${escapeHTML(lean)}</b><i>model's read</i></div>
       </div>
       ${s.hide?'':`<div class="g-foot" style="margin-top:8px"><span class="signal ${s.cls}">${s.label}</span></div>`}
     </article>`;
@@ -1748,7 +1812,7 @@ details.method summary{font-size:13px}
     html+=Object.entries(groups).map(([sport,rows])=>groupSection(sportNames[sport]||sport,rows.length+' game'+(rows.length===1?'':'s'),rows,false)).join('');
     const host=document.getElementById('games');
     const emptyHtml=state.sigOnly
-      ?'<div class="empty"><h2>No signals today</h2><p>The gate only promotes validated tiers — no flag, no edge. Turn off ⚡ Signals only to see every game.</p></div>'
+      ?'<div class="empty"><h2>No signals today</h2><p>Nothing stood out. Turn off ⚡ Signals only to see every game.</p></div>'
       :state.sport==='favs'
       ?'<div class="empty"><h2>No favorite teams yet</h2><p>Tap the star on any team’s card and its games will live on this screen.</p></div>'
       :'<div class="empty"><h2>No games here</h2><p>Try another day or sport — or search a team above to jump straight to its games.</p></div>';
@@ -1934,7 +1998,7 @@ details.method summary{font-size:13px}
   function renderGatedPlays(){
     const host=document.getElementById('gated');if(!host)return;
     const plays=(typeof gatedPlays!=='undefined'&&gatedPlays)||[];
-    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Signals &mdash; tracked for calibration, not proven bets</p></div>`;
+    let html=`<div class="gplays"><div class="subhead"><h3>Today&rsquo;s gated plays</h3><p>Signals &mdash; the model's read on today's games</p></div>`;
     if(!plays.length)
       html+='<div class="empty"><h2>No gated plays yet</h2><p>Gated plays appear after the morning model run. Only signals with a clear, machine-readable reason make the cut — that’s the discipline.</p></div>';
     else
@@ -1965,7 +2029,7 @@ function slateLegs(){
 }
 function slateHTML(legs){
   const head=`<div class="slate"><div class="subhead"><h3>Today&rsquo;s slate</h3>`
-    +`<p>Practice slate &mdash; calibration only, not betting picks</p></div>`;
+    +`<p>The model's read, ranked by disagreement</p></div>`;
   if(!legs.length)
     return head+`<div class="empty"><h2>No slate today</h2>`
       +`<p>Nothing cleared the gate — the gate is the discipline. Loosen it tomorrow, or browse the full signal list on the Games tab.</p></div></div>`;
@@ -2015,7 +2079,7 @@ function renderWhatIf(){
   if(!d||!d.strong||!d.lean||!d.all)return '';
   const asof=d.asof?` · graded through ${escapeHTML(dateLabel(d.asof))}`:'';
   return `<div class="whatif"><div class="subhead"><h3>What if</h3>`
-    +`<p>Historical paper results &mdash; not a promise, not advice</p></div>`
+    +`<p>Historical results at flat $20 stakes</p></div>`
     +`<div class="wi-rows">`
     +whatIfRow('strong play',d.strong)
     +whatIfRow('lean',d.lean)
@@ -2188,12 +2252,13 @@ function renderWhatIf(){
   function projectedScore(g){return {home:(g.our_total+g.our_spread)/2,away:(g.our_total-g.our_spread)/2}}
   function spreadDetail(g){
     const d=g.our_spread-g.market_spread,hasMkt=g.market_spread!=null;
+    const favPrice=hasMkt&&Math.abs(g.market_spread)>=.05?(g.market_spread>0?g.market_spread_price_home:g.market_spread_price_away):null;
     const edge=!hasMkt?'—':(Math.abs(d)<.05
       ?`No edge <span class="leans">matches the market</span>`
       :`${Math.abs(d).toFixed(1)} <span class="leans">Leans <b>${escapeHTML(d>0?g.home_team:g.away_team)}</b></span>`);
     return `<h4>Spread</h4><div class="sheet-sec"><div class="numrows">`
       +`<div class="numrow"><span>Model</span><b>${escapeHTML(fmtLine(g,g.our_spread))}</b></div>`
-      +`<div class="numrow"><span>Market</span><b>${hasMkt?escapeHTML(fmtLine(g,g.market_spread)):'—'}</b></div>`
+      +`<div class="numrow"><span>Market</span><b>${hasMkt?escapeHTML(fmtLine(g,g.market_spread))+(favPrice!=null?` <i>${fmtOdds(favPrice)}</i>`:''):'—'}</b></div>`
       +`<div class="numrow edge"><span>Edge</span><b>${edge}</b></div>`
       +`</div></div>`;
   }
@@ -2221,11 +2286,33 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   }
   return `<h4>Total</h4><div class="sheet-sec"><div class="numrows">`
     +`<div class="numrow"><span>Model</span><b>${g.our_total==null?'—':g.our_total.toFixed(1)}</b></div>`
-    +`<div class="numrow"><span>Market</span><b>${hasMkt?g.market_total.toFixed(1):'—'}</b></div>`
+    +`<div class="numrow"><span>Market</span><b>${hasMkt?g.market_total.toFixed(1)+(g.market_total_price_over!=null&&g.market_total_price_under!=null?` <i>O ${fmtOdds(g.market_total_price_over)} · U ${fmtOdds(g.market_total_price_under)}</i>`:''):'—'}</b></div>`
     +`<div class="numrow edge"><span>Edge</span><b>${edge}</b></div>`
     +splits
     +`</div></div>`;
 }
+/* Moneyline section for the game sheet: the model's pick + win chance
+     next to the market's moneyline odds. Market odds render when the
+     pipeline captures them; until then the market row shows —. */
+  function moneylineDetail(g){
+    const hp=g.our_home_prob;
+    const pick=hp==null?null:(hp>=0.5?g.home_team:g.away_team);
+    const pct=hp==null?null:Math.round((hp>=0.5?hp:1-hp)*100);
+    const mA=g.market_ml_price_away,mH=g.market_ml_price_home;
+    const oTxt=o=>o==null?'—':fmtOdds(o);
+    const imp=o=>o==null?null:(o<0?(-o)/(-o+100):100/(o+100));
+    let edge='—';
+    if(pick!=null){
+      const mp=pick===g.home_team?mH:mA;
+      const ip=imp(mp);
+      if(ip!=null)edge=`Model ${pct}% vs market-implied ${Math.round(ip*100)}%`;
+    }
+    return `<h4>Moneyline</h4><div class="sheet-sec"><div class="numrows">`
+      +`<div class="numrow"><span>Model</span><b>${pick==null?'—':escapeHTML(pick)+' '+pct+'%'}</b></div>`
+      +`<div class="numrow"><span>Market</span><b>${mA==null&&mH==null?'—':escapeHTML(g.away_team)+' '+oTxt(mA)+' · '+escapeHTML(g.home_team)+' '+oTxt(mH)}</b></div>`
+      +`<div class="numrow edge"><span>Edge</span><b>${edge}</b></div>`
+      +`</div><div class="edge-line">Who wins outright. The model's win chance comes from the same spread distribution as the spread line — a second view of the same call, not a separate model.</div></div>`;
+  }
   function injuryDetail(g){
   const data=(typeof injuryData!=='undefined'&&injuryData)||{};
   const lg=data[g.sport];
@@ -2340,7 +2427,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   /* Why-this-number explainer: model components that add up to our number.
      Only rendered when refresh.py verified the parts against the journal. */
   function whyDetail(g){
-    const w=g.why;if(!w||!w.sp||!w.tp)return '';
+    const w=g.why;if(!w||!w.sp||!w.tp){if(['cbb','mlb','tennis'].includes(g.sport))return `<h4>Why this number</h4><div class="sheet-sec"><div class="edge-line">A component breakdown isn't available for ${g.sport==='cbb'?'college hoops':g.sport==='mlb'?'baseball':'tennis'} yet — the spread and total above are still the model's full read.</div></div>`;return ''}
     const fmt=v=>`${v<0?'−':v>0?'+':''}${Math.abs(v).toFixed(1)}`;
     const cls=v=>v>0?'pos':v<0?'neg':'';
     /* sp rows are [label, team, pts]; tp rows are [label, pts]. */
@@ -2465,7 +2552,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.home_team)}</span><span class="ps">${ps.home.toFixed(1)}</span></div>`
       +`<div class="proj-row"><span class="pt">${escapeHTML(g.away_team)}</span><span class="ps">${ps.away.toFixed(1)}</span></div>`
       +`</div><div class="proj-cap">From the model&rsquo;s spread (${signedNum(g.our_spread)}) and total (${g.our_total==null?'—':g.our_total.toFixed(1)}).</div></div>`;
-    h+=formHTML(g)+spreadDetail(g)+totalDetail(g)+injuryDetail(g)+clvDetail(g)+biasDetail(g)+variantLine(g)+movementDetail(g)+paceMatchupDetail(g)+whyDetail(g);
+    h+=formHTML(g)+spreadDetail(g)+totalDetail(g)+moneylineDetail(g)+injuryDetail(g)+clvDetail(g)+biasDetail(g)+variantLine(g)+movementDetail(g)+paceMatchupDetail(g)+whyDetail(g);
     if(graded){const am=g.home_score-g.away_score,at=g.home_score+g.away_score;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${g.home_score} – ${escapeHTML(g.away_team)} ${g.away_score}</b><div class="edge-line">Spread error ${Math.abs(g.our_spread-am).toFixed(1)} · total error ${Math.abs(g.our_total-at).toFixed(1)}</div></div>`}
     else if(espnFinal){const am=L.home-L.away,at=L.home+L.away;h+=`<h4>Final</h4><div class="sheet-sec"><b>${escapeHTML(g.home_team)} ${L.home} – ${escapeHTML(g.away_team)} ${L.away}</b><div class="edge-line">Live final via ESPN — grades overnight. Our spread was ${signedNum(g.our_spread)} (err ${Math.abs(g.our_spread-am).toFixed(1)}) · total ${g.our_total==null?'—':g.our_total.toFixed(1)} (err ${g.our_total==null?'—':Math.abs(g.our_total-at).toFixed(1)}).</div></div>`}
     if(L&&(L.state==='in'||espnFinal))h+=`<h4>Live</h4><div class="sheet-sec"><div id="liveViz"></div><div id="paceRow"></div><div id="winProb"></div><div class="pbp" id="pbpFeed"><div class="pbp-note">Loading plays…</div></div></div>`;
@@ -2474,8 +2561,12 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   }
   /* ---------- venue weather (drawer only, once per open, outdoor games) ----------
      Open-Meteo is free with no key and CORS-open. Domes are skipped via a
-     name list (ESPN's indoor flag is unreliable — SoFi reports indoor:false). */
+     name list (ESPN's indoor flag is unreliable — SoFi reports indoor:false).
+     Forecast is for kickoff time when available, else current conditions;
+     non-outdoor sports get the indoor note (ESPN venues carry no coordinates,
+     so city+state geocoding stands in). */
   const DOME_RE=/sofi|allegiant|at&t|ford field|lucas oil|u\.?\s?s\.?\s?bank|caesars|superdome|state farm|nrg|mercedes-benz/i;
+  const WX_OUTDOOR=new Set(['nfl','cfb','mlb']); /* weather only matters outdoors */
   const WX_WORD={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Fog',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Rain',71:'Snow',73:'Snow',75:'Snow',80:'Showers',81:'Showers',82:'Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
   const wxCache=new Map(); /* game.id -> rendered html ('' = skip/failed) */
   let wxAbort=null;
@@ -2483,16 +2574,47 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const done=h=>{wxCache.set(g.id,h);const e=document.getElementById('wxLine');if(e)e.innerHTML=h};
     try{
       if(wxCache.has(g.id)){const e=document.getElementById('wxLine');if(e)e.innerHTML=wxCache.get(g.id);return}
+      if(!WX_OUTDOOR.has(g.sport)){done(' · Indoor — weather not a factor');return}
       if(v&&(v.indoor||DOME_RE.test(v.name||''))){done(' · Indoor — weather not a factor');return}
       if(!v||!v.city){done(' · Weather unavailable for this venue');return}
       if(wxAbort)wxAbort.abort();
       wxAbort=new AbortController();const sig=wxAbort.signal;
       const geo=await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(v.city+(v.state?', '+v.state:''))}&count=1&language=en&format=json`,{signal:sig})).json();
       const r=(geo.results||[])[0];if(!r||r.latitude==null)throw 0;
-      const w=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${r.latitude}&longitude=${r.longitude}&current=temperature_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto`,{signal:sig})).json();
-      const c=w.current||{};if(c.temperature_2m==null)throw 0;
-      const cond=WX_WORD[c.weather_code]||'';
-      done(` · ${Math.round(c.temperature_2m)}°F${cond?', '+cond:''} · wind ${Math.round(c.wind_speed_10m||0)} mph`);
+      const lat=r.latitude,lon=r.longitude;
+      let line=null;
+      /* Forecast at kickoff when we have one; otherwise current conditions. */
+      if(g.kickoff_utc){
+        try{
+          const f=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,wind_speed_10m,wind_gusts_10m&forecast_days=16&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto`,{signal:sig})).json();
+          const times=(f.hourly&&f.hourly.time)||[];
+          const off=f.utc_offset_seconds||0;
+          const ko=Date.parse(g.kickoff_utc);
+          let best=-1,bd=1e15;
+          for(let i=0;i<times.length;i++){
+            const t=times[i];
+            const ep=Date.UTC(+t.slice(0,4),+t.slice(5,7)-1,+t.slice(8,10),+t.slice(11,13),+t.slice(14,16))-off*1000;
+            const d=Math.abs(ep-ko);
+            if(d<bd){bd=d;best=i;}
+          }
+          if(best>=0){
+            const h=f.hourly;
+            const temp=h.temperature_2m[best],code=h.weather_code[best];
+            const w=h.wind_speed_10m[best],gu=h.wind_gusts_10m[best];
+            if(temp!=null){
+              const cond=WX_WORD[code]||'';
+              line=` · ${Math.round(temp)}°F${cond?', '+cond:''} · wind ${Math.round(w||0)} mph${gu!=null?' (gusts '+Math.round(gu)+')':''} at kickoff`;
+            }
+          }
+        }catch(e){/* fall through to current conditions */}
+      }
+      if(!line){
+        const w=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto`,{signal:sig})).json();
+        const c=w.current||{};if(c.temperature_2m==null)throw 0;
+        const cond=WX_WORD[c.weather_code]||'';
+        line=` · ${Math.round(c.temperature_2m)}°F${cond?', '+cond:''} · wind ${Math.round(c.wind_speed_10m||0)} mph now`;
+      }
+      done(line);
     }catch(e){done(' · Weather unavailable right now')}
   }
 
@@ -2552,7 +2674,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       C(lbl,W/2,py+56,'800 40px system-ui',INK);
     }
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1210,'500 32px system-ui',FAINT);
-    C('Signals · calibration only — never betting picks',W/2,1262,'600 30px system-ui',FAINT);
+    C('Line Lab · the model\'s read on every game',W/2,1262,'600 30px system-ui',FAINT);
     return cv;
   }
   async function shareCard(g){
@@ -3435,7 +3557,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       <label>Contracts<input data-co="n" inputmode="numeric" value="${n!=null?n:''}" placeholder="e.g. 38"></label>
       <label>Yes price now (¢)<input data-co="sell" inputmode="decimal" placeholder="e.g. 80"></label>
       <div data-co-out><div class="row"><span>Enter prices to see the math</span><b></b></div></div>
-      <div class="muted-note">Position management info only, not betting advice.</div>
+      <div class="muted-note">Position management info only.</div>
       <div data-co-stake="${st!=null?st:''}" hidden></div></div>`;
   }
   function _updateCashout(box){
@@ -3613,7 +3735,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     const txt=e.edge
       ?'Edge detected vs market — <b>~$20 standard is fine</b>'
       :'No clear edge — <b>toss-up; consider passing or half size</b>';
-    return `<div class="sizenote">Stake note (heuristic, not advice): ${txt}</div>`;
+    return `<div class="sizenote">Stake note (heuristic): ${txt}</div>`;
   }
 
   /* (d) mistake-tag chips on the card; the P&L-by-tag table is in _renderBankroll. */
@@ -3731,8 +3853,8 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       <div class="row"><span>Gap (ours − market)</span><b>${v.gap>0?'+':''}${f(v.gap)}</b></div>
       <div class="row"><span>Lean threshold (${escapeHTML(_sportName(g.sport))})</span><b>±${f(v.lean)}</b></div></div>
       <div style="margin-top:8px">${verdict}</div>
-      <div class="sizenote" style="border-top:0;padding-top:0;margin-top:6px">Stake note (heuristic, not advice): <b>${nudge}</b></div>
-      <div class="muted-note">Informational only — a paper-signal check, not betting advice.</div></div>`;
+      <div class="sizenote" style="border-top:0;padding-top:0;margin-top:6px">Stake note (heuristic): <b>${nudge}</b></div>
+      <div class="muted-note">Informational only — the model's read.</div></div>`;
   }
   function _betsChange(e){
     if(e.target&&['chkGame','chkSide'].indexOf(e.target.id)>=0)_updateChecklist();
@@ -4120,12 +4242,12 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
   }
 
   /* Share today's slate as text: the brief items, plain-text, with the
-     paper-signals footer. Native share when available, clipboard fallback. */
+     model's-read footer. Native share when available, clipboard fallback. */
   async function shareSlate(){
     const host=document.getElementById('briefSection');if(!host)return;
     const items=[...host.querySelectorAll('li')].map(li=>li.textContent.replace(/\s+/g,' ').trim()).filter(Boolean);
     if(!items.length)return;
-    const text='Line Lab — today\'s slate\n'+items.map((t,i)=>`${i+1}. ${t}`).join('\n')+'\nPaper signals for calibration only, not bets.';
+    const text='Line Lab — today\'s slate\n'+items.map((t,i)=>`${i+1}. ${t}`).join('\n')+'\nThe model\'s read on today\'s slate.';
     if(navigator.share){
       try{await navigator.share({title:'Line Lab slate',text});return;}
       catch(e){if(e&&e.name==='AbortError')return;}
@@ -4174,7 +4296,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       }
       if(dsc&&dir)out.push({id:'mv-'+g.game_id,kind:'move',gid:g.id,
         title:`Line moved ${dir} our number — ${g.away_team} @ ${g.home_team}`,
-        sub:`Market ${dsc} since open; the model's number is now ${dir==='toward'?'closer to':'further from'} the market. Position info only — model signals are calibration-only.`,ts:Date.now()});
+        sub:`Market ${dsc} since open; the model's number is now ${dir==='toward'?'closer to':'further from'} the market. Position info only — the model's read.`,ts:Date.now()});
     });
     return out;
   }
@@ -4185,7 +4307,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
       const g=gamesData.find(x=>x.away_team===p.away&&x.home_team===p.home&&x.sport===p.sport&&x.game_date>=TODAY);
       return {id:'gp-'+p.sport+'-'+p.away+'-'+p.home+'-'+(p.line==null?'x':p.line),kind:'play',gid:g?g.id:null,
         title:`New strong play gated — ${p.away} @ ${p.home}`,
-        sub:`${p.side||''} ${p.line==null?'':(+p.line).toFixed(1)} · model ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)}. Model signal — calibration only, not a bet.`,ts:Date.now()};
+        sub:`${p.side||''} ${p.line==null?'':(+p.line).toFixed(1)} · model ${p.our_total==null?'—':(+p.our_total).toFixed(1)} vs market ${p.market_total==null?'—':(+p.market_total).toFixed(1)}. Model signal — the model's read.`,ts:Date.now()};
     });
   }
   /* Injury flags on games carrying a paper lean or better. */
@@ -4456,7 +4578,7 @@ const fmtPts=v=>(v<0?'−':'+')+Math.abs(v).toFixed(1);
     C(`Model had ${fmtLine(g,g.our_spread)} · ${g.our_total==null?'—':g.our_total.toFixed(1)}`,W/2,760,'600 40px system-ui',MUT);
     C(`Spread error ${se.toFixed(1)}${te==null?'':' · Total error '+te.toFixed(1)}`,W/2,820,'600 40px system-ui',MUT);
     x.strokeStyle='rgba(255,255,255,.09)';x.lineWidth=2;x.beginPath();x.moveTo(90,900);x.lineTo(W-90,900);x.stroke();
-    C('Signals · calibration only — never betting picks',W/2,972,'600 34px system-ui',FAINT);
+    C('Line Lab · the model\'s read on every game',W/2,972,'600 34px system-ui',FAINT);
     C(`Line Lab · ${dateLabel(g.game_date)}`,W/2,1262,'500 32px system-ui',FAINT);
     return cv;
   }
@@ -4502,7 +4624,7 @@ function receiptRow(r, opts) {
   let pick = '';
   if (r.pick_side && r.pick_line != null) {
     const res = r.pick_result ? ` · <b class="${r.pick_result === 'won' ? 'pos' : r.pick_result === 'lost' ? 'neg' : ''}">${escapeHTML(r.pick_result)}</b>` : '';
-    pick = `<div class="rc-pick">paper pick: ${escapeHTML(r.pick_side)} ${r.pick_line.toFixed(1)}${res} <span class="rc-cal">calibration only</span></div>`;
+    pick = `<div class="rc-pick">model read: ${escapeHTML(r.pick_side)} ${r.pick_line.toFixed(1)}${res}</div>`;
   }
   return `<div class="rc-row">
     <div class="rc-top"><b>${escapeHTML(r.away)} @ ${escapeHTML(r.home)}</b><span class="rc-meta">${sport} · ${when}</span></div>
