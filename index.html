@@ -1246,6 +1246,19 @@ details.method summary{font-size:13px}
     .chip[data-sport="nba"][aria-pressed="true"]{background:var(--sp-nba);border-color:var(--sp-nba);color:#0a0a0f}
     .chip[data-sport="tennis"][aria-pressed="true"]{background:var(--sp-tennis);border-color:var(--sp-tennis);color:#0a0a0f}
     .chip[data-sport="nhl"][aria-pressed="true"]{background:var(--sp-nhl);border-color:var(--sp-nhl);color:#0a0a0f}
+    /* Light theme pressed chips: the light .chip background above beats
+       the pressed rule on specificity, leaving light text on a light pill
+       (e.g. Following). Non-sport pressed chips get an ink fill; sport
+       chips keep their accent fill but switch to white text, since the
+       light-mode accents are dark. */
+    html[data-theme="light"] .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+    html[data-theme="light"] .chip[data-sport="nfl"][aria-pressed="true"]{background:var(--sp-nfl);border-color:var(--sp-nfl);color:#fff}
+    html[data-theme="light"] .chip[data-sport="cfb"][aria-pressed="true"]{background:var(--sp-cfb);border-color:var(--sp-cfb);color:#fff}
+    html[data-theme="light"] .chip[data-sport="cbb"][aria-pressed="true"]{background:var(--sp-cbb);border-color:var(--sp-cbb);color:#fff}
+    html[data-theme="light"] .chip[data-sport="mlb"][aria-pressed="true"]{background:var(--sp-mlb);border-color:var(--sp-mlb);color:#fff}
+    html[data-theme="light"] .chip[data-sport="nba"][aria-pressed="true"]{background:var(--sp-nba);border-color:var(--sp-nba);color:#fff}
+    html[data-theme="light"] .chip[data-sport="tennis"][aria-pressed="true"]{background:var(--sp-tennis);border-color:var(--sp-tennis);color:#fff}
+    html[data-theme="light"] .chip[data-sport="nhl"][aria-pressed="true"]{background:var(--sp-nhl);border-color:var(--sp-nhl);color:#fff}
     html:not([data-theme="light"]) .masthead h1{background:linear-gradient(100deg,#7dd3fc 0%,#5eb0ff 45%,#a78bfa 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
     /* ---- daily slate cards: visual, not paragraphs ---- */
     .brief li{display:block}
