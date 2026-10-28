@@ -1288,6 +1288,11 @@ details.method summary{font-size:13px}
       .bottom-nav{padding:4px 8px calc(4px + env(safe-area-inset-bottom))}
       .app{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
     }
+    /* ---------- card fixes (2026-10-28): logos clear the side bar; lines box full-width; sparkline gets its own labeled row ---------- */
+    .game{padding-left:12px}
+    .g-mkt{display:block}
+    .craft-sparkrow{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .craft-sparkrow .craft-spark{margin-left:0}
 </style>
 </head>
 <body>
@@ -4793,7 +4798,9 @@ function renderLabNotebook() {
         dot.setAttribute('cx',lx);dot.setAttribute('cy',ly);dot.setAttribute('r','2.6');
         dot.setAttribute('fill','currentColor');
         svg.appendChild(pl);svg.appendChild(dot);
-        mid.appendChild(svg);
+        const row=document.createElement('div');row.className='craft-sparkrow';
+        const lab=document.createElement('span');lab.textContent='Line move';row.appendChild(lab);row.appendChild(svg);
+        mid.appendChild(row);
       }catch(e){}
     }
 
